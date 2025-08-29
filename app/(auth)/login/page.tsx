@@ -1,0 +1,13 @@
+import React, { Suspense } from 'react'
+import { PageBase } from './toolkit/page-base'
+import { Loader } from '@/components/ui-kit/Loader'
+
+const Auth = () => {
+  return (
+    <Suspense fallback={<Loader />}>
+        <PageBase />
+    </Suspense>
+  )
+}
+
+export default Auth
