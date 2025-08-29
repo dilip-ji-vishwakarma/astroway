@@ -8,11 +8,15 @@ type Props = {
 }
 
 export default async function SubdomainLayout({ children }: Props) {
-  const session: any = await getServerSession(authOptions)
+  // Get the session from next-auth
+  const session = await getServerSession(authOptions)
 
-  if (!session?.user?.access_token) {
+  // Debug log (server side)
+  console.log("Session in layout:", session)
+
+  // If no session or no token, redirect to login
+  if (!session || !session.user?.token) {
     redirect('/login')
-    
   }
 
   return <>{children}</>

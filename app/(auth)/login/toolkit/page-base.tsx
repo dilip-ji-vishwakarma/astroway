@@ -1,10 +1,12 @@
-"use client"
-import React from "react";
+"use client";
+import React, { use } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Controller, useForm } from "react-hook-form";
 import { useDataMutation } from "../hook/use-data-mutation";
+
+
 export const PageBase = () => {
   const {
     handleSubmit,
@@ -16,6 +18,8 @@ export const PageBase = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      
+    
       <div className="grid gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
