@@ -124,3 +124,11 @@
 .primary-color {
   background-color: #164E62;
 }
+
+.custom-shadow {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px !important;
+}
+
+.primary-text {
+  color: #164E62;
+}
