@@ -57,12 +57,12 @@ export const AdminHeader = ({ session }: any) => {
   });
 
   return (
-    <div className="admin-header flex justify-between items-center bg-[#F5E882] px-3 py-2">
+    <div className="admin-header flex justify-between items-center px-3 py-2 bg-[#e2501640] custom-shadow">
       <div className="flex items-center gap-3">
         <SidebarTrigger className="cursor-pointer size-10 primary-color text-white font-bold hover:text-white" />
         <div className="flex items-center gap-2.5 p-3 rounded-md md:hidden">
           <Image
-            src="/images/AdminLogo1756469947.png"
+            src="/images/logo.png"
             width={30}
             height={30}
             alt="logo"
@@ -75,7 +75,7 @@ export const AdminHeader = ({ session }: any) => {
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link className="hover:primary-text" href="/">
-                    Astroway
+                    Astrova
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>

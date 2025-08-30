@@ -26,27 +26,33 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar className="border-r bg-white">
+    <Sidebar collapsible="icon" className="border-r bg-white" variant="floating">
       <SidebarHeader>
-        <div className="flex items-center gap-2.5 custom-shadow p-3 rounded-md">
-          <Image
-            src="/images/AdminLogo1756469947.png"
-            width={60}
-            height={60}
-            alt="logo"
-          />
-          <Label className="text-[20px] primary-text font-medium">
-            Astroway
+        <div className="flex items-center gap-2.5 group-data-[collapsible=icon]:block custom-shadow group-data-[collapsible=icon]:p-0 p-3 rounded-md">
+          <Image src="/images/logo.png" width={50} height={50} alt="logo" />
+          {/* 👇 hides when collapsed */}
+          <Label className="text-[20px] primary-text font-medium group-data-[collapsible=icon]:hidden">
+            Astrova
           </Label>
         </div>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="uppercase primary-text text-xs tracking-wide px-4 mb-2">
+          <SidebarGroupLabel className="uppercase primary-text text-xs tracking-wide px-4 mb-2 group-data-[collapsible=icon]:hidden">
             Menu
           </SidebarGroupLabel>
 
-          <SidebarGroupContent>
+          <SidebarGroupContent
+            className="
+    h-screen 
+    group-data-[collapsible=icon]:overflow-y-auto 
+    group-data-[collapsible=icon]:pr-2
+    group-data-[collapsible=icon]:scrollbar-thin
+    group-data-[collapsible=icon]:scrollbar-thumb-muted
+    group-data-[collapsible=icon]:scrollbar-track-transparent
+  "
+          >
             <SidebarMenu className="space-y-2">
               {mainItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
@@ -56,13 +62,16 @@ export function AppSidebar() {
                         <Button className="w-full flex items-center justify-between px-3 py-[20px] rounded-lg hover:bg-gray-100 bg-white text-black cursor-pointer">
                           <span className="flex items-center space-x-2">
                             <item.icon className="h-4 w-4 text-gray-500" />
-                            <span className="text-sm">{item.title}</span>
+                            {/* 👇 hide text when collapsed */}
+                            <span className="text-sm group-data-[collapsible=icon]:hidden">
+                              {item.title}
+                            </span>
                           </span>
-                          <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                          <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180 group-data-[collapsible=icon]:hidden" />
                         </Button>
                       </CollapsibleTrigger>
                       <CollapsibleContent>
-                        <div className="mt-2 space-y-2 ml-2 rounded-md p-2  custom-shadow">
+                        <div className="mt-2 space-y-2 ml-2 rounded-md p-2 custom-shadow">
                           {item.children.map((child) => (
                             <Link
                               key={child.title}
@@ -96,7 +105,10 @@ export function AppSidebar() {
                               : "text-gray-500"
                           }`}
                         />
-                        <span className="text-sm">{item.title}</span>
+                        {/* 👇 hide label when collapsed */}
+                        <span className="text-sm group-data-[collapsible=icon]:hidden">
+                          {item.title}
+                        </span>
                       </span>
                     </Link>
                   )}

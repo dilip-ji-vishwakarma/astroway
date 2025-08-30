@@ -30,7 +30,7 @@ export const PageBase = () => {
         <div className="max-w-[480px] w-full">
           <div className="p-6 sm:p-8 rounded-2xl bg-white border border-gray-200 shadow-sm">
             <Image
-              src="/images/AdminLogo1756469947.png"
+              src="/images/logo.png"
               alt="logo"
               width={100}
               height={100}
