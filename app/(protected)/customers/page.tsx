@@ -1,8 +1,8 @@
 import { Loader } from "@/components/ui-kit/Loader";
 import React, { Suspense } from "react";
-import { PageBase } from "./toolkit/page-base";
+import PageBase from "./toolkit/page-base";
 
-const Dashboard = () => {
+const Customers = () => {
   return (
     <Suspense fallback={<Loader />}>
       <PageBase />
@@ -10,4 +10,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Customers;

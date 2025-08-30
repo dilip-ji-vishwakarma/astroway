@@ -1,23 +1,32 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { authOptions } from '@/lib/authOptions'
-import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
+import { AppSidebar } from "@/components/ui-kit/AppSidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { authOptions } from "@/lib/authOptions";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default async function SubdomainLayout({ children }: Props) {
   // Get the session from next-auth
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
 
   // Debug log (server side)
-  console.log("Session in layout:", session)
+  console.log("Session in layout:", session);
 
   // If no session or no token, redirect to login
   if (!session || !session.user?.token) {
-    redirect('/login')
+    redirect("/login");
   }
 
-  return <>{children}</>
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <main>
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
+  );
 }
