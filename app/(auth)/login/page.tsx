@@ -3,6 +3,11 @@ import { PageBase } from './toolkit/page-base'
 import { Loader } from '@/components/ui-kit/Loader'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/authOptions'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Sign In',
+}
 
 const Auth = async () => {
   const session = await getServerSession(authOptions)

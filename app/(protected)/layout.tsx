@@ -1,22 +1,17 @@
 import { AppSidebar } from "@/components/ui-kit/AppSidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import "../globals.css"
+import { AdminHeader } from "@/components/ui-kit/admin-header";
 
 type Props = {
   children: React.ReactNode;
 };
 
 export default async function SubdomainLayout({ children }: Props) {
-  // Get the session from next-auth
   const session = await getServerSession(authOptions);
-
-  // Debug log (server side)
-  console.log("Session in layout:", session);
-
-  // If no session or no token, redirect to login
   if (!session || !session.user?.token) {
     redirect("/login");
   }
@@ -24,9 +19,11 @@ export default async function SubdomainLayout({ children }: Props) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main>
-        <SidebarTrigger />
+      <main className="w-full">
+        <AdminHeader session={session.user}/>
+        <div className="px-5 py-3 ">
         {children}
+        </div>
       </main>
     </SidebarProvider>
   );

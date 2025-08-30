@@ -1,7 +1,16 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarHeader,
+} from "@/components/ui/sidebar";
 import { mainItems } from "@/lib/menuItems";
 import { ChevronDown } from "lucide-react";
 import {
@@ -17,16 +26,22 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar className="border-r bg-white dilip">
+    <Sidebar className="border-r bg-white">
+      <SidebarHeader>
+        <div className="flex items-center gap-2.5 custom-shadow p-3 rounded-md">
+          <Image
+            src="/images/AdminLogo1756469947.png"
+            width={60}
+            height={60}
+            alt="logo"
+          />
+          <Label className="text-[20px] primary-text font-medium">
+            Astroway
+          </Label>
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          {/* Logo */}
-          <div className="flex items-center gap-2.5 mb-5 mt-2 custom-shadow p-3 rounded-md">
-            <Image src="/images/AdminLogo1756469947.png" width={60} height={60} alt="logo" />
-            <Label className="text-[20px] primary-text font-medium">Astroway</Label>
-          </div>
-
-          {/* Menu label */}
           <SidebarGroupLabel className="uppercase primary-text text-xs tracking-wide px-4 mb-2">
             Menu
           </SidebarGroupLabel>
@@ -53,7 +68,9 @@ export function AppSidebar() {
                               key={child.title}
                               href={child.url}
                               className={`block text-sm px-2 py-[7px] rounded-md font-medium ${
-                                pathname === child.url ? "primary-text" : "text-black"
+                                pathname === child.url
+                                  ? "primary-text"
+                                  : "text-black"
                               }`}
                             >
                               {child.title}
@@ -74,7 +91,9 @@ export function AppSidebar() {
                       <span className="flex items-center space-x-2">
                         <item.icon
                           className={`h-4 w-4 ${
-                            pathname === item.url ? "text-white" : "text-gray-500"
+                            pathname === item.url
+                              ? "text-white"
+                              : "text-gray-500"
                           }`}
                         />
                         <span className="text-sm">{item.title}</span>
