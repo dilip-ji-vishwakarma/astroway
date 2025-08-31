@@ -23,9 +23,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import EditProfile from "./edit-profile";
+import ChangePassword from "./change-password";
 
 export const AdminHeader = ({ session }: any) => {
   const [openSheet, setOpenSheet] = useState(false);
+  const [sheet, setSheet] = useState(false);
   const handleLogout = () => {
     signOut({ callbackUrl: "/login" });
   };
@@ -100,7 +102,10 @@ export const AdminHeader = ({ session }: any) => {
           >
             Edit Profile
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem 
+           className="cursor-pointer"
+            onClick={() => setSheet(true)}
+            >
             Change Password
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -113,6 +118,7 @@ export const AdminHeader = ({ session }: any) => {
       </DropdownMenu>
     </div>
      <EditProfile open={openSheet} onOpenChange={setOpenSheet} />
+     <ChangePassword open={sheet} onOpenChange={setSheet} />
     </>
   );
 };
