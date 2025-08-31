@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -22,8 +22,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import EditProfile from "./edit-profile";
 
 export const AdminHeader = ({ session }: any) => {
+  const [openSheet, setOpenSheet] = useState(false);
   const handleLogout = () => {
     signOut({ callbackUrl: "/login" });
   };
@@ -57,16 +59,12 @@ export const AdminHeader = ({ session }: any) => {
   });
 
   return (
+    <>
     <div className="admin-header flex justify-between items-center px-3 py-2 bg-[#e2501640] custom-shadow">
       <div className="flex items-center gap-3">
         <SidebarTrigger className="cursor-pointer size-10 primary-color text-white font-bold hover:text-white" />
         <div className="flex items-center gap-2.5 p-3 rounded-md md:hidden">
-          <Image
-            src="/images/logo.png"
-            width={30}
-            height={30}
-            alt="logo"
-          />
+          <Image src="/images/logo.png" width={30} height={30} alt="logo" />
         </div>
 
         <div>
@@ -96,11 +94,25 @@ export const AdminHeader = ({ session }: any) => {
         <DropdownMenuContent>
           <DropdownMenuLabel>astroway admin</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer">Edit Profile</DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">Change Password</DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>Logout</DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => setOpenSheet(true)}
+          >
+            Edit Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
+            Change Password
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer bg-[#f3f4f6] border border-solid border-[#E25016]"
+            onClick={handleLogout}
+          >
+            Logout
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+     <EditProfile open={openSheet} onOpenChange={setOpenSheet} />
+    </>
   );
 };

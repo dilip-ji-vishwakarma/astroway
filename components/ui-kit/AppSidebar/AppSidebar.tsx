@@ -26,9 +26,13 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar collapsible="icon" className="border-r bg-white" variant="floating">
+    <Sidebar
+      collapsible="icon"
+      className="border-r bg-white"
+      variant="floating"
+    >
       <SidebarHeader>
-        <div className="flex items-center gap-2.5 group-data-[collapsible=icon]:block custom-shadow group-data-[collapsible=icon]:p-0 p-3 rounded-md">
+        <div className="flex items-center gap-2.5 group-data-[collapsible=icon]:block group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:bg-[transparent] bg-white group-data-[collapsible=icon]:p-0 p-3 rounded-md">
           <Image src="/images/logo.png" width={50} height={50} alt="logo" />
           {/* 👇 hides when collapsed */}
           <Label className="text-[20px] primary-text font-medium group-data-[collapsible=icon]:hidden">
