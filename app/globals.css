@@ -132,3 +132,11 @@
 .primary-text {
   color: #E25016;
 }
+
+.table-wrapper {
+  width: calc(100% - var(--sidebar-width)); /* sidebar ke liye space chhodo */
+  max-width: calc(100vw - var(--sidebar-width)); /* viewport overflow na ho */
+  overflow-x: auto; /* horizontal scroll sirf yahan */
+  overflow-y: hidden; 
+  box-sizing: border-box;
+}
