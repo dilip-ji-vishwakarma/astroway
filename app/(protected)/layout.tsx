@@ -19,7 +19,7 @@ export default async function SubdomainLayout({ children }: Props) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="w-full">
+      <main className="w-full overflow-hidden">
         <AdminHeader session={session.user}/>
         <div className="px-5 py-3 ">
         {children}

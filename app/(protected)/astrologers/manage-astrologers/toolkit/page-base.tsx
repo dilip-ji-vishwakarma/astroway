@@ -21,6 +21,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import Link from "next/link";
 
 const PageBase = ({ initialData, initialPagination }: any) => {
   const {
@@ -76,7 +77,14 @@ const PageBase = ({ initialData, initialPagination }: any) => {
                   {item.lastName}
                 </TableCell>
                 <TableCell className="px-[30px] py-5">{item.phone}</TableCell>
-                <TableCell className="px-[30px] py-5">{item.email}</TableCell>
+                <TableCell className="px-[30px] py-5">
+                  <Link
+                    href={`mailto:${item.email}`}
+                    className="text-blue-500 hover:underline"
+                  >
+                    {item.email}
+                  </Link>
+                </TableCell>
                 <TableCell className="px-[30px] py-5">{item.city}</TableCell>
                 <TableCell className="px-[30px] py-5">{item.state}</TableCell>
                 <TableCell className="px-[30px] py-5">
