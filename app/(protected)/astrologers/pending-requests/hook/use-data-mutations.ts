@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
+import { approved_astrologer } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import { useEffect, useState, useCallback } from "react";
+import { toast } from "sonner";
 
 export const useDataMutation = (
   initialData: any[],
   initialPagination: { page: number; limit: number; totalPages: number }
 ) => {
+  const [submittingItems, setSubmittingItems] = useState<Set<string>>(
+    new Set()
+  );
   const [data, setData] = useState<any[]>(initialData);
   const [page, setPage] = useState(initialPagination.page || 1);
   const [limit] = useState(initialPagination.limit || 5);
@@ -21,7 +25,7 @@ export const useDataMutation = (
     setLoading(true);
     try {
       const response = await apiServices(
-        `/admin/astrologers?page=${pageNumber}&limit=${limit}&isBlocked=true`,
+        `/admin/astrologers?page=${pageNumber}&limit=${limit}&isApproved=false`,
         "get"
       );
 
@@ -37,24 +41,20 @@ export const useDataMutation = (
     }
   }, [limit]);
 
-  // Debounce search to avoid too many API calls
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      // Always reset to page 1 when search changes
       if (search !== "") {
         fetchData(1, search);
       } else {
-        // When search is cleared, fetch page 1 with no search term
         fetchData(1, "");
       }
-    }, 300); // 300ms debounce
+    }, 300); 
 
     return () => clearTimeout(timeoutId);
   }, [search, fetchData]);
 
-  // Handle page changes (only when not searching)
+
   useEffect(() => {
-    // Only fetch when page changes and we're not in the middle of a search
     if (search === "") {
       fetchData(page, "");
     }
@@ -68,16 +68,47 @@ export const useDataMutation = (
     if (page < totalPages) setPage(page + 1);
   };
 
-  // Custom search handler to reset page
   const handleSearch = (searchTerm: string) => {
     setSearch(searchTerm);
-    setPage(1); // Reset to page 1 when searching
+    setPage(1); 
   };
 
+const onSubmit = async (formProp: any) => {
+  if (!formProp.astrologerId) {
+    toast.error("Missing ID");
+    return;
+  }
+  try {
+    const response = await apiServices(approved_astrologer, "post", formProp);
+    toast.success("Approved");
+    fetchData(page, search); 
+  } catch (error: any) {
+    toast.error("Approval failed");
+  }
+};
 
-  const onSubmit = async (formProp: any) => {
-    alert(JSON.stringify(formProp, null, 2))
-    
+
+
+  const handleSwitchChange = async (itemId: string, checked: boolean) => {
+    // Add item to submitting state
+    setSubmittingItems((prev) => new Set([...prev, itemId]));
+
+    try {
+      await onSubmit({
+        astrologerId: itemId,
+        isApproved: checked,
+      });
+    } catch (error) {
+      console.error("Error updating approval status:", error);
+      // You might want to show an error message to the user here
+    } finally {
+      // Remove item from submitting state
+      setSubmittingItems((prev) => {
+        const newSet = new Set([...prev]);
+        newSet.delete(itemId);
+        return newSet;
+      });
+    }
   };
 
   return {
@@ -90,6 +121,8 @@ export const useDataMutation = (
     handlePrev,
     handleNext,
     setPage,
-    onSubmit
+    onSubmit,
+    submittingItems,
+    handleSwitchChange
   };
 };

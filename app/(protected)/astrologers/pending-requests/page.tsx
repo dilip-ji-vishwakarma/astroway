@@ -3,10 +3,10 @@ import React, { Suspense } from "react";
 import { apiServices } from "@/lib/api.services";
 import { TextH1 } from "@/components/ui-kit/TextH1";
 import PageBase from "./toolkit/page-base";
-import { blocked_astrologer } from "@/lib/api-endpoints";
+import { pending_astrologer } from "@/lib/api-endpoints";
 
-const AstrologerList = async () => {
-  const response = await apiServices(blocked_astrologer, "get");
+const PendingAstrologer = async () => {
+  const response = await apiServices(pending_astrologer, "get");
 
   return (
     <Suspense fallback={<Loader />}>
@@ -21,4 +21,4 @@ const AstrologerList = async () => {
   );
 };
 
-export default AstrologerList;
+export default PendingAstrologer;
