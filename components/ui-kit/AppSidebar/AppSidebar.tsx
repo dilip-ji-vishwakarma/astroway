@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect, useCallback } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -24,6 +26,21 @@ import { Button } from "@/components/ui/button";
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const [openMenus, setOpenMenus] = useState<string[]>([]);
+
+  // Function to check if any child is active - wrapped in useCallback
+  const isParentActive = useCallback((item: any) => {
+    if (!item.children) return false;
+    return item.children.some((child: any) => pathname === child.url);
+  }, [pathname]);
+
+  // Update open menus when pathname changes
+  useEffect(() => {
+    const activeMenus = mainItems
+      .filter(item => isParentActive(item))
+      .map(item => item.title);
+    setOpenMenus(activeMenus);
+  }, [pathname, isParentActive]);
 
   return (
     <Sidebar
@@ -61,7 +78,20 @@ export function AppSidebar() {
               {mainItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   {item.children ? (
-                    <Collapsible className="group/collapsible">
+                    <Collapsible 
+                      className="group/collapsible"
+                      open={openMenus.includes(item.title)}
+                      onOpenChange={(open) => {
+                        if (open) {
+                          setOpenMenus(prev => [...prev, item.title]);
+                        } else {
+                          // Don't close if child is active
+                          if (!isParentActive(item)) {
+                            setOpenMenus(prev => prev.filter(menu => menu !== item.title));
+                          }
+                        }
+                      }}
+                    >
                       <CollapsibleTrigger asChild>
                         <Button className="w-full flex items-center justify-between px-3 py-[20px] rounded-lg hover:bg-gray-100 bg-white text-black cursor-pointer">
                           <span className="flex items-center space-x-2">
