@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Loader } from "@/components/ui-kit/Loader";
 import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
 import {
   Pagination,
@@ -49,78 +48,64 @@ export const PageBase = ({ initialData, initialPagination }: any) => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-
-      {loading ? (
-        <div className="h-[350px]">
-          <Loader />
-        </div>
-      ) : (
-        <Table className="mt-5 border border-solid">
-          <TableHeader className="bg-gray-100">
-            <TableRow>
-              <TableHead className="px-[10px] py-5">#</TableHead>
-              <TableHead className="px-[10px] py-5">First Name</TableHead>
-              <TableHead className="px-[10px] py-5">Last Name</TableHead>
-              <TableHead className="px-[10px] py-5">Phone</TableHead>
-              <TableHead className="px-[10px] py-5">Email</TableHead>
-              <TableHead className="px-[10px] py-5">City</TableHead>
-              <TableHead className="px-[10px] py-5">State</TableHead>
-              <TableHead className="px-[10px] py-5">Blocked</TableHead>
+      <Table className="mt-5 border border-solid">
+        <TableHeader className="bg-gray-100">
+          <TableRow>
+            <TableHead className="px-[10px] py-5">#</TableHead>
+            <TableHead className="px-[10px] py-5">First Name</TableHead>
+            <TableHead className="px-[10px] py-5">Last Name</TableHead>
+            <TableHead className="px-[10px] py-5">Phone</TableHead>
+            <TableHead className="px-[10px] py-5">Email</TableHead>
+            <TableHead className="px-[10px] py-5">City</TableHead>
+            <TableHead className="px-[10px] py-5">State</TableHead>
+            <TableHead className="px-[10px] py-5">Blocked</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((item: any) => (
+            <TableRow key={item.id}>
+              <TableCell className="px-[10px] py-5">{item.id}</TableCell>
+              <TableCell className="px-[10px] py-5">{item.firstName}</TableCell>
+              <TableCell className="px-[10px] py-5">{item.lastName}</TableCell>
+              <TableCell className="px-[10px] py-5">{item.phone}</TableCell>
+              <TableCell className="px-[10px] py-5">
+                <Link
+                  href={`mailto:${item.email}`}
+                  className="text-blue-500 hover:underline"
+                >
+                  {item.email}
+                </Link>
+              </TableCell>
+              <TableCell className="px-[10px] py-5">{item.city}</TableCell>
+              <TableCell className="px-[10px] py-5">{item.state}</TableCell>
+              <TableCell className="px-[10px] py-5">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  {submittingItems.has(item.id) ? (
+                    <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500"></div>
+                  ) : (
+                    <Controller
+                      name={`isBlocked-${item.id}`}
+                      control={control}
+                      defaultValue={item.isBlocked}
+                      render={({ field: { onChange, value } }) => (
+                        <Switch
+                          className="cursor-pointer"
+                          checked={value}
+                          disabled={submittingItems.has(item.id)}
+                          onCheckedChange={(checked) => {
+                            onChange(checked);
+                            handleSwitchChange(item.id, checked);
+                          }}
+                        />
+                      )}
+                    />
+                  )}
+                </form>
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((item: any) => (
-              <TableRow key={item.id}>
-                <TableCell className="px-[10px] py-5">
-                  {item.id}
-                </TableCell>
-                <TableCell className="px-[10px] py-5">
-                  {item.firstName}
-                </TableCell>
-                <TableCell className="px-[10px] py-5">
-                  {item.lastName}
-                </TableCell>
-                <TableCell className="px-[10px] py-5">{item.phone}</TableCell>
-                <TableCell className="px-[10px] py-5">
-                  <Link
-                    href={`mailto:${item.email}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    {item.email}
-                  </Link>
-                </TableCell>
-                <TableCell className="px-[10px] py-5">{item.city}</TableCell>
-                <TableCell className="px-[10px] py-5">{item.state}</TableCell>
-                <TableCell className="px-[10px] py-5">
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    {submittingItems.has(item.id) ? (
-                      <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500"></div>
-                    ) : (
-                      <Controller
-                        name={`isBlocked-${item.id}`}
-                        control={control}
-                        defaultValue={item.isBlocked}
-                        render={({ field: { onChange, value } }) => (
-                          <Switch
-                            className="cursor-pointer"
-                            checked={value}
-                            disabled={submittingItems.has(item.id)}
-                            onCheckedChange={(checked) => {
-                              onChange(checked);
-                              handleSwitchChange(item.id, checked);
-                            }}
-                          />
-                        )}
-                      />
-                    )}
-                  </form>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      )}
-
+          ))}
+        </TableBody>
+      </Table>
       {data.length === 0 && !loading && (
         <div className="text-center py-8 text-gray-500">
           {search ? `No results found for "${search}"` : "No data available"}

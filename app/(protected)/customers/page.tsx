@@ -2,15 +2,21 @@ import { Loader } from "@/components/ui-kit/Loader";
 import React, { Suspense } from "react";
 import PageBase from "./toolkit/page-base";
 import { Metadata } from "next";
+import { admin_users } from "@/lib/api-endpoints";
+import { apiServices } from "@/lib/api.services";
 
 export const metadata: Metadata = {
   title: 'Customer',
 }
 
-const Customers = () => {
+const Customers = async () => {
+  const response = await apiServices(admin_users, "get");
   return (
     <Suspense fallback={<Loader />}>
-      <PageBase />
+      <PageBase
+        initialData={response.data}
+        initialPagination={response.pagination}
+      />
     </Suspense>
   );
 };

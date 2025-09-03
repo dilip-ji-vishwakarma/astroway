@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Loader } from "@/components/ui-kit/Loader";
 import { useDataMutation } from "../hook/use-data-mutations";
 import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
 import {
@@ -45,70 +44,56 @@ const PageBase = ({ initialData, initialPagination }: any) => {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {loading ? (
-        <div className="h-[350px]">
-          <Loader />
-        </div>
-      ) : (
-        <Table className="mt-5">
-          <TableHeader className="bg-gray-100">
-            <TableRow>
-              <TableHead className="px-[30px] py-5">#</TableHead>
-              <TableHead className="px-[30px] py-5">First Name</TableHead>
-              <TableHead className="px-[30px] py-5">Last Name</TableHead>
-              <TableHead className="px-[30px] py-5">Phone</TableHead>
-              <TableHead className="px-[30px] py-5">Email</TableHead>
-              <TableHead className="px-[30px] py-5">City</TableHead>
-              <TableHead className="px-[30px] py-5">State</TableHead>
-              <TableHead className="px-[30px] py-5">Approved</TableHead>
-              <TableHead className="px-[30px] py-5">Blocked</TableHead>
-              <TableHead className="px-[30px] py-5">Rating</TableHead>
-              <TableHead className="px-[30px] py-5">Created At</TableHead>
+      <Table className="mt-5">
+        <TableHeader className="bg-gray-100">
+          <TableRow>
+            <TableHead className="px-[30px] py-5">#</TableHead>
+            <TableHead className="px-[30px] py-5">First Name</TableHead>
+            <TableHead className="px-[30px] py-5">Last Name</TableHead>
+            <TableHead className="px-[30px] py-5">Phone</TableHead>
+            <TableHead className="px-[30px] py-5">Email</TableHead>
+            <TableHead className="px-[30px] py-5">City</TableHead>
+            <TableHead className="px-[30px] py-5">State</TableHead>
+            <TableHead className="px-[30px] py-5">Approved</TableHead>
+            <TableHead className="px-[30px] py-5">Blocked</TableHead>
+            <TableHead className="px-[30px] py-5">Rating</TableHead>
+            <TableHead className="px-[30px] py-5">Created At</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((item: any) => (
+            <TableRow key={item.id}>
+              <TableCell className="px-[30px] py-5">{item.id}</TableCell>
+              <TableCell className="px-[30px] py-5">{item.firstName}</TableCell>
+              <TableCell className="px-[30px] py-5">{item.lastName}</TableCell>
+              <TableCell className="px-[30px] py-5">{item.phone}</TableCell>
+              <TableCell className="px-[30px] py-5">
+                <Link
+                  href={`mailto:${item.email}`}
+                  className="text-blue-500 hover:underline"
+                >
+                  {item.email}
+                </Link>
+              </TableCell>
+              <TableCell className="px-[30px] py-5">{item.city}</TableCell>
+              <TableCell className="px-[30px] py-5">{item.state}</TableCell>
+              <TableCell className="px-[30px] py-5">
+                {item.isApproved ? "Yes" : "No"}
+              </TableCell>
+              <TableCell className="px-[30px] py-5">
+                {item.isBlocked ? "Yes" : "No"}
+              </TableCell>
+              <TableCell className="px-[30px] py-5">{item.rating}</TableCell>
+              <TableCell className="px-[30px] py-5">{item.createdAt}</TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((item: any) => (
-              <TableRow key={item.id}>
-                <TableCell className="px-[30px] py-5">{item.id}</TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {item.firstName}
-                </TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {item.lastName}
-                </TableCell>
-                <TableCell className="px-[30px] py-5">{item.phone}</TableCell>
-                <TableCell className="px-[30px] py-5">
-                  <Link
-                    href={`mailto:${item.email}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    {item.email}
-                  </Link>
-                </TableCell>
-                <TableCell className="px-[30px] py-5">{item.city}</TableCell>
-                <TableCell className="px-[30px] py-5">{item.state}</TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {item.isApproved ? "Yes" : "No"}
-                </TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {item.isBlocked ? "Yes" : "No"}
-                </TableCell>
-                <TableCell className="px-[30px] py-5">{item.rating}</TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {item.createdAt}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      )}
-
+          ))}
+        </TableBody>
+      </Table>
       {data.length === 0 && !loading && (
         <div className="text-center py-8 text-gray-500">
           {search ? `No results found for "${search}"` : "No data available"}
         </div>
       )}
-
       <Pagination className="mt-6">
         <PaginationContent>
           {/* Prev */}
