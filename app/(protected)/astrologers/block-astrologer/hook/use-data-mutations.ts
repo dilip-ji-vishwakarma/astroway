@@ -1,13 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { toggle_blocked_unblocked_astrologer } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import { useEffect, useState, useCallback } from "react";
+import { toast } from "sonner";
 
 export const useDataMutation = (
   initialData: any[],
   initialPagination: { page: number; limit: number; totalPages: number }
 ) => {
+      const [submittingItems, setSubmittingItems] = useState<Set<string>>(
+    new Set()
+  );
   const [data, setData] = useState<any[]>(initialData);
   const [page, setPage] = useState(initialPagination.page || 1);
   const [limit] = useState(initialPagination.limit || 5);
@@ -75,9 +80,42 @@ export const useDataMutation = (
   };
 
 
-  const onSubmit = async (formProp: any) => {
-    alert(JSON.stringify(formProp, null, 2))
-    
+ const onSubmit = async (formProp: any) => {
+  if (!formProp.astrologerId) {
+    toast.error("Missing ID");
+    return;
+  }
+  try {
+    const response = await apiServices(toggle_blocked_unblocked_astrologer, "post", formProp);
+    toast.success("UnBlocked");
+    fetchData(page, search); 
+  } catch (error: any) {
+    toast.error("UnBlocked failed");
+  }
+};
+
+
+
+  const handleSwitchChange = async (itemId: string, checked: boolean) => {
+    // Add item to submitting state
+    setSubmittingItems((prev) => new Set([...prev, itemId]));
+
+    try {
+      await onSubmit({
+        astrologerId: itemId,
+        isApproved: checked,
+      });
+    } catch (error) {
+      console.error("Error updating approval status:", error);
+      // You might want to show an error message to the user here
+    } finally {
+      // Remove item from submitting state
+      setSubmittingItems((prev) => {
+        const newSet = new Set([...prev]);
+        newSet.delete(itemId);
+        return newSet;
+      });
+    }
   };
 
   return {
@@ -90,6 +128,8 @@ export const useDataMutation = (
     handlePrev,
     handleNext,
     setPage,
-    onSubmit
+    onSubmit,
+    submittingItems,
+    handleSwitchChange
   };
 };

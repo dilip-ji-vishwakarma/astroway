@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 "use client";
 import React from "react";
 import {
@@ -39,12 +37,10 @@ export const PageBase = ({ initialData, initialPagination }: any) => {
     handleNext,
     setPage,
     onSubmit,
+    submittingItems,
+    handleSwitchChange,
   } = useDataMutation(initialData, initialPagination);
-  const {
-    handleSubmit,
-    control,
-    formState: { errors, isSubmitting },
-  } = useForm();
+  const { handleSubmit, control } = useForm();
   return (
     <div className="mt-8">
       <SearchAndFilter
@@ -93,24 +89,26 @@ export const PageBase = ({ initialData, initialPagination }: any) => {
                 <TableCell className="px-[10px] py-5">{item.state}</TableCell>
                 <TableCell className="px-[10px] py-5">
                   <form onSubmit={handleSubmit(onSubmit)}>
-                    <Controller
-                      name={`isBlocked-${item.id}`}
-                      control={control}
-                      defaultValue={item.isBlocked}
-                      render={({ field: { onChange, value } }) => (
-                        <Switch
-                          className="cursor-pointer"
-                          checked={value}
-                          onCheckedChange={(checked) => {
-                            onChange(checked);
-                            onSubmit({
-                              id: item.id,
-                              isBlocked: checked,
-                            });
-                          }}
-                        />
-                      )}
-                    />
+                    {submittingItems.has(item.id) ? (
+                      <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500"></div>
+                    ) : (
+                      <Controller
+                        name={`isBlocked-${item.id}`}
+                        control={control}
+                        defaultValue={item.isBlocked}
+                        render={({ field: { onChange, value } }) => (
+                          <Switch
+                            className="cursor-pointer"
+                            checked={value}
+                            disabled={submittingItems.has(item.id)}
+                            onCheckedChange={(checked) => {
+                              onChange(checked);
+                              handleSwitchChange(item.id, checked);
+                            }}
+                          />
+                        )}
+                      />
+                    )}
                   </form>
                 </TableCell>
               </TableRow>
