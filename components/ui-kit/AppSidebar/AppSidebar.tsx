@@ -12,6 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarHeader,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { mainItems } from "@/lib/menuItems";
 import { ChevronDown } from "lucide-react";
@@ -27,53 +28,40 @@ import { Button } from "@/components/ui/button";
 export function AppSidebar() {
   const pathname = usePathname();
   const [openMenus, setOpenMenus] = useState<string[]>([]);
+  const { setOpenMobile } = useSidebar();
 
-  // Function to check if any child is active - wrapped in useCallback
   const isParentActive = useCallback((item: any) => {
     if (!item.children) return false;
     return item.children.some((child: any) => pathname === child.url);
   }, [pathname]);
 
-  // Update open menus when pathname changes
-  useEffect(() => {
-    const activeMenus = mainItems
-      .filter(item => isParentActive(item))
-      .map(item => item.title);
-    setOpenMenus(activeMenus);
-  }, [pathname, isParentActive]);
+useEffect(() => {
+  setOpenMobile(false);
+}, [pathname, setOpenMobile]);
+
+const handleLinkClick = () => {
+  setOpenMobile(false);
+};
+
 
   return (
     <Sidebar
-      collapsible="icon"
       className="border-r bg-white"
-      variant="floating"
     >
       <SidebarHeader>
-        <div className="flex items-center gap-2.5 group-data-[collapsible=icon]:block group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:bg-[transparent] bg-white group-data-[collapsible=icon]:p-0 p-3 rounded-md">
+        <div className="flex items-center gap-2.5 bg-white p-3 rounded-md">
           <Image src="/images/logo.png" width={50} height={50} alt="logo" />
-          {/* 👇 hides when collapsed */}
-          <Label className="text-[20px] primary-text font-medium group-data-[collapsible=icon]:hidden">
+          <Label className="text-[20px] primary-text font-medium">
             Astrova
           </Label>
         </div>
       </SidebarHeader>
-
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="uppercase primary-text text-xs tracking-wide px-4 mb-2 group-data-[collapsible=icon]:hidden">
+          <SidebarGroupLabel className="uppercase primary-text text-xs tracking-wide px-4 mb-2">
             Menu
           </SidebarGroupLabel>
-
-          <SidebarGroupContent
-            className="
-    h-screen 
-    group-data-[collapsible=icon]:overflow-y-auto 
-    group-data-[collapsible=icon]:pr-2
-    group-data-[collapsible=icon]:scrollbar-thin
-    group-data-[collapsible=icon]:scrollbar-thumb-muted
-    group-data-[collapsible=icon]:scrollbar-track-transparent
-  "
-          >
+          <SidebarGroupContent>
             <SidebarMenu className="space-y-2">
               {mainItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
@@ -85,7 +73,6 @@ export function AppSidebar() {
                         if (open) {
                           setOpenMenus(prev => [...prev, item.title]);
                         } else {
-                          // Don't close if child is active
                           if (!isParentActive(item)) {
                             setOpenMenus(prev => prev.filter(menu => menu !== item.title));
                           }
@@ -96,12 +83,11 @@ export function AppSidebar() {
                         <Button className="w-full flex items-center justify-between px-3 py-[20px] rounded-lg hover:bg-gray-100 bg-white text-black cursor-pointer">
                           <span className="flex items-center space-x-2">
                             <item.icon className="h-4 w-4 text-gray-500" />
-                            {/* 👇 hide text when collapsed */}
-                            <span className="text-sm group-data-[collapsible=icon]:hidden">
+                            <span className="text-sm">
                               {item.title}
                             </span>
                           </span>
-                          <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180 group-data-[collapsible=icon]:hidden" />
+                          <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
                         </Button>
                       </CollapsibleTrigger>
                       <CollapsibleContent>
@@ -110,6 +96,7 @@ export function AppSidebar() {
                             <Link
                               key={child.title}
                               href={child.url}
+                              onClick={handleLinkClick}
                               className={`block text-sm px-2 py-[7px] rounded-md font-medium ${
                                 pathname === child.url
                                   ? "primary-text"
@@ -125,6 +112,7 @@ export function AppSidebar() {
                   ) : (
                     <Link
                       href={item.url}
+                      onClick={handleLinkClick}
                       className={`w-full font-medium flex items-center px-3 py-[10px] rounded-lg ${
                         pathname === item.url
                           ? "primary-color text-white hover:text-white"
@@ -139,8 +127,7 @@ export function AppSidebar() {
                               : "text-gray-500"
                           }`}
                         />
-                        {/* 👇 hide label when collapsed */}
-                        <span className="text-sm group-data-[collapsible=icon]:hidden">
+                        <span className="text-sm">
                           {item.title}
                         </span>
                       </span>
