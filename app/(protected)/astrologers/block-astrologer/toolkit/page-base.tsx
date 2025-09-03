@@ -58,6 +58,7 @@ export const PageBase = ({ initialData, initialPagination }: any) => {
         <Table className="mt-5 border border-solid">
           <TableHeader className="bg-gray-100">
             <TableRow>
+              <TableHead className="px-[10px] py-5">#</TableHead>
               <TableHead className="px-[10px] py-5">First Name</TableHead>
               <TableHead className="px-[10px] py-5">Last Name</TableHead>
               <TableHead className="px-[10px] py-5">Phone</TableHead>
@@ -70,6 +71,9 @@ export const PageBase = ({ initialData, initialPagination }: any) => {
           <TableBody>
             {data.map((item: any) => (
               <TableRow key={item.id}>
+                <TableCell className="px-[10px] py-5">
+                  {item.id}
+                </TableCell>
                 <TableCell className="px-[10px] py-5">
                   {item.firstName}
                 </TableCell>
