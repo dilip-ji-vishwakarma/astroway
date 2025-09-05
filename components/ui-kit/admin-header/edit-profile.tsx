@@ -49,7 +49,7 @@ const EditProfile = ({ open, onOpenChange }: EditProfileProps) => {
     }
   }, [userData, reset]);
 
-  const { onSubmit } = useDataMutation();
+  const { onSubmit } = useDataMutation(onOpenChange);
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>

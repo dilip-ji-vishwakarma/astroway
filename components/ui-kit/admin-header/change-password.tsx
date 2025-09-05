@@ -1,5 +1,5 @@
 "use client";
-import React, {useState } from "react";
+import React, { useState } from "react";
 import {
   Sheet,
   SheetClose,
@@ -24,7 +24,8 @@ type EditProfileProps = {
 const ChangePassword = ({ open, onOpenChange }: EditProfileProps) => {
   const [oldmasked, setOldMasked] = useState(true);
   const [newmasked, setNewMasked] = useState(true);
-  const { onFormSubmit, handleSubmit, control, isSubmitting, errors } = useDataMutation();
+  const { onFormSubmit, handleSubmit, control, isSubmitting, errors } =
+    useDataMutation(onOpenChange);
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
