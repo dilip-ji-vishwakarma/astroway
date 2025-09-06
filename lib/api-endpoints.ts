@@ -8,4 +8,5 @@ export const blocked_astrologer = "/admin/astrologers?page=1&limit=5&isBlocked=t
 export const toggle_blocked_unblocked_astrologer = "/admin/astrologer/toggle-block"
 export const admin_users = "/admin/users"
 export const admin_chnage_password = "/admin/password"
+export const block_user = "/admin/user/block"
 

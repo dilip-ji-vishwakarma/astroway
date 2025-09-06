@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -22,6 +22,8 @@ import {
 import { useDataMutation } from "../hook/use-data-mutations";
 import Image from "next/image";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { UserBlockUnblock } from "./user-block-unblock";
 
 const PageBase = ({ initialData, initialPagination }: any) => {
   const {
@@ -35,6 +37,9 @@ const PageBase = ({ initialData, initialPagination }: any) => {
     handleNext,
     setPage,
   } = useDataMutation(initialData, initialPagination);
+   const [open, setOpen] = useState(false);
+   const [userRequest, setUserRequest] = useState(false);
+   const [id, setId] = useState()
   return (
     <div className="mt-8">
       <SearchAndFilter
@@ -55,8 +60,9 @@ const PageBase = ({ initialData, initialPagination }: any) => {
             <TableHead className="px-[30px] py-5">Date Of Birth</TableHead>
             <TableHead className="px-[30px] py-5">Time Of Birth</TableHead>
             <TableHead className="px-[30px] py-5">Place Of Birth</TableHead>
-            <TableHead className="px-[30px] py-5">Blocked</TableHead>
+            {/* <TableHead className="px-[30px] py-5">Blocked</TableHead> */}
             <TableHead className="px-[30px] py-5">Created At</TableHead>
+            <TableHead className="px-[30px] py-5">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -95,10 +101,15 @@ const PageBase = ({ initialData, initialPagination }: any) => {
               <TableCell className="px-[30px] py-5">{item.dateOfBirth}</TableCell>
               <TableCell className="px-[30px] py-5">{item.timeOfBirth}</TableCell>
               <TableCell className="px-[30px] py-5">{item.placeOfBirth}</TableCell>
-              <TableCell className="px-[30px] py-5">
+              {/* <TableCell className="px-[30px] py-5">
                 {item.isBlocked ? "Yes" : "No"}
-              </TableCell>
+              </TableCell> */}
               <TableCell className="px-[30px] py-5">{item.createdAt}</TableCell>
+              <TableCell className="px-[30px] py-5">
+                <Button onClick={() => {setOpen(true); setUserRequest(item.isBlocked); setId(item.id)}} className="cursor-pointer primary-color w-[85px]">
+                  {item.isBlocked === true ? "Unblock" : "Block"}
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -204,6 +215,7 @@ const PageBase = ({ initialData, initialPagination }: any) => {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
+      <UserBlockUnblock open={open} onOpenChange={setOpen} userRequest={userRequest} id={id}/>
     </div>
   );
 };
