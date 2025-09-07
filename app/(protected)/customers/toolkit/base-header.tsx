@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import {
-  CallToActionButton,
   PageHeader,
   PageHeaderLeft,
   PageHeaderRight,
 } from "@/components/ui-kit/page-header";
-import { CloudDownload, Plus } from "lucide-react";
+import { CloudDownload } from "lucide-react";
 import React from "react";
 import dynamic from "next/dynamic";
 
@@ -20,13 +19,6 @@ export const BaseHeader = ({ response }: any) => {
     <PageHeader containerVariation="fluid" height="l">
       <PageHeaderLeft>Customers</PageHeaderLeft>
       <PageHeaderRight>
-        <CallToActionButton
-          onClick={() => alert("Create clicked")}
-          prependIcon={<Plus size={"18px"} />}
-        >
-          Add Customer
-        </CallToActionButton>
-
         <CSVLink
           data={response}
           filename="customers.csv"

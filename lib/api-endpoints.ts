@@ -9,4 +9,4 @@ export const toggle_blocked_unblocked_astrologer = "/admin/astrologer/toggle-blo
 export const admin_users = "/admin/users"
 export const admin_chnage_password = "/admin/password"
 export const block_user = "/admin/user/block"
-
+export const reviews = "/admin/reviews"
