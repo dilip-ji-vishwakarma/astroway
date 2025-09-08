@@ -11,29 +11,18 @@ import {
 } from "@/components/ui/table";
 import { useDataMutation } from "../hook/use-data-mutations";
 import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import Link from "next/link";
 import { Star } from "lucide-react";
+import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 
 const PageBase = ({ initialData, initialPagination }: any) => {
   const {
     data,
     search,
     setSearch,
-    page,
-    totalPages,
     loading,
-    handlePrev,
-    handleNext,
-    setPage,
+    onPageChange,
+    onPerPageChange,
   } = useDataMutation(initialData, initialPagination);
 
   return (
@@ -104,107 +93,23 @@ const PageBase = ({ initialData, initialPagination }: any) => {
           ))}
         </TableBody>
       </Table>
+
       {data.length === 0 && !loading && (
         <div className="text-center py-8 text-gray-500">
           {search ? `No results found for "${search}"` : "No data available"}
         </div>
       )}
-      <Pagination className="mt-6">
-        <PaginationContent>
-          {/* Prev */}
-          <PaginationItem>
-            <PaginationPrevious
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                handlePrev();
-              }}
-              className={page === 1 ? "pointer-events-none opacity-50" : ""}
-            />
-          </PaginationItem>
 
-          {/* Page 1 */}
-          <PaginationItem>
-            <PaginationLink
-              href="#"
-              isActive={page === 1}
-              onClick={(e) => {
-                e.preventDefault();
-                setPage(1);
-              }}
-            >
-              1
-            </PaginationLink>
-          </PaginationItem>
-
-          {/* Page 2 (always show if exists) */}
-          {totalPages >= 2 && (
-            <PaginationItem>
-              <PaginationLink
-                href="#"
-                isActive={page === 2}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setPage(2);
-                }}
-              >
-                2
-              </PaginationLink>
-            </PaginationItem>
-          )}
-
-          {/* Ellipsis after 2 if current page > 3 */}
-          {page > 3 && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          )}
-
-          {/* Middle current page if > 2 and < totalPages */}
-          {page > 2 && page < totalPages && (
-            <PaginationItem>
-              <PaginationLink isActive>{page}</PaginationLink>
-            </PaginationItem>
-          )}
-
-          {/* Ellipsis before last */}
-          {page < totalPages - 2 && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          )}
-
-          {/* Last page */}
-          {totalPages > 2 && (
-            <PaginationItem>
-              <PaginationLink
-                href="#"
-                isActive={page === totalPages}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setPage(totalPages);
-                }}
-              >
-                {totalPages}
-              </PaginationLink>
-            </PaginationItem>
-          )}
-
-          {/* Next */}
-          <PaginationItem>
-            <PaginationNext
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNext();
-              }}
-              className={
-                page === totalPages ? "pointer-events-none opacity-50" : ""
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <div className="flex justify-between w-full mt-4">
+        <MetaPagination
+          pagination={initialPagination}
+          onChange={onPageChange}
+        />
+        <MetaPagination.PerPage
+          value={initialPagination.limit}
+          onChange={onPerPageChange}
+        />
+      </div>
     </div>
   );
 };
