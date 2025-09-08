@@ -11,7 +11,7 @@ const PendingAstrologer = async () => {
   return (
     <Suspense fallback={<Loader />}>
       <TextH1 className="mt-3">
-        Block Astrologer
+        Pending Astrologer
       </TextH1>
       <PageBase
         initialData={response.data}
