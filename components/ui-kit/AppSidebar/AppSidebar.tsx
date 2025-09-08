@@ -37,7 +37,12 @@ export function AppSidebar() {
 
 useEffect(() => {
   setOpenMobile(false);
-}, [pathname, setOpenMobile]);
+  const activeParents = mainItems
+    .filter((item) => isParentActive(item))
+    .map((item) => item.title);
+
+  setOpenMenus((prev) => Array.from(new Set([...prev, ...activeParents])));
+}, [pathname, setOpenMobile, isParentActive]);
 
 const handleLinkClick = () => {
   setOpenMobile(false);

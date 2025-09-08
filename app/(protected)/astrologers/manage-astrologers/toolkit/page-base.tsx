@@ -21,6 +21,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import Link from "next/link";
+import { Star } from "lucide-react";
 
 const PageBase = ({ initialData, initialPagination }: any) => {
   const {
@@ -83,7 +84,21 @@ const PageBase = ({ initialData, initialPagination }: any) => {
               <TableCell className="px-[30px] py-5">
                 {item.isBlocked ? "Yes" : "No"}
               </TableCell>
-              <TableCell className="px-[30px] py-5">{item.rating}</TableCell>
+              <TableCell className="px-[30px] py-5">
+                <div className="flex items-center">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      size={20}
+                      className={
+                        star <= item.rating
+                          ? "fill-[#F8D3C5] text-[#F8D3C5]"
+                          : "text-gray-300"
+                      }
+                    />
+                  ))}
+                </div>
+              </TableCell>
               <TableCell className="px-[30px] py-5">{item.createdAt}</TableCell>
             </TableRow>
           ))}
