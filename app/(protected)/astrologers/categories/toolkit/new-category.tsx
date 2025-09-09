@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -65,27 +65,31 @@ export const NewCategory = ({ open, onOpenChange }: NewCategoryProps) => {
                   Icon
                 </Label>
                 <Controller
-  name="icon"
-  control={control}
-  defaultValue=""
-  render={({ field: { onChange } }) => (
-    <Input
-      accept="image/jpeg,image/png,image/webp"
-      type="file"
-      onChange={(e) => {
-        const file = e.target.files?.[0];
-        if (file) {
-          const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-          if (!allowedTypes.includes(file.type)) {
-            alert("Only JPG, PNG, and WEBP files are allowed.");
-            return;
-          }
-          onChange(file);
-        }
-      }}
-    />
-  )}
-/>
+                  name="icon"
+                  control={control}
+                  defaultValue=""
+                  render={({ field: { onChange } }) => (
+                    <Input
+                      accept="image/jpeg,image/png,image/webp"
+                      type="file"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const allowedTypes = [
+                            "image/jpeg",
+                            "image/png",
+                            "image/webp",
+                          ];
+                          if (!allowedTypes.includes(file.type)) {
+                            alert("Only JPG, PNG, and WEBP files are allowed.");
+                            return;
+                          }
+                          onChange(file);
+                        }
+                      }}
+                    />
+                  )}
+                />
               </>
             </DialogDescription>
           </DialogHeader>
