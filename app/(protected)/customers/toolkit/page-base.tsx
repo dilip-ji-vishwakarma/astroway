@@ -117,12 +117,13 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 </TableCell>
                 <TableCell className="px-[30px] py-5">
                   <Button
+                    
                     onClick={() => {
                       setOpen(true);
                       setUserRequest(item.isBlocked);
                       setId(item.id);
                     }}
-                    className="cursor-pointer w-[85px]"
+                    className="cursor-pointer w-[85px] primary-color"
                   >
                     {item.isBlocked ? "Unblock" : "Block"}
                   </Button>

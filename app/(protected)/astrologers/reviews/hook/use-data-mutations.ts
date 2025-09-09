@@ -1,48 +1,52 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-"use client"
+"use client";
 import { reviews } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
 
+type Pagination = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
 export const useDataMutation = (
   initialData: any[],
-  initialPagination: { page: number; limit: number; totalPages: number }
+  initialPagination: Pagination
 ) => {
   const [data, setData] = useState<any[]>(initialData);
-  const [page, setPage] = useState(initialPagination.page || 1);
-  const [limit] = useState(initialPagination.limit || 5);
-  const [totalPages, setTotalPages] = useState(
-    initialPagination.totalPages || 1
-  );
-const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [pagination, setPagination] = useState<Pagination>(initialPagination);
+  const [loading, setLoading] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+
   const fetchData = useCallback(
     async (pageNumber: number) => {
       try {
+        setLoading(true);
+
         const response = await apiServices(
-          `${reviews}?page=${pageNumber}&limit=${limit}`,
+          `${reviews}?page=${pageNumber}&limit=${pagination.limit}`,
           "get"
         );
 
-        setData(response.data || []);
-        setTotalPages(response.pagination?.totalPages || 1);
-        setPage(response.pagination?.page || pageNumber);
+        if (response.statusCode == 200) {
+          setData(response.data || []);
+          setPagination(response.pagination);
+        }
       } catch (error) {
-        console.error("Failed to fetch astrologers:", error);
-        setData([]);
-        setTotalPages(1);
+        console.error("❌ Failed to fetch astrologers:", error);
+      } finally {
+        setLoading(false);
       }
     },
-    [limit]
+    [pagination.limit]
   );
 
-  const handlePrev = () => {
-    if (page > 1) setPage(page - 1);
-  };
-
-  const handleNext = () => {
-    if (page < totalPages) setPage(page + 1);
+  const handlePageChange = (page: number) => {
+    fetchData(page);
   };
 
   const handleDelete = async (id: any) => {
@@ -58,12 +62,10 @@ const [deletingId, setDeletingId] = useState<number | null>(null);
 
   return {
     data,
-    page,
-    totalPages,
-    handlePrev,
-    handleNext,
-    setPage,
+    pagination,
+    handlePageChange,
+    loading,
     handleDelete,
-    deletingId
+    deletingId,
   };
 };
