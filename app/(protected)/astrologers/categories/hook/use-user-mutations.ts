@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Category } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import { useForm } from "react-hook-form";

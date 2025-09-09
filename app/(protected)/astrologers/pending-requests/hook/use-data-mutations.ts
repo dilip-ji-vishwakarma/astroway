@@ -5,73 +5,60 @@ import { apiServices } from "@/lib/api.services";
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 
+type Pagination = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 export const useDataMutation = (
-  initialData: any[],
-  initialPagination: { page: number; limit: number; totalPages: number }
+   initialData: any[],
+  initialPagination: Pagination
 ) => {
   const [submittingItems, setSubmittingItems] = useState<Set<string>>(
     new Set()
   );
   const [data, setData] = useState<any[]>(initialData);
-  const [page, setPage] = useState(initialPagination.page || 1);
-  const [limit] = useState(initialPagination.limit || 5);
-  const [totalPages, setTotalPages] = useState(
-    initialPagination.totalPages || 1
-  );
-  const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false);
+    const [pagination, setPagination] = useState<Pagination>(initialPagination);
+    const [loading, setLoading] = useState(false);
+    const [search, setSearch] = useState("");
 
-  const fetchData = useCallback(async (pageNumber: number, searchTerm: string) => {
-    setLoading(true);
-    try {
-      const response = await apiServices(
-        `/admin/astrologers?page=${pageNumber}&limit=${limit}&isApproved=false`,
-        "get"
+    const fetchData = useCallback(
+        async (pageNumber: number, searchTerm: string = "") => {
+          try {
+            setLoading(true);
+    
+            const response = await apiServices(
+              `/admin/astrologers?page=${pageNumber}&limit=${pagination.limit}&isApproved=false&search=${searchTerm}`,
+              "get"
+            );
+    
+            if (response.statusCode == 200) {
+              setData(response.data || []);
+              setPagination(response.pagination);
+            }
+          } catch (error) {
+            console.error("❌ Failed to fetch astrologers:", error);
+          } finally {
+            setLoading(false);
+          }
+        },
+        [pagination.limit]
       );
 
-      setData(response.data || []);
-      setTotalPages(response.pagination?.totalPages || 1);
-      setPage(response.pagination?.page || pageNumber);
-    } catch (error) {
-      console.error("Failed to fetch astrologers:", error);
-      setData([]);
-      setTotalPages(1);
-    } finally {
-      setLoading(false);
-    }
-  }, [limit]);
+  const handlePageChange = (page: number) => {
+    fetchData(page, search);
+  };
 
+  // Handle search
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (search !== "") {
-        fetchData(1, search);
-      } else {
-        fetchData(1, "");
-      }
-    }, 300); 
+    const delayDebounce = setTimeout(() => {
+      fetchData(1, search);
+    }, 500);
 
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(delayDebounce);
   }, [search, fetchData]);
-
-
-  useEffect(() => {
-    if (search === "") {
-      fetchData(page, "");
-    }
-  }, [page, fetchData, search]);
-
-  const handlePrev = () => {
-    if (page > 1) setPage(page - 1);
-  };
-
-  const handleNext = () => {
-    if (page < totalPages) setPage(page + 1);
-  };
-
-  const handleSearch = (searchTerm: string) => {
-    setSearch(searchTerm);
-    setPage(1); 
-  };
 
 const onSubmit = async (formProp: any) => {
   if (!formProp.astrologerId) {
@@ -81,7 +68,7 @@ const onSubmit = async (formProp: any) => {
   try {
     const response = await apiServices(approved_astrologer, "post", formProp);
     toast.success("Approved");
-    fetchData(page, search); 
+    window.location.reload()
   } catch (error: any) {
     toast.error("Approval failed");
   }
@@ -114,15 +101,12 @@ const onSubmit = async (formProp: any) => {
   return {
     data,
     search,
-    setSearch: handleSearch,
-    page,
-    totalPages,
-    loading,
-    handlePrev,
-    handleNext,
-    setPage,
     onSubmit,
+    pagination,
+    handlePageChange,
     submittingItems,
-    handleSwitchChange
+    loading,
+    handleSwitchChange,
+     setSearch,
   };
 };

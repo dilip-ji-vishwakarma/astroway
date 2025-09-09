@@ -10,13 +10,8 @@ const AstrologerList = async () => {
 
   return (
     <Suspense fallback={<Loader />}>
-      <TextH1 className="mt-3">
-        Manage Astrologers
-      </TextH1>
-      <PageBase
-        initialData={response.data}
-        initialPagination={response.pagination}
-      />
+      <TextH1 className="mt-3">Manage Astrologers</TextH1>
+      <PageBase initialData={response.data} initialPagination={response.pagination} />
     </Suspense>
   );
 };
