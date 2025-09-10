@@ -4,6 +4,11 @@ import { apiServices } from "@/lib/api.services";
 import { TextH1 } from "@/components/ui-kit/TextH1";
 import PageBase from "./toolkit/page-base";
 import { pending_astrologer } from "@/lib/api-endpoints";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Pending Astrologer',
+}
 
 const PendingAstrologer = async () => {
   const response = await apiServices(pending_astrologer, "get");

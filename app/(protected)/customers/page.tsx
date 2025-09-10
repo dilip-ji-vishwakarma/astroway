@@ -7,7 +7,7 @@ import { apiServices } from "@/lib/api.services";
 import { BaseHeader } from "./toolkit/base-header";
 
 export const metadata: Metadata = {
-  title: 'Customer',
+  title: 'Customers',
 }
 
 const Customers = async () => {

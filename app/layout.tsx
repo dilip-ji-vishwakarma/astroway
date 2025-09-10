@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Astroway",
+  title: "Astrova",
   description: "",
   icons: {
     icon: "/favicon.png",

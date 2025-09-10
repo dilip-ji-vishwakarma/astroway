@@ -4,6 +4,11 @@ import { apiServices } from "@/lib/api.services";
 import { reviews } from "@/lib/api-endpoints";
 import { Loader } from "@/components/ui-kit/Loader";
 import { TextH1 } from "@/components/ui-kit/TextH1";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Reviews',
+}
 
 const Reviews = async () => {
   const response = await apiServices(reviews, "get");

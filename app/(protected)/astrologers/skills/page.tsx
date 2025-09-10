@@ -4,6 +4,11 @@ import { Skill } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import React, { Suspense } from "react";
 import { PageBase } from "./toolkit/page-base";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Skills',
+}
 
 const Skills = async () => {
   const response = await apiServices(Skill, "get");
