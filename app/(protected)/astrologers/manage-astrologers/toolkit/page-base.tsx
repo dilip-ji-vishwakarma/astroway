@@ -14,6 +14,7 @@ import { Star } from "lucide-react";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
 import { useDataMutation } from "../hook/use-data-mutations";
+import { formatSingleDate } from "@/lib/utils";
 
 type PageBaseProps = {
   initialData: any[];
@@ -104,7 +105,7 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     ))}
                   </div>
                 </TableCell>
-                <TableCell className="px-[30px] py-5">{item.createdAt}</TableCell>
+                <TableCell className="px-[30px] py-5">{formatSingleDate(item.createdAt)}</TableCell>
               </TableRow>
             ))
           ) : (

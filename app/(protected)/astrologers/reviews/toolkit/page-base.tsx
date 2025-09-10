@@ -14,6 +14,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { Star, X } from "lucide-react";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
+import { formatSingleDate } from "@/lib/utils";
 
 type PageBaseProps = {
   initialData: any[];
@@ -100,7 +101,7 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 </TableCell>
                 <TableCell className="px-[30px] py-5">{item.comment}</TableCell>
                 <TableCell className="px-[30px] py-5">
-                  {item.createdAt}
+                  {formatSingleDate(item.createdAt)}
                 </TableCell>
                 <TableCell className="px-[30px] py-5">
                   {deletingId === item.id ? (

@@ -16,6 +16,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { UserBlockUnblock } from "./user-block-unblock";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
+import { formatSingleDate } from "@/lib/utils";
 
 type PageBaseProps = {
   initialData: any[];
@@ -113,11 +114,10 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   {item.placeOfBirth}
                 </TableCell>
                 <TableCell className="px-[30px] py-5">
-                  {item.createdAt}
+                  {formatSingleDate(item.createdAt)}
                 </TableCell>
                 <TableCell className="px-[30px] py-5">
                   <Button
-                    
                     onClick={() => {
                       setOpen(true);
                       setUserRequest(item.isBlocked);

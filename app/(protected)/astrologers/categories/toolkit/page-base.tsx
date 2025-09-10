@@ -12,6 +12,7 @@ import {
 import Image from "next/image";
 import { useDataMutation } from "../hook/use-data-mutations";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
+import { formatSingleDate } from "@/lib/utils";
 
 type PageBaseProps = {
   initialData: any[];
@@ -39,6 +40,7 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
             <TableHead className="px-[30px] py-5">Updated By</TableHead>
             <TableHead className="px-[30px] py-5">Created At</TableHead>
             <TableHead className="px-[30px] py-5">Updated At</TableHead>
+            <TableHead className="px-[30px] py-5">Active</TableHead>
             <TableHead className="px-[30px] py-5">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -69,11 +71,12 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   {item.updatedBy}
                 </TableCell>
                 <TableCell className="px-[30px] py-5">
-                  {item.createdAt}
+                  {formatSingleDate(item.createdAt)}
                 </TableCell>
                 <TableCell className="px-[30px] py-5">
-                  {item.updatedAt}
+                  {formatSingleDate(item.updatedAt)}
                 </TableCell>
+                <TableCell className="px-[30px] py-5">—</TableCell>
                 <TableCell className="px-[30px] py-5">—</TableCell>
               </TableRow>
             ))
