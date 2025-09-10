@@ -9,8 +9,10 @@ export const useUserMutation = (onOpenChange: any) => {
     handleSubmit,
     control,
     reset,
-    formState: { errors, isSubmitting },
+    setValue,
+    formState: { errors, isSubmitting},
   } = useForm();
+
   const onSubmit = async (formProp: any) => {
   try {
     const formData = new FormData();
@@ -30,6 +32,27 @@ export const useUserMutation = (onOpenChange: any) => {
   }
 };
 
+const onFormSubmit = async (formProp: any) => {
+  try {
+    const formData = new FormData();
+    formData.append("name", formProp.name);
+    formData.append("icon", formProp.icon);
+
+    // remove extra `}`
+    const response = await apiServices(`${Category}/${formProp.id}`, "put", formData);
+
+    if (response?.statusCode === 200) {
+      toast.success("Category Updated Successfully");
+      onOpenChange(false);
+      window.location.reload()
+    } else {
+      toast.error(response?.message || "Category Not Updated");
+    }
+  } catch (error: unknown) {
+    toast.error(error instanceof Error ? error.message : String(error));
+  }
+};
+
 
   return {
     onSubmit,
@@ -38,5 +61,7 @@ export const useUserMutation = (onOpenChange: any) => {
     reset,
     errors,
     isSubmitting,
+    setValue,
+    onFormSubmit
   };
 };
