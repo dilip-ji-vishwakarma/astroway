@@ -4,7 +4,7 @@ import { astrologer_details } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
-import PageBase from "./toolkit/page-base";
+import { PageBase } from "./toolkit/page-base";
 
 export const metadata: Metadata = {
   title: "Update Astrologer",
