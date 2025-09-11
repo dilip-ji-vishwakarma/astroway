@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-import { MessageSquare, PhoneCall } from "lucide-react";
+import { MessageSquare, PhoneCall, SquarePen } from "lucide-react";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
 import { useDataMutation } from "../hook/use-data-mutations";
@@ -100,7 +100,8 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   </Link>
                 </TableCell>
                 <TableCell className="px-[20px] py-5">{item.gender}</TableCell>
-                <TableCell className="px-[20px] py-5 flex justify-center gap-2.5 items-center">
+                <TableCell className="px-[20px] py-5">
+                  <div className="flex justify-center gap-2.5 items-center">
                   <div className="flex gap-[5px] items-center justify-center font-medium">
                     <PhoneCall size={"16px"} /> 
                     <span>{item.callBookings}</span>
@@ -110,6 +111,7 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     <MessageSquare size={"16px"} /> 
                     <span>{item.chatBookings}</span>
                   </div>
+                  </div>
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
                   {item.isApproved ? "Yes" : "No"}
@@ -118,7 +120,9 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   {item.isBlocked ? "Yes" : "No"}
                 </TableCell>
 
-                <TableCell className="px-[20px] py-5">-</TableCell>
+                <TableCell className="px-[20px] py-5">
+                  <Link href={`/astrologers/manage-astrologers/${item.id}`} className="flex gap-2 items-center hover:text-[#e25016]"><SquarePen size={"18px"} /> Edit</Link>
+                </TableCell>
               </TableRow>
             ))
           ) : (
