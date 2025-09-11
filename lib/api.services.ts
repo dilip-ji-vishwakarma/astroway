@@ -114,10 +114,11 @@ export async function apiServices<T>(
   config: AxiosRequestConfig = {}
 ): Promise<{
   data: any;
-  pagination?: any,
+  pagination?: any;
   statusCode: number | null;
   message: string | null;
   error: any;
+  success: any;
 }> {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
   const URL = `${BASE_URL}${endpoint}`;
@@ -146,6 +147,7 @@ export async function apiServices<T>(
       statusCode: response.status,
       message: response.data.message || response.statusText,
       error: null,
+      success: response.data.success ?? true,
     };
   } catch (error: any) {
     const cookieStore: any = await cookies();
@@ -164,6 +166,7 @@ export async function apiServices<T>(
         statusCode: 401,
         message: "Unauthorized access. Please log in again.",
         error: { message: "Unauthorized access" },
+        success: false,
       };
     }
 
@@ -172,6 +175,7 @@ export async function apiServices<T>(
         return {
           data: null,
           statusCode: 503,
+          success: false,
           message:
             error.message ||
             "Server is unreachable. Please check the API server.",
@@ -186,6 +190,7 @@ export async function apiServices<T>(
         statusCode: error.response?.status || 500,
         message: error.response?.data?.message || error.message,
         error: error.response?.data || error.message,
+        success: false,
       };
     }
 
@@ -194,7 +199,7 @@ export async function apiServices<T>(
       statusCode: 500,
       message: "An unexpected error occurred",
       error: null,
+      success: false,
     };
   }
 }
-

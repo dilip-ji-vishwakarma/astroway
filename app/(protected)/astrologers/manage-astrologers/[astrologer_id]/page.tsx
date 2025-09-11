@@ -22,7 +22,7 @@ const AstrologerId = async ({ params }: PageProps) => {
   );
   return (
     <Suspense fallback={<Loader />}>
-        <PageBase response={response} />
+        <PageBase response={response} id={astrologer_id}/>
     </Suspense>
   );
 };

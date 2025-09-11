@@ -6,8 +6,7 @@ import { SkillForm } from "./skill-form";
 import { OtherForm } from "./other-form";
 import { AvailabilityForm } from "./availability-form";
 
-export const PageBase = ({ response }: any) => {
-    console.log(response);
+export const PageBase = ({ response, id }: any) => {
   return (
     <Tabs defaultValue="personal" className="w-full mt-5">
       <TabsList className="w-full bg-[transparent]">
@@ -18,9 +17,9 @@ export const PageBase = ({ response }: any) => {
       </TabsList>
       <div className="mt-5">
       <TabsContent value="personal">
-        <PersonalForm />
+        <PersonalForm response={response} id={id} />
       </TabsContent>
-      <TabsContent value="skill"><SkillForm /></TabsContent>
+      <TabsContent value="skill"><SkillForm response={response} id={id}/></TabsContent>
       <TabsContent value="other"><OtherForm /></TabsContent>
        <TabsContent value="availability"><AvailabilityForm /></TabsContent>
        </div>
