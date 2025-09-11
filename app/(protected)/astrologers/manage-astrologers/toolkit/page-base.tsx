@@ -10,11 +10,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { MessageSquare, PhoneCall } from "lucide-react";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
 import { useDataMutation } from "../hook/use-data-mutations";
-import { formatSingleDate } from "@/lib/utils";
+import Image from "next/image";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 type PageBaseProps = {
   initialData: any[];
@@ -24,14 +25,11 @@ type PageBaseProps = {
     limit: number;
     totalPages: number;
   };
-}
+};
 
 const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
-  const { data, pagination, loading, handlePageChange,
-    setSearch, search } = useDataMutation(
-    initialData,
-    initialPagination
-  );
+  const { data, pagination, loading, handlePageChange, setSearch, search } =
+    useDataMutation(initialData, initialPagination);
 
   return (
     <div className="mt-8">
@@ -47,17 +45,17 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
       <Table className="mt-5">
         <TableHeader className="bg-gray-100">
           <TableRow>
-            <TableHead className="px-[30px] py-5">#</TableHead>
-            <TableHead className="px-[30px] py-5">First Name</TableHead>
-            <TableHead className="px-[30px] py-5">Last Name</TableHead>
-            <TableHead className="px-[30px] py-5">Phone</TableHead>
-            <TableHead className="px-[30px] py-5">Email</TableHead>
-            <TableHead className="px-[30px] py-5">City</TableHead>
-            <TableHead className="px-[30px] py-5">State</TableHead>
-            <TableHead className="px-[30px] py-5">Approved</TableHead>
-            <TableHead className="px-[30px] py-5">Blocked</TableHead>
-            <TableHead className="px-[30px] py-5">Rating</TableHead>
-            <TableHead className="px-[30px] py-5">Created At</TableHead>
+            <TableHead className="px-[20px] py-5">#</TableHead>
+            <TableHead className="px-[20px] py-5">Profile</TableHead>
+            <TableHead className="px-[20px] py-5">First Name</TableHead>
+            <TableHead className="px-[20px] py-5">Last Name</TableHead>
+            <TableHead className="px-[20px] py-5">Phone</TableHead>
+            <TableHead className="px-[20px] py-5">Email</TableHead>
+            <TableHead className="px-[20px] py-5">Gender</TableHead>
+            <TableHead className="px-[20px] py-5">Total Request</TableHead>
+            <TableHead className="px-[20px] py-5">Approved</TableHead>
+            <TableHead className="px-[20px] py-5">Blocked</TableHead>
+            <TableHead className="px-[20px] py-5">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -70,11 +68,30 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
           ) : data.length > 0 ? (
             data.map((item) => (
               <TableRow key={item.id}>
-                <TableCell className="px-[30px] py-5">{item.id}</TableCell>
-                <TableCell className="px-[30px] py-5">{item.firstName}</TableCell>
-                <TableCell className="px-[30px] py-5">{item.lastName}</TableCell>
-                <TableCell className="px-[30px] py-5">{item.phone}</TableCell>
-                <TableCell className="px-[30px] py-5">
+                <TableCell className="px-[20px] py-5">{item.id}</TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {item.avatarUrl ? (
+                    <Image
+                      src={item.avatarUrl}
+                      width={40}
+                      height={40}
+                      alt="avatar"
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <Avatar>
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                    </Avatar>
+                  )}
+                </TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {item.firstName}
+                </TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {item.lastName}
+                </TableCell>
+                <TableCell className="px-[20px] py-5">{item.phone}</TableCell>
+                <TableCell className="px-[20px] py-5">
                   <Link
                     href={`mailto:${item.email}`}
                     className="text-blue-500 hover:underline"
@@ -82,35 +99,34 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     {item.email}
                   </Link>
                 </TableCell>
-                <TableCell className="px-[30px] py-5">{item.city}</TableCell>
-                <TableCell className="px-[30px] py-5">{item.state}</TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {item.isApproved ? "Yes" : "No"}
-                </TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {item.isBlocked ? "Yes" : "No"}
-                </TableCell>
-                <TableCell className="px-[30px] py-5">
-                  <div className="flex items-center">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        size={20}
-                        className={
-                          star <= item.rating
-                            ? "fill-[#F8D3C5] text-[#F8D3C5]"
-                            : "text-gray-300"
-                        }
-                      />
-                    ))}
+                <TableCell className="px-[20px] py-5">{item.gender}</TableCell>
+                <TableCell className="px-[20px] py-5 flex justify-center gap-2.5 items-center">
+                  <div className="flex gap-[5px] items-center justify-center font-medium">
+                    <PhoneCall size={"16px"} /> 
+                    <span>{item.callBookings}</span>
+                  </div>
+                  <span>/</span>
+                  <div className="flex gap-[5px] items-center justify-center">
+                    <MessageSquare size={"16px"} /> 
+                    <span>{item.chatBookings}</span>
                   </div>
                 </TableCell>
-                <TableCell className="px-[30px] py-5">{formatSingleDate(item.createdAt)}</TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {item.isApproved ? "Yes" : "No"}
+                </TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {item.isBlocked ? "Yes" : "No"}
+                </TableCell>
+
+                <TableCell className="px-[20px] py-5">-</TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={11} className="text-center py-8 text-gray-500">
+              <TableCell
+                colSpan={11}
+                className="text-center py-8 text-gray-500"
+              >
                 {search
                   ? `No results found for "${search}"`
                   : "No data available"}
@@ -122,7 +138,10 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
 
       {/* Pagination */}
       <div className="flex justify-end w-full mt-4">
-        <MetaPagination pagination={pagination} onPageChange={handlePageChange} />
+        <MetaPagination
+          pagination={pagination}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );
