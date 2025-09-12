@@ -21,7 +21,7 @@ export const PageBase = ({ response, id }: any) => {
       </TabsContent>
       <TabsContent value="skill"><SkillForm response={response} id={id}/></TabsContent>
       <TabsContent value="other"><OtherForm response={response} id={id} /></TabsContent>
-       <TabsContent value="availability"><AvailabilityForm /></TabsContent>
+       <TabsContent value="availability"><AvailabilityForm response={response} id={id} /></TabsContent>
        </div>
     </Tabs>
   );
