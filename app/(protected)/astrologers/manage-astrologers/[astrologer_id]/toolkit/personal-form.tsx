@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -14,11 +15,47 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDataMutation } from "../hook/use-data-mutations";
 import { Controller } from "react-hook-form";
+import { apiServices } from "@/lib/api.services";
+import { toast } from "sonner";
 
 export const PersonalForm = ({ response, id }: any) => {
   const data = response.data;
-  const { onSubmit, handleSubmit, control, errors, isSubmitting } =
+  const { onSubmit, handleSubmit, control, errors, isSubmitting, setValue } =
     useDataMutation(id);
+
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(
+    data.avatarUrl || ""
+  );
+
+  const handleFileUpload = async (file: File) => {
+    setIsUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await apiServices(
+        "/file/upload/astrologer",
+        "post",
+        formData
+      );
+
+      if (response.success === true) {
+        setUploadedImageUrl(response.data.file);
+        setValue("avatarUrl", response.data.file);
+        toast.success(response.message);
+      } else {
+        alert("File upload failed: " + response.message);
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("File upload failed. Please try again.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Card>
@@ -138,34 +175,60 @@ export const PersonalForm = ({ response, id }: any) => {
               htmlFor="avatarUrl"
               className="text-slate-900 text-sm font-medium mb-2 block"
             >
-              Avatar Url
+              Profile Image
             </Label>
+
+            {/* Hidden input to store the image URL */}
             <Controller
               name="avatarUrl"
               control={control}
-              defaultValue=""
-              render={({ field: { onChange } }) => (
-                <Input
-                  accept="image/jpeg,image/png,image/webp"
-                  type="file"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      const allowedTypes = [
-                        "image/jpeg",
-                        "image/png",
-                        "image/webp",
-                      ];
-                      if (!allowedTypes.includes(file.type)) {
-                        alert("Only JPG, PNG, and WEBP files are allowed.");
-                        return;
-                      }
-                      onChange(file);
-                    }
-                  }}
-                />
+              defaultValue={data.avatarUrl || ""}
+              render={({ field: { value } }) => (
+                <Input type="hidden" value={value} />
               )}
             />
+
+            {/* File input for uploading */}
+            <Input
+              accept="image/jpeg,image/png,image/webp"
+              type="file"
+              disabled={isUploading}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  const allowedTypes = [
+                    "image/jpeg",
+                    "image/png",
+                    "image/webp",
+                  ];
+                  if (!allowedTypes.includes(file.type)) {
+                    alert("Only JPG, PNG, and WEBP files are allowed.");
+                    return;
+                  }
+                  handleFileUpload(file);
+                }
+              }}
+            />
+
+            {isUploading && (
+              <div className="mt-2 text-blue-600 text-sm">
+                Uploading image...
+              </div>
+            )}
+
+            {uploadedImageUrl && (
+              <div className="mt-2">
+                <img
+                  src={
+                    uploadedImageUrl.startsWith("http")
+                      ? uploadedImageUrl
+                      : `https://astrova-backend-t1zo.onrender.com${uploadedImageUrl}`
+                  }
+                  alt="Preview"
+                  className="w-20 h-20 object-cover rounded-md"
+                />
+              </div>
+            )}
           </div>
         </CardContent>
         <CardFooter>

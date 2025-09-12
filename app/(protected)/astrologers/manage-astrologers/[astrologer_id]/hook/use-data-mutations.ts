@@ -10,8 +10,11 @@ export const useDataMutation = (id: any) => {
     handleSubmit,
     control,
     reset,
+    setValue ,
     formState: { errors, isSubmitting },
   } = useForm();
+
+  
 
   const onSubmit = async (formProp: any) => {
     try {
@@ -33,5 +36,5 @@ export const useDataMutation = (id: any) => {
     }
   };
 
-  return { onSubmit, handleSubmit, control, errors, isSubmitting, reset };
+  return { onSubmit, handleSubmit, control, errors, isSubmitting, reset, setValue  };
 };
