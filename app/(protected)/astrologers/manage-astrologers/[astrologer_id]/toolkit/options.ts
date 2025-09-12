@@ -58,3 +58,17 @@ export const languageOptions = [
   { value: "Lithuanian", label: "Lithuanian" },
   { value: "Estonian", label: "Estonian" },
 ];
+
+export const primarySkillsOption = [
+  { value: "Vedic Astrology", label: "Vedic Astrology" },
+  { value: "Numerology", label: "Numerology" },
+  { value: "Palmistry", label: "Palmistry" },
+  { value: "Psychologist", label: "Psychologist" },
+  { value: "Prashana", label: "Prashana" },
+  { value: "Marriage Counselling", label: "Marriage Counselling" },
+  { value: "Relationship", label: "Relationship" },
+  { value: "Vastu", label: "Vastu" },
+  { value: "Tarot Reading", label: "Tarot Reading" },
+  { value: "tyh", label: "tyh" },
+];
+

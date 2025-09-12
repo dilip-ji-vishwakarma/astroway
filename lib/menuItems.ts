@@ -2,7 +2,7 @@ import {
   LayoutDashboard,
   Users,
   UserCheck,
-  ShoppingCart,
+  // ShoppingCart,
   Calendar,
   Video,
   Image,
@@ -38,16 +38,16 @@ export const mainItems = [
       { title: "Commission Rate for Calls/Chats", url: "/astrologers/commissionn-rate" },
     ],
   },
-  {
-    title: "Astroshop",
-    url: "#",
-    icon: ShoppingCart,
-    children: [
-      { title: "Product Categories", url: "/astroshop/product-categories" },
-      { title: "Products", url: "/astroshop/products" },
-      { title: "Orders", url: "/astroshop/orders" },
-    ],
-  },
+  // {
+  //   title: "Astroshop",
+  //   url: "#",
+  //   icon: ShoppingCart,
+  //   children: [
+  //     { title: "Product Categories", url: "/astroshop/product-categories" },
+  //     { title: "Products", url: "/astroshop/products" },
+  //     { title: "Orders", url: "/astroshop/orders" },
+  //   ],
+  // },
   {
     title: "Horoscope",
     url: "#",

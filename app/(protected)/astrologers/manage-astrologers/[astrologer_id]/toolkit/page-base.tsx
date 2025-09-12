@@ -20,7 +20,7 @@ export const PageBase = ({ response, id }: any) => {
         <PersonalForm response={response} id={id} />
       </TabsContent>
       <TabsContent value="skill"><SkillForm response={response} id={id}/></TabsContent>
-      <TabsContent value="other"><OtherForm /></TabsContent>
+      <TabsContent value="other"><OtherForm response={response} id={id} /></TabsContent>
        <TabsContent value="availability"><AvailabilityForm /></TabsContent>
        </div>
     </Tabs>

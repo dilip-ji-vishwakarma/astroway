@@ -15,20 +15,17 @@ export const useDataMutation = (id: any) => {
 
   const onSubmit = async (formProp: any) => {
     try {
-      const formData = new FormData();
-      Object.entries(formProp).forEach(([key, value]) => {
-        formData.append(key, value as any);
-      });
-
       const response = await apiServices(
         `${astrologer_details}/update/${id}`,
         "put",
-        formData // send FormData instead of JSON
+        formProp 
       );
 
       if (response?.success === true) {
-        toast.success("Updated successfully");
+        toast.success(response.message);
         return response;
+      } else {
+        toast.error(response.message);
       }
     } catch (error: any) {
       toast.error(error?.message || "Something went wrong");

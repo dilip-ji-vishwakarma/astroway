@@ -43,7 +43,7 @@ export const PersonalForm = ({ response, id }: any) => {
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <Input
-                  type="firstName"
+                  type="text"
                   className=""
                   placeholder="First Name"
                   onChange={onChange}
@@ -71,7 +71,7 @@ export const PersonalForm = ({ response, id }: any) => {
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <Input
-                  type="lastName"
+                  type="text"
                   className=""
                   placeholder="Last Name"
                   onChange={onChange}

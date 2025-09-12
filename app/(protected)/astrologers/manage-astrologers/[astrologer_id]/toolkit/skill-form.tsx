@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -29,22 +29,18 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { MultiSelect } from "@/components/ui/multi-select";
-import { categoryOption, languageOptions } from "./options";
+import {
+  categoryOption,
+  languageOptions,
+  primarySkillsOption,
+} from "./options";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const SkillForm = ({ response, id }: any) => {
   const data = response.data;
-  const { onSubmit, handleSubmit, control, errors, isSubmitting, reset } =
+  const { onSubmit, handleSubmit, control, isSubmitting } =
     useDataMutation(id);
-
-    useEffect(() => {
-    if (data) {
-      reset({
-        astrologerCategory: Array.isArray(data.astrologerCategory) ? data.astrologerCategory : [],
-        languages: Array.isArray(data.languages) ? data.languages : []
-      });
-    }
-  }, [data, reset]);
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -55,9 +51,7 @@ export const SkillForm = ({ response, id }: any) => {
             Make changes to your account here. Click save when you&apos;re done.
           </CardDescription>
         </CardHeader>
-
         <CardContent className="grid grid-cols-2 gap-6">
-          {/* Gender Dropdown */}
           <div className="w-full">
             <Label
               htmlFor="gender"
@@ -83,14 +77,8 @@ export const SkillForm = ({ response, id }: any) => {
                 </Select>
               )}
             />
-            {errors["gender"] && (
-              <span className="text-red-500 text-sm">
-                Please select your gender
-              </span>
-            )}
           </div>
 
-          {/* Date Picker */}
           <div className="w-full">
             <Label
               htmlFor="dateOfBirth"
@@ -133,11 +121,6 @@ export const SkillForm = ({ response, id }: any) => {
                 </Popover>
               )}
             />
-            {errors["dateOfBirth"] && (
-              <span className="text-red-500 text-sm">
-                Please select your date of birth
-              </span>
-            )}
           </div>
           <div className="w-full">
             <Label
@@ -149,22 +132,69 @@ export const SkillForm = ({ response, id }: any) => {
             <Controller
               name="astrologerCategory"
               control={control}
-            //   defaultValue={Array.isArray(data.astrologerCategory) ? data.astrologerCategory : []}
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <MultiSelect
                   options={categoryOption}
+                  defaultValue={
+                    Array.isArray(data.astrologerCategory)
+                      ? data.astrologerCategory
+                      : []
+                  }
                   value={value || []}
                   onValueChange={onChange}
                   placeholder="-- Select Categories --"
                 />
               )}
             />
-            {errors["astrologerCategory"] && (
-              <span className="text-red-500 text-sm">
-                Please select at least one category
-              </span>
-            )}
+          </div>
+          <div className="w-full">
+            <Label
+              htmlFor="primarySkills"
+              className="text-slate-900 text-sm font-medium mb-2 block"
+            >
+              Primary Skills
+            </Label>
+            <Controller
+              name="primarySkills"
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <MultiSelect
+                  options={primarySkillsOption}
+                  defaultValue={
+                    Array.isArray(data.primarySkills) ? data.primarySkills : []
+                  }
+                  value={value || []}
+                  onValueChange={onChange}
+                  placeholder="-- Select Skills --"
+                />
+              )}
+            />
+          </div>
+          <div className="w-full">
+            <Label
+              htmlFor="allSkills"
+              className="text-slate-900 text-sm font-medium mb-2 block"
+            >
+              All Skills
+            </Label>
+            <Controller
+              name="allSkills"
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <MultiSelect
+                  options={primarySkillsOption}
+                  defaultValue={
+                    Array.isArray(data.allSkills) ? data.allSkills : []
+                  }
+                  value={value || []}
+                  onValueChange={onChange}
+                  placeholder="-- Select Skills --"
+                />
+              )}
+            />
           </div>
           <div className="w-full">
             <Label
@@ -176,22 +206,170 @@ export const SkillForm = ({ response, id }: any) => {
             <Controller
               name="languages"
               control={control}
-            //   defaultValue={Array.isArray(data.languages) ? data.languages : []}
               rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
                 <MultiSelect
                   options={languageOptions}
+                  defaultValue={
+                    Array.isArray(data.languages) ? data.languages : []
+                  }
                   value={value || []}
                   onValueChange={onChange}
                   placeholder="-- Select Language --"
                 />
               )}
             />
-            {errors["astrologerCategory"] && (
-              <span className="text-red-500 text-sm">
-                Please select at least one category
-              </span>
-            )}
+          </div>
+          <div>
+            <Label
+              htmlFor="voiceCallRate"
+              className="text-slate-900 text-sm font-medium mb-2 block"
+            >
+              Add Your Charge(As per Minute)
+            </Label>
+            <Controller
+              name="voiceCallRate"
+              control={control}
+              defaultValue={data.voiceCallRate}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  type="number"
+                  className=""
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </div>
+          <div>
+            <Label
+              htmlFor="videoCallRate"
+              className="text-slate-900 text-sm font-medium mb-2 block"
+            >
+              Add Your video charge(As per Minute)
+            </Label>
+            <Controller
+              name="videoCallRate"
+              control={control}
+              defaultValue={data.videoCallRate}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  type="number"
+                  className=""
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </div>
+          <div>
+            <Label
+              htmlFor="reportRate"
+              className="text-slate-900 text-sm font-medium mb-2 block"
+            >
+              Add Your report charge(As per Minute)
+            </Label>
+            <Controller
+              name="reportRate"
+              control={control}
+              defaultValue={data.reportRate}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  type="number"
+                  className=""
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </div>
+          <div>
+            <Label
+              htmlFor="experienceYrs"
+              className="text-slate-900 text-sm font-medium mb-2 block"
+            >
+              Experience In Years
+            </Label>
+            <Controller
+              name="experienceYrs"
+              control={control}
+              defaultValue={data.experienceYrs}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  type="number"
+                  className=""
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </div>
+          <div>
+            <Label
+              htmlFor="dailyContributionHrs"
+              className="text-slate-900 text-sm font-medium mb-2 block"
+            >
+              How many hours you can contribute daily?
+            </Label>
+            <Controller
+              name="dailyContributionHrs"
+              control={control}
+              defaultValue={data.dailyContributionHrs}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  type="number"
+                  className=""
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </div>
+          <div>
+            <Label
+              htmlFor="heardFrom"
+              className="text-slate-900 text-sm font-medium mb-2 block"
+            >
+              Where did you hear about Astroguru?
+            </Label>
+            <Controller
+              name="heardFrom"
+              control={control}
+              defaultValue={data.heardFrom || ""}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  type="text"
+                  className=""
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+          </div>
+          <div className="flex gap-3 items-center">
+            <Controller
+              name="worksElsewhere"
+              control={control}
+              defaultValue={data.worksElsewhere || false}
+              render={({ field }) => (
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              )}
+            />
+            <Label
+              htmlFor="otherPlatforms"
+              className="text-slate-900 text-sm font-medium block"
+            >
+              Are you working on any other platform?
+            </Label>
           </div>
         </CardContent>
 
