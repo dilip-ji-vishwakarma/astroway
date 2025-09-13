@@ -26,6 +26,7 @@ export const useDataMutation = (id: any) => {
 
       if (response?.success === true) {
         toast.success(response.message);
+        window.location.reload();
         return response;
       } else {
         toast.error(response.message);

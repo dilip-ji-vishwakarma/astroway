@@ -3,6 +3,8 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import moment from 'moment';
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || '';
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -21,3 +23,7 @@ export const formatSingleDate = (date: any) => {
 
   return dateFormatted
 }
+
+export const getImageUrl = (imagePath:any) => {
+  return `${BASE_URL}${imagePath}`;
+};

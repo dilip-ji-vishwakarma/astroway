@@ -16,6 +16,9 @@ import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
 import { useDataMutation } from "../hook/use-data-mutations";
 import Image from "next/image";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { getImageUrl } from "@/lib/utils";
+import { Controller, useForm } from "react-hook-form";
+import { Switch } from "@/components/ui/switch";
 
 type PageBaseProps = {
   initialData: any[];
@@ -28,8 +31,18 @@ type PageBaseProps = {
 };
 
 const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
-  const { data, pagination, loading, handlePageChange, setSearch, search } =
-    useDataMutation(initialData, initialPagination);
+  const {
+    data,
+    pagination,
+    loading,
+    handlePageChange,
+    setSearch,
+    search,
+    submittingItems,
+    handleSwitchChange,
+  } = useDataMutation(initialData, initialPagination);
+
+  const { control } = useForm();
 
   return (
     <div className="mt-8">
@@ -53,7 +66,7 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
             <TableHead className="px-[20px] py-5">Email</TableHead>
             <TableHead className="px-[20px] py-5">Gender</TableHead>
             <TableHead className="px-[20px] py-5">Total Request</TableHead>
-            <TableHead className="px-[20px] py-5">Approved</TableHead>
+            <TableHead className="px-[20px] py-5">Unverified</TableHead>
             <TableHead className="px-[20px] py-5">Blocked</TableHead>
             <TableHead className="px-[20px] py-5">Action</TableHead>
           </TableRow>
@@ -72,15 +85,16 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 <TableCell className="px-[20px] py-5">
                   {item.avatarUrl ? (
                     <Image
-                      src={item.avatarUrl}
+                      src={getImageUrl(item.avatarUrl)}
                       width={40}
                       height={40}
                       alt="avatar"
                       className="rounded-full"
                     />
                   ) : (
+                    // <span>{item.avatarUrl}</span>
                     <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarImage src="/images/astrologer-placeholder.png" />
                     </Avatar>
                   )}
                 </TableCell>
@@ -102,26 +116,50 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 <TableCell className="px-[20px] py-5">{item.gender}</TableCell>
                 <TableCell className="px-[20px] py-5">
                   <div className="flex justify-center gap-2.5 items-center">
-                  <div className="flex gap-[5px] items-center justify-center font-medium">
-                    <PhoneCall size={"16px"} /> 
-                    <span>{item.callBookings}</span>
-                  </div>
-                  <span>/</span>
-                  <div className="flex gap-[5px] items-center justify-center">
-                    <MessageSquare size={"16px"} /> 
-                    <span>{item.chatBookings}</span>
-                  </div>
+                    <div className="flex gap-[5px] items-center justify-center font-medium">
+                      <PhoneCall size={"16px"} />
+                      <span>{item.callBookings}</span>
+                    </div>
+                    <span>/</span>
+                    <div className="flex gap-[5px] items-center justify-center">
+                      <MessageSquare size={"16px"} />
+                      <span>{item.chatBookings}</span>
+                    </div>
                   </div>
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.isApproved ? "Yes" : "No"}
+                  {submittingItems.has(item.id) ? (
+                    <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
+                  ) : (
+                    <Controller
+                      name={`isApproved-${item.id}`}
+                      control={control}
+                      defaultValue={item.isApproved}
+                      render={({ field: { onChange, value } }) => (
+                        <Switch
+                          className="cursor-pointer"
+                          checked={value}
+                          disabled={submittingItems.has(item.id)}
+                          onCheckedChange={(checked) => {
+                            onChange(checked);
+                            handleSwitchChange(item.id, checked);
+                          }}
+                        />
+                      )}
+                    />
+                  )}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
                   {item.isBlocked ? "Yes" : "No"}
                 </TableCell>
 
                 <TableCell className="px-[20px] py-5">
-                  <Link href={`/astrologers/manage-astrologers/${item.id}`} className="flex gap-2 items-center hover:text-[#e25016]"><SquarePen size={"18px"} /> Edit</Link>
+                  <Link
+                    href={`/astrologers/manage-astrologers/${item.id}`}
+                    className="flex gap-2 items-center hover:text-[#e25016]"
+                  >
+                    <SquarePen size={"18px"} /> Edit
+                  </Link>
                 </TableCell>
               </TableRow>
             ))

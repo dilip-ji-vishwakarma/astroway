@@ -236,7 +236,7 @@ export const SkillForm = ({ response, id }: any) => {
                 <Input
                   type="number"
                   className=""
-                  onChange={onChange}
+                  onChange={(e) => onChange(e.target.value ? parseFloat(e.target.value) : null)}
                   value={value}
                 />
               )}
@@ -258,7 +258,7 @@ export const SkillForm = ({ response, id }: any) => {
                 <Input
                   type="number"
                   className=""
-                  onChange={onChange}
+                 onChange={(e) => onChange(e.target.value ? parseFloat(e.target.value) : null)}
                   value={value}
                 />
               )}
@@ -280,7 +280,7 @@ export const SkillForm = ({ response, id }: any) => {
                 <Input
                   type="number"
                   className=""
-                  onChange={onChange}
+                  onChange={(e) => onChange(e.target.value ? parseFloat(e.target.value) : null)}
                   value={value}
                 />
               )}
@@ -302,7 +302,7 @@ export const SkillForm = ({ response, id }: any) => {
                 <Input
                   type="number"
                   className=""
-                  onChange={onChange}
+                  onChange={(e) => onChange(e.target.value ? parseFloat(e.target.value) : null)}
                   value={value}
                 />
               )}
@@ -324,7 +324,7 @@ export const SkillForm = ({ response, id }: any) => {
                 <Input
                   type="number"
                   className=""
-                  onChange={onChange}
+                  onChange={(e) => onChange(e.target.value ? parseFloat(e.target.value) : null)}
                   value={value}
                 />
               )}
