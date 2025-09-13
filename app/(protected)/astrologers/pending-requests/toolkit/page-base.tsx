@@ -16,6 +16,10 @@ import { Switch } from "@/components/ui/switch";
 import { Controller, useForm } from "react-hook-form";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
+import Image from "next/image";
+import { getImageUrl } from "@/lib/utils";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { MessageSquare, PhoneCall, SquarePen } from "lucide-react";
 
 type PageBaseProps = {
   initialData: any[];
@@ -53,13 +57,15 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
         <TableHeader className="bg-gray-100">
           <TableRow>
             <TableHead className="px-[10px] py-5">#</TableHead>
+            <TableHead className="px-[10px] py-5">Profile</TableHead>
             <TableHead className="px-[10px] py-5">First Name</TableHead>
             <TableHead className="px-[10px] py-5">Last Name</TableHead>
             <TableHead className="px-[10px] py-5">Phone</TableHead>
             <TableHead className="px-[10px] py-5">Email</TableHead>
-            <TableHead className="px-[10px] py-5">City</TableHead>
-            <TableHead className="px-[10px] py-5">State</TableHead>
+            <TableHead className="px-[10px] py-5">Gender</TableHead>
+            <TableHead className="px-[10px] py-5">Total Request</TableHead>
             <TableHead className="px-[10px] py-5">Approved</TableHead>
+            <TableHead className="px-[10px] py-5">Action</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -75,6 +81,22 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
               <TableRow key={item.id}>
                 <TableCell className="px-[10px] py-5">{item.id}</TableCell>
                 <TableCell className="px-[10px] py-5">
+                  {item.avatarUrl ? (
+                    <Image
+                      src={getImageUrl(item.avatarUrl)}
+                      width={40}
+                      height={40}
+                      alt="avatar"
+                      className="rounded-full"
+                    />
+                  ) : (
+                    // <span>{item.avatarUrl}</span>
+                    <Avatar>
+                      <AvatarImage src="/images/astrologer-placeholder.png" />
+                    </Avatar>
+                  )}
+                </TableCell>
+                <TableCell className="px-[10px] py-5">
                   {item.firstName}
                 </TableCell>
                 <TableCell className="px-[10px] py-5">
@@ -89,8 +111,20 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     {item.email}
                   </Link>
                 </TableCell>
-                <TableCell className="px-[10px] py-5">{item.city}</TableCell>
-                <TableCell className="px-[10px] py-5">{item.state}</TableCell>
+                <TableCell className="px-[10px] py-5">{item.gender}</TableCell>
+                <TableCell className="px-[10px] py-5">
+                  <div className="flex justify-center gap-2.5 items-center">
+                    <div className="flex gap-[5px] items-center justify-center font-medium">
+                      <PhoneCall size={"16px"} />
+                      <span>{item.callBookings}</span>
+                    </div>
+                    <span>/</span>
+                    <div className="flex gap-[5px] items-center justify-center">
+                      <MessageSquare size={"16px"} />
+                      <span>{item.chatBookings}</span>
+                    </div>
+                  </div>
+                </TableCell>
                 <TableCell className="px-[10px] py-5">
                   {submittingItems.has(item.id) ? (
                     <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
@@ -112,6 +146,14 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                       )}
                     />
                   )}
+                </TableCell>
+                <TableCell className="px-[20px] py-5">
+                  <Link
+                    href={`/astrologers/pending-requests/${item.id}`}
+                    className="flex gap-2 items-center hover:text-[#e25016]"
+                  >
+                    <SquarePen size={"18px"} /> Edit
+                  </Link>
                 </TableCell>
               </TableRow>
             ))

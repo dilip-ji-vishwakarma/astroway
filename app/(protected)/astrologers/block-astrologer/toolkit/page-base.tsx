@@ -16,6 +16,9 @@ import { useDataMutation } from "../hook/use-data-mutations";
 import { Switch } from "@/components/ui/switch";
 import { Controller, useForm } from "react-hook-form";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
+import Image from "next/image";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { formatSingleDate, getImageUrl } from "@/lib/utils";
 
 type PageBaseProps = {
   initialData: any[];
@@ -53,12 +56,13 @@ export const PageBase= ({ initialData, initialPagination }: PageBaseProps) => {
         <TableHeader className="bg-gray-100">
           <TableRow>
             <TableHead className="px-[10px] py-5">#</TableHead>
+            <TableHead className="px-[10px] py-5">Profile</TableHead>
             <TableHead className="px-[10px] py-5">First Name</TableHead>
             <TableHead className="px-[10px] py-5">Last Name</TableHead>
             <TableHead className="px-[10px] py-5">Phone</TableHead>
             <TableHead className="px-[10px] py-5">Email</TableHead>
-            <TableHead className="px-[10px] py-5">City</TableHead>
-            <TableHead className="px-[10px] py-5">State</TableHead>
+            <TableHead className="px-[10px] py-5">Date</TableHead>
+            <TableHead className="px-[10px] py-5">Reason</TableHead>
             <TableHead className="px-[10px] py-5">Blocked</TableHead>
           </TableRow>
         </TableHeader>
@@ -75,6 +79,22 @@ export const PageBase= ({ initialData, initialPagination }: PageBaseProps) => {
               <TableRow key={item.id}>
                 <TableCell className="px-[10px] py-5">{item.id}</TableCell>
                 <TableCell className="px-[10px] py-5">
+                  {item.avatarUrl ? (
+                    <Image
+                      src={getImageUrl(item.avatarUrl)}
+                      width={40}
+                      height={40}
+                      alt="avatar"
+                      className="rounded-full"
+                    />
+                  ) : (
+                    // <span>{item.avatarUrl}</span>
+                    <Avatar>
+                      <AvatarImage src="/images/astrologer-placeholder.png" />
+                    </Avatar>
+                  )}
+                </TableCell>
+                <TableCell className="px-[10px] py-5">
                   {item.firstName}
                 </TableCell>
                 <TableCell className="px-[10px] py-5">
@@ -89,9 +109,9 @@ export const PageBase= ({ initialData, initialPagination }: PageBaseProps) => {
                     {item.email}
                   </Link>
                 </TableCell>
-                <TableCell className="px-[10px] py-5">{item.city}</TableCell>
-                <TableCell className="px-[10px] py-5">{item.state}</TableCell>
-                <TableCell className="px-[10px] py-5">
+                <TableCell className="px-[10px] py-5">{formatSingleDate(item.createdAt)}</TableCell>
+                <TableCell className="px-[10px] py-5">{item.blockedReason ? (item.blockedReason) : "Not Added"}</TableCell>
+                <TableCell className="px-[10px] py-5 text-center">
                   {submittingItems.has(item.id) ? (
                     <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500"></div>
                   ) : (
