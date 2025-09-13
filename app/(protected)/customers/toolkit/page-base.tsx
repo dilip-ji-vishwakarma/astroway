@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -13,10 +13,10 @@ import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
 import { useDataMutation } from "../hook/use-data-mutations";
 import Image from "next/image";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { UserBlockUnblock } from "./user-block-unblock";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
-import { formatSingleDate } from "@/lib/utils";
+import { formatSingleDate, getImageUrl } from "@/lib/utils";
+import Link from "next/link";
+import { SquarePen } from "lucide-react";
 
 type PageBaseProps = {
   initialData: any[];
@@ -29,18 +29,8 @@ type PageBaseProps = {
 };
 
 const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
-  const {
-    data,
-    pagination,
-    handlePageChange,
-    loading,
-    setSearch,
-    search,
-  } = useDataMutation(initialData, initialPagination);
-
-  const [open, setOpen] = useState(false);
-  const [userRequest, setUserRequest] = useState(false);
-  const [id, setId] = useState<string | number | undefined>(undefined);
+  const { data, pagination, handlePageChange, loading, setSearch, search } =
+    useDataMutation(initialData, initialPagination);
 
   return (
     <div className="mt-8">
@@ -54,17 +44,15 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
       <Table className="mt-5">
         <TableHeader className="bg-gray-100">
           <TableRow>
-            <TableHead className="px-[30px] py-5">#</TableHead>
-            <TableHead className="px-[30px] py-5">First Name</TableHead>
-            <TableHead className="px-[30px] py-5">Last Name</TableHead>
-            <TableHead className="px-[30px] py-5">Phone</TableHead>
-            <TableHead className="px-[30px] py-5">Wallet Balance</TableHead>
-            <TableHead className="px-[30px] py-5">City</TableHead>
-            <TableHead className="px-[30px] py-5">Date Of Birth</TableHead>
-            <TableHead className="px-[30px] py-5">Time Of Birth</TableHead>
-            <TableHead className="px-[30px] py-5">Place Of Birth</TableHead>
-            <TableHead className="px-[30px] py-5">Created At</TableHead>
-            <TableHead className="px-[30px] py-5">Action</TableHead>
+            <TableHead className="px-[20px] py-5">#</TableHead>
+            <TableHead className="px-[20px] py-5">Profile</TableHead>
+            <TableHead className="px-[20px] py-5">First Name</TableHead>
+            <TableHead className="px-[20px] py-5">Last Name</TableHead>
+            <TableHead className="px-[20px] py-5">Phone</TableHead>
+            <TableHead className="px-[20px] py-5">Email</TableHead>
+            <TableHead className="px-[20px] py-5">Date Of Birth</TableHead>
+            <TableHead className="px-[20px] py-5">Time Of Birth</TableHead>
+            <TableHead className="px-[20px] py-5">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -77,56 +65,46 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
           ) : data.length > 0 ? (
             data.map((item: any) => (
               <TableRow key={item.id}>
-                <TableCell className="px-[30px] py-5">{item.id}</TableCell>
-                <TableCell className="px-[30px] py-5">
-                  <div className="flex items-center gap-2.5 font-semibold">
-                    {item.avatarUrl ? (
-                      <Image
-                        src={item.avatarUrl}
-                        width={40}
-                        height={40}
-                        alt="avatar"
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <Avatar>
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                      </Avatar>
-                    )}
-                    <span>
-                      {item.firstName}
-                    </span>
-                  </div>
+                <TableCell className="px-[20px] py-5">{item.id}</TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {item.avatarUrl ? (
+                    <Image
+                      src={getImageUrl(item.avatarUrl)}
+                      width={40}
+                      height={40}
+                      alt="avatar"
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <Avatar>
+                      <AvatarImage src="/images/astrologer-placeholder.png" />
+                    </Avatar>
+                  )}
                 </TableCell>
-                <TableCell className="px-[30px] py-5 font-semibold"> {item.lastName}</TableCell>
-                <TableCell className="px-[30px] py-5">{item.phone}</TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {item.walletBalance}
+                <TableCell className="px-[30px] py-5 font-semibold">
+                  {item.firstName}
                 </TableCell>
-                <TableCell className="px-[30px] py-5">{item.city}</TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {item.dateOfBirth}
+                <TableCell className="px-[30px] py-5 font-semibold">
+                  {" "}
+                  {item.lastName}
                 </TableCell>
-                <TableCell className="px-[30px] py-5">
+                <TableCell className="px-[20px] py-5">{item.phone}</TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {item.email}
+                </TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {formatSingleDate(item.dateOfBirth)}
+                </TableCell>
+                <TableCell className="px-[20px] py-5">
                   {item.timeOfBirth}
                 </TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {item.placeOfBirth}
-                </TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {formatSingleDate(item.createdAt)}
-                </TableCell>
-                <TableCell className="px-[30px] py-5">
-                  <Button
-                    onClick={() => {
-                      setOpen(true);
-                      setUserRequest(item.isBlocked);
-                      setId(item.id);
-                    }}
-                    className="cursor-pointer w-[85px] primary-color"
+                <TableCell className="px-[20px] py-5">
+                  <Link
+                    href={`/customers/${item.id}`}
+                    className="flex gap-2 items-center hover:text-[#e25016]"
                   >
-                    {item.isBlocked ? "Unblock" : "Block"}
-                  </Button>
+                    <SquarePen size={"18px"} /> Edit
+                  </Link>
                 </TableCell>
               </TableRow>
             ))
@@ -145,12 +123,6 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
           onPageChange={handlePageChange}
         />
       </div>
-      <UserBlockUnblock
-        open={open}
-        onOpenChange={setOpen}
-        userRequest={userRequest}
-        id={id}
-      />
     </div>
   );
 };
