@@ -53,7 +53,7 @@ export const useDataMutation = (
     setDeletingId(id);
     try {
       const response = await apiServices(`${reviews}/${id}`, "delete");
-      toast.success("Deleted Successfully");
+      toast.success(response.message);
       window.location.reload();
     } catch (error) {
       toast.success("Getting Error");

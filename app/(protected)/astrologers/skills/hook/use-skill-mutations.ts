@@ -17,7 +17,7 @@ export const UseSkillMutations = (onOpenChange: any) => {
     try {
       const response = await apiServices(Skill, "post", formProp);
       if (response.success == true) {
-        toast.success("Skill Updated");
+        toast.success(response.message);
         onOpenChange(false);
         window.location.reload();
       }

@@ -62,14 +62,14 @@ const handleSwitchChange = async (itemId: string, checked: boolean) => {
       );
 
       if (response.statusCode === 200) {
-        toast.success("Status updated successfully");
+        toast.success(response.message);
         setData((prev) =>
           prev.map((item) =>
             item.id === itemId ? { ...item, isActive: checked } : item
           )
         );
       } else {
-        toast.error("Failed to update status");
+        toast.error(response.message);
       }
     } catch (error) {
       console.error("❌ Error updating status:", error);

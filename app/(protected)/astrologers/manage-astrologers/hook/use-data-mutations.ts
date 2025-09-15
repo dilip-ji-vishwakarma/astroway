@@ -71,7 +71,7 @@ export const useDataMutation = (
     }
     try {
       const response = await apiServices(approved_astrologer, "post", formProp);
-      toast.success("Verified");
+      toast.success(response.message);
       window.location.reload();
     } catch (error: any) {
       toast.error("Approval failed");

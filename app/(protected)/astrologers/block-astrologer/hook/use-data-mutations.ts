@@ -68,7 +68,7 @@ const handlePageChange = (page: number) => {
   }
   try {
     const response = await apiServices(toggle_blocked_unblocked_astrologer, "post", formProp);
-    toast.success("UnBlocked");
+    toast.success(response.message);
     window.location.reload()
   } catch (error: any) {
     toast.error("UnBlocked failed");

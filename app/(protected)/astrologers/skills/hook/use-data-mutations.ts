@@ -59,7 +59,7 @@ export const useDataMutation = (
       formProp
     );
     if(response.success) {
-    toast.success("UnBlocked");
+    toast.success(response.message);
     window.location.reload();
     }
   } catch (error: any) {
