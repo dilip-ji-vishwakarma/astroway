@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,6 +11,11 @@ import {
 } from "@/components/ui/table";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import { useDataMutation } from "../hook/use-data-mutations";
+import { Controller, useForm } from "react-hook-form";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { SquarePen, Trash2 } from "lucide-react";
+import { UpdateSkill } from "./update-skill";
 
 type PageBaseProps = {
   initialData: any[];
@@ -23,10 +28,18 @@ type PageBaseProps = {
 };
 
 export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
-  const { data, pagination, handlePageChange, loading } = useDataMutation(
-    initialData,
-    initialPagination
-  );
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const {
+    data,
+    pagination,
+    handlePageChange,
+    loading,
+    handleSwitchChange,
+    submittingItems,
+  } = useDataMutation(initialData, initialPagination);
+
+  const { control } = useForm();
 
   return (
     <div className="mt-8">
@@ -35,7 +48,8 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
           <TableRow>
             <TableHead className="px-[30px] py-5">#</TableHead>
             <TableHead className="px-[30px] py-5">Name</TableHead>
-            <TableHead className="px-[30px] py-5">Active</TableHead>
+            <TableHead className="px-[30px] py-5">Status</TableHead>
+            <TableHead className="px-[30px] py-5">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -51,7 +65,55 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 <TableCell className="px-[30px] py-5">{item.id}</TableCell>
                 <TableCell className="px-[30px] py-5">{item.name}</TableCell>
                 <TableCell className="px-[30px] py-5">
-                  {item.isActive === true ? "Yes" : "No"}
+                  {submittingItems.has(item.id) ? (
+                    <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500"></div>
+                  ) : (
+                    <Controller
+                      name={`isActive-${item.id}`}
+                      control={control}
+                      defaultValue={item.isActive}
+                      render={({ field: { onChange, value } }) => (
+                        <Switch
+                          className="cursor-pointer"
+                          checked={value}
+                          disabled={submittingItems.has(item.id)}
+                          onCheckedChange={(checked) => {
+                            onChange(checked);
+                            handleSwitchChange(item.id, checked);
+                          }}
+                        />
+                      )}
+                    />
+                  )}
+                </TableCell>
+                <TableCell className="px-[30px] py-5 gap-3 flex items-center">
+                  <Button
+                    variant="outline"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setOpen(true);
+                      setSelectedItem(item);
+                    }}
+                  >
+                    <SquarePen
+                      color="currentColor"
+                      size={18}
+                      className=" text-gray-600 hover:text-[#E25016]"
+                    />
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="cursor-pointer"
+                  
+                  >
+                    <Trash2
+                      color="currentColor"
+                      size={18}
+                      className=" text-gray-600 hover:text-[#E25016]"
+                    />
+                    Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             ))
@@ -69,6 +131,14 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
         <MetaPagination
           pagination={pagination}
           onPageChange={handlePageChange}
+        />
+      </div>
+      <div>
+        <UpdateSkill
+          open={open}
+          onOpenChange={setOpen}
+          name={selectedItem?.name}
+          id={selectedItem?.id}
         />
       </div>
     </div>

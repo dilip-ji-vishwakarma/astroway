@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
-import { Category } from "@/lib/api-endpoints";
+import {  Skill } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import { useState, useCallback } from "react";
+import { toast } from "sonner";
 
 type Pagination = {
   total: number;
@@ -18,6 +20,9 @@ export const useDataMutation = (
   const [data, setData] = useState<any[]>(initialData);
   const [pagination, setPagination] = useState<Pagination>(initialPagination);
   const [loading, setLoading] = useState(false);
+   const [submittingItems, setSubmittingItems] = useState<Set<string>>(
+        new Set()
+      );
 
   const fetchData = useCallback(
       async (pageNumber: number) => {
@@ -25,7 +30,7 @@ export const useDataMutation = (
           setLoading(true);
   
           const response = await apiServices(
-            `${Category}?page=${pageNumber}&limit=${pagination.limit}`,
+            `${Skill}?page=${pageNumber}&limit=${pagination.limit}`,
             "get"
           );
   
@@ -46,11 +51,50 @@ export const useDataMutation = (
     fetchData(page);
   };
 
+  const onSubmit = async (itemId: string, formProp: any) => {
+  try {
+    const response = await apiServices(
+      `${Skill}/${itemId}/status`,
+      "patch",
+      formProp
+    );
+    if(response.success) {
+    toast.success("UnBlocked");
+    window.location.reload();
+    }
+  } catch (error: any) {
+    toast.error("UnBlocked failed");
+  }
+};
+
+const handleSwitchChange = async (itemId: string, checked: boolean) => {
+  // Add item to submitting state
+  setSubmittingItems((prev) => new Set([...prev, itemId]));
+
+  try {
+    await onSubmit(itemId, {
+      isActive: checked,
+    });
+  } catch (error) {
+    console.error("Error updating approval status:", error);
+  } finally {
+    // Remove item from submitting state
+    setSubmittingItems((prev) => {
+      const newSet = new Set([...prev]);
+      newSet.delete(itemId);
+      return newSet;
+    });
+  }
+};
+
+
 
   return {
    data,
     pagination,
     handlePageChange,
     loading,
+    handleSwitchChange,
+    submittingItems
   };
 };
