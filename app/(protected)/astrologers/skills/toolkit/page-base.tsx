@@ -16,6 +16,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { SquarePen, Trash2 } from "lucide-react";
 import { UpdateSkill } from "./update-skill";
+import { DeleteSkill } from "./delete-skill";
 
 type PageBaseProps = {
   initialData: any[];
@@ -30,6 +31,8 @@ type PageBaseProps = {
 export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
+    const [openAlert, setOpenAlert] = useState(false);
+  const [selectedItemAlert, setSelectedItemAlert] = useState<any | null>(null);
   const {
     data,
     pagination,
@@ -105,7 +108,10 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   <Button
                     variant="outline"
                     className="cursor-pointer"
-                  
+                  onClick={() => {
+                      setOpenAlert(true);
+                      setSelectedItemAlert(item);
+                    }}
                   >
                     <Trash2
                       color="currentColor"
@@ -139,6 +145,13 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
           onOpenChange={setOpen}
           name={selectedItem?.name}
           id={selectedItem?.id}
+        />
+      </div>
+      <div>
+        <DeleteSkill 
+         openAlert={openAlert}
+          onOpenChange={setOpenAlert}
+          id={selectedItemAlert?.id}
         />
       </div>
     </div>
