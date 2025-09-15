@@ -19,6 +19,7 @@ import { SquarePen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UpdateCategory } from "./update-category";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Label } from "@/components/ui/label";
 
 type PageBaseProps = {
   initialData: any[];
@@ -45,6 +46,7 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
 
   return (
     <div className="mt-8">
+      <Label className="text-md font-semibold">{`${initialPagination.total} Listings`}</Label>
       <Table className="mt-5">
         <TableHeader className="bg-gray-100">
           <TableRow>
