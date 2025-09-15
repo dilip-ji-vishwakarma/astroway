@@ -12,12 +12,13 @@ import {
 import Image from "next/image";
 import { useDataMutation } from "../hook/use-data-mutations";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
-import { formatSingleDate } from "@/lib/utils";
+import { getImageUrl } from "@/lib/utils";
 import { Controller, useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import { SquarePen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UpdateCategory } from "./update-category";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 type PageBaseProps = {
   initialData: any[];
@@ -48,12 +49,11 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
         <TableHeader className="bg-gray-100">
           <TableRow>
             <TableHead className="px-[30px] py-5">#</TableHead>
+            <TableHead className="px-[30px] py-5">Image</TableHead>
             <TableHead className="px-[30px] py-5">Name</TableHead>
             <TableHead className="px-[30px] py-5">Added By</TableHead>
             <TableHead className="px-[30px] py-5">Updated By</TableHead>
-            <TableHead className="px-[30px] py-5">Created At</TableHead>
-            <TableHead className="px-[30px] py-5">Updated At</TableHead>
-            <TableHead className="px-[30px] py-5">Active</TableHead>
+            <TableHead className="px-[30px] py-5">Status</TableHead>
             <TableHead className="px-[30px] py-5">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -69,25 +69,24 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
               <TableRow key={item.id}>
                 <TableCell className="px-[30px] py-5">{item.id}</TableCell>
                 <TableCell className="px-[30px] py-5">
-                  <div className="flex items-center gap-2.5 font-semibold">
+                  {item.icon ? (
                     <Image
-                      src={"/images/wedding-ring.png"}
-                      width={50}
-                      height={50}
+                      src={getImageUrl(item.icon)}
+                      width={40}
+                      height={40}
                       alt="avatar"
+                      className="rounded-full"
                     />
-                    <span>{item.name}</span>
-                  </div>
+                  ) : (
+                    <Avatar>
+                      <AvatarImage src="/images/wedding-ring.png" />
+                    </Avatar>
+                  )}
                 </TableCell>
-                <TableCell className="px-[30px] py-5">{item.addedBy}</TableCell>
+                <TableCell className="px-[30px] py-5">{item.name}</TableCell>
+                <TableCell className="px-[30px] py-5">{item.addedByAdmin?.name}</TableCell>
                 <TableCell className="px-[30px] py-5">
-                  {item.updatedBy}
-                </TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {formatSingleDate(item.createdAt)}
-                </TableCell>
-                <TableCell className="px-[30px] py-5">
-                  {formatSingleDate(item.updatedAt)}
+                  {item.updatedByAdmin?.name}
                 </TableCell>
                 <TableCell className="px-[30px] py-5">
                   {submittingItems.has(item.id) ? (
@@ -114,7 +113,7 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 <TableCell className="px-[30px] py-5">
                   <Button
                     variant="ghost"
-                    className="cursor-pointer"
+                    className="cursor-pointer has-[>svg]:px-0 py-0 hover:bg-[transparent]"
                     onClick={() => {
                       setOpen(true);
                       setSelectedItem(item);
@@ -125,6 +124,7 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                       size={18}
                       className=" text-gray-600 hover:text-[#E25016]"
                     />
+                    Edit
                   </Button>
                 </TableCell>
               </TableRow>
