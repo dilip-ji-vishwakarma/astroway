@@ -29,13 +29,9 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { MultiSelect } from "@/components/ui/multi-select";
-import {
-  categoryOption,
-  languageOptions,
-  primarySkillsOption,
-} from "./options";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { categoryOption, languageOptions, primarySkillsOption } from "@/lib/options";
 
 export const SkillForm = ({ response, id }: any) => {
   const data = response.data;
