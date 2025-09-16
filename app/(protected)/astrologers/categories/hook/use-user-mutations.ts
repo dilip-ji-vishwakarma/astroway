@@ -21,9 +21,10 @@ export const useUserMutation = (onOpenChange: any) => {
 
     const response = await apiServices(Category, "post", formData);
 
-    if (response?.statusCode === 201) {
-      toast.success("Category Added Successfully");
+    if (response.success === true) {
+      toast.success(response.message);
       onOpenChange(false);
+      window.location.reload()
     } else {
       toast.error(response?.message || "Category Not Added");
     }
@@ -41,8 +42,8 @@ const onFormSubmit = async (formProp: any) => {
     // remove extra `}`
     const response = await apiServices(`${Category}/${formProp.id}`, "put", formData);
 
-    if (response?.statusCode === 200) {
-      toast.success("Category Updated Successfully");
+    if (response.success === true) {
+      toast.success(response.message);
       onOpenChange(false);
       window.location.reload()
     } else {
