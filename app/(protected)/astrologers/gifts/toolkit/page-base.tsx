@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useState } from "react";
 import {
@@ -19,6 +18,7 @@ import { Switch } from "@/components/ui/switch";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import { Button } from "@/components/ui/button";
 import { SquarePen, Trash2 } from "lucide-react";
+import { UpdateGift } from "./update-gift";
 
 type PageBaseProps = {
   initialData: any[];
@@ -160,6 +160,15 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
         <MetaPagination
           pagination={pagination}
           onPageChange={handlePageChange}
+        />
+      </div>
+      <div>
+        <UpdateGift
+          open={open}
+          onOpenChange={setOpen}
+          name={selectedItem?.name}
+          amount={selectedItem?.amount}
+          id={selectedItem?.id}
         />
       </div>
     </div>
