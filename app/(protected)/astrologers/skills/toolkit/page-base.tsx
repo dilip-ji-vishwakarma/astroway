@@ -51,6 +51,8 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
           <TableRow>
             <TableHead className="px-[30px] py-5">#</TableHead>
             <TableHead className="px-[30px] py-5">Name</TableHead>
+            <TableHead className="px-[20px] py-5">Added By</TableHead>
+            <TableHead className="px-[20px] py-5">Updated By</TableHead>
             <TableHead className="px-[30px] py-5">Status</TableHead>
             <TableHead className="px-[30px] py-5">Action</TableHead>
           </TableRow>
@@ -67,6 +69,12 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
               <TableRow key={item.id}>
                 <TableCell className="px-[30px] py-5">{item.id}</TableCell>
                 <TableCell className="px-[30px] py-5">{item.name}</TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {item.addedByAdmin.name}
+                </TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {item.updatedByAdmin.name}
+                </TableCell>
                 <TableCell className="px-[30px] py-5">
                   {submittingItems.has(item.id) ? (
                     <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500"></div>
