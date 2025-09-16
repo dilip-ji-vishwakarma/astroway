@@ -31,7 +31,7 @@ type PageBaseProps = {
 export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
-    const [openAlert, setOpenAlert] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [selectedItemAlert, setSelectedItemAlert] = useState<any | null>(null);
   const {
     data,
@@ -89,7 +89,10 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     />
                   )}
                 </TableCell>
-                <TableCell className="px-[30px] py-5 gap-3 flex items-center">
+                <TableCell
+                  align="right"
+                  className="px-[30px] py-5 gap-3 flex items-center"
+                >
                   <Button
                     variant="outline"
                     className="cursor-pointer"
@@ -103,12 +106,11 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                       size={18}
                       className=" text-gray-600 hover:text-[#E25016]"
                     />
-                    Edit
                   </Button>
                   <Button
                     variant="outline"
                     className="cursor-pointer"
-                  onClick={() => {
+                    onClick={() => {
                       setOpenAlert(true);
                       setSelectedItemAlert(item);
                     }}
@@ -118,7 +120,6 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                       size={18}
                       className=" text-gray-600 hover:text-[#E25016]"
                     />
-                    Delete
                   </Button>
                 </TableCell>
               </TableRow>
@@ -148,8 +149,8 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
         />
       </div>
       <div>
-        <DeleteSkill 
-         openAlert={openAlert}
+        <DeleteSkill
+          openAlert={openAlert}
           onOpenChange={setOpenAlert}
           id={selectedItemAlert?.id}
         />

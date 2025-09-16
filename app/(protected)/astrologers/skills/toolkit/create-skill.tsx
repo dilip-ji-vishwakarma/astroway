@@ -45,7 +45,7 @@ export const CreateSkill = ({ open, onOpenChange }: SkillProps) => {
                     className="text-black"
                     placeholder="Skill"
                     onChange={onChange}
-                    value={value}
+                    value={value ?? ""}
                   />
                 )}
               />

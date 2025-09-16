@@ -12,8 +12,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { apiServices } from "@/lib/api.services";
-import { Skill } from "@/lib/api-endpoints";
 import { toast } from "sonner";
+import { Category } from "@/lib/api-endpoints";
 
 type DeleteSkillProps = {
   openAlert: boolean;
@@ -21,7 +21,7 @@ type DeleteSkillProps = {
   id: number;
 };
 
-export const DeleteSkill = ({
+export const DeleteCategory = ({
   openAlert,
   onOpenChange,
   id,
@@ -31,16 +31,16 @@ export const DeleteSkill = ({
   const handleDelete = () => {
     startTransition(async () => {
       try {
-        const response = await apiServices(`${Skill}/${id}`, "delete");
+        const response = await apiServices(`${Category}/${id}`, "delete");
         if (response.success === true) {
           toast.success(response.message);
-          onOpenChange(false); // close modal before reload
+          onOpenChange(false);
           window.location.reload();
         } else {
           toast.error(response.message || "Delete failed");
         }
       } catch (error: any) {
-        toast.error("Failed to delete skill");
+        toast.error("Failed to delete category");
       }
     });
   };
@@ -52,7 +52,7 @@ export const DeleteSkill = ({
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete this
-            skill and remove its data from our servers.
+            category and remove its data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

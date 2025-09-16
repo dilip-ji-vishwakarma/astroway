@@ -15,11 +15,12 @@ import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-paginat
 import { getImageUrl } from "@/lib/utils";
 import { Controller, useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
-import { SquarePen } from "lucide-react";
+import { SquarePen, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UpdateCategory } from "./update-category";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
+import { DeleteCategory } from "./delete-category";
 
 type PageBaseProps = {
   initialData: any[];
@@ -34,6 +35,8 @@ type PageBaseProps = {
 const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [selectedItemAlert, setSelectedItemAlert] = useState<any | null>(null);
   const {
     data,
     loading,
@@ -86,7 +89,9 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   )}
                 </TableCell>
                 <TableCell className="px-[30px] py-5">{item.name}</TableCell>
-                <TableCell className="px-[30px] py-5">{item.addedByAdmin?.name}</TableCell>
+                <TableCell className="px-[30px] py-5">
+                  {item.addedByAdmin?.name}
+                </TableCell>
                 <TableCell className="px-[30px] py-5">
                   {item.updatedByAdmin?.name}
                 </TableCell>
@@ -112,10 +117,10 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     />
                   )}
                 </TableCell>
-                <TableCell className="px-[30px] py-5">
+                <TableCell className="px-[30px] py-5 gap-3 flex items-center">
                   <Button
-                    variant="ghost"
-                    className="cursor-pointer has-[>svg]:px-0 py-0 hover:bg-[transparent]"
+                    variant="outline"
+                    className="cursor-pointer"
                     onClick={() => {
                       setOpen(true);
                       setSelectedItem(item);
@@ -124,9 +129,22 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     <SquarePen
                       color="currentColor"
                       size={18}
-                      className=" text-gray-600 hover:text-[#E25016]"
+                      className=" text-gray-600"
                     />
-                    Edit
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setOpenAlert(true);
+                      setSelectedItemAlert(item);
+                    }}
+                  >
+                    <Trash2
+                      color="currentColor"
+                      size={18}
+                      className=" text-gray-600"
+                    />
                   </Button>
                 </TableCell>
               </TableRow>
@@ -153,6 +171,11 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
         name={selectedItem?.name}
         id={selectedItem?.id}
       />
+              <DeleteCategory 
+               openAlert={openAlert}
+                onOpenChange={setOpenAlert}
+                id={selectedItemAlert?.id}
+              />
     </div>
   );
 };
