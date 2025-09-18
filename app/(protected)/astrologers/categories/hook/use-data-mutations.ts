@@ -44,7 +44,7 @@ export const useDataMutation = (
           setLoading(false);
         }
       },
-      [pagination.limit]
+      [pagination?.limit]
     );
 
  const handlePageChange = (page: number) => {

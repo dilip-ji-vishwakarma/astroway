@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
-import { reviews } from "@/lib/api-endpoints";
-import { apiServices } from "@/lib/api.services";
 import { useState, useCallback } from "react";
-import { toast } from "sonner";
+import { commision } from "@/lib/api-endpoints";
+import { apiServices } from "@/lib/api.services";
 
 type Pagination = {
   total: number;
@@ -20,7 +19,6 @@ export const useDataMutation = (
   const [data, setData] = useState<any[]>(initialData);
   const [pagination, setPagination] = useState<Pagination>(initialPagination);
   const [loading, setLoading] = useState(false);
-  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const fetchData = useCallback(
     async (pageNumber: number) => {
@@ -28,7 +26,7 @@ export const useDataMutation = (
         setLoading(true);
 
         const response = await apiServices(
-          `${reviews}?page=${pageNumber}&limit=${pagination.limit}`,
+          `${commision}?page=${pageNumber}&limit=${pagination.limit}`,
           "get"
         );
 
@@ -49,23 +47,12 @@ export const useDataMutation = (
     fetchData(page);
   };
 
-  const handleDelete = async (id: any) => {
-    setDeletingId(id);
-    try {
-      const response = await apiServices(`${reviews}/${id}`, "delete");
-      toast.success(response.message);
-      window.location.reload();
-    } catch (error) {
-      toast.success("Getting Error");
-    }
-  };
 
   return {
     data,
     pagination,
-    handlePageChange,
     loading,
-    handleDelete,
-    deletingId,
+    fetchData,
+    handlePageChange,
   };
 };

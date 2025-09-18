@@ -2,11 +2,9 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
 "use client";
 
-import { useState, useCallback, useEffect, useTransition } from "react";
+import { useState, useCallback } from "react";
 import {
-  approved_astrologer,
   gifts,
-  manage_astrologer,
 } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import { toast } from "sonner";
@@ -52,7 +50,7 @@ export const useDataMutations = (
         setLoading(false);
       }
     },
-    [pagination.limit]
+    [pagination?.limit]
   );
 
   // Handle page change
@@ -60,14 +58,6 @@ export const useDataMutations = (
     fetchData(page);
   };
 
-  // Handle search
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      fetchData(1);
-    }, 500);
-
-    return () => clearTimeout(delayDebounce);
-  }, [fetchData]);
 
   const onSubmit = async (formProp: { giftId: string; isActive: boolean }) => {
     if (!formProp.giftId) {

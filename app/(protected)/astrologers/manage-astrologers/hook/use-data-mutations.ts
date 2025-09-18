@@ -47,7 +47,7 @@ export const useDataMutation = (
         setLoading(false);
       }
     },
-    [pagination.limit]
+    [pagination?.limit]
   );
 
   // Handle page change
