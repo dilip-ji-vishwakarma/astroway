@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/table";
 import { useDataMutation } from "../hook/use-data-mutations";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
+import { Button } from "@/components/ui/button";
+import { SquarePen, Trash2 } from "lucide-react";
+import { UpdateCommission } from "./update-commission";
 
 type PageBaseProps = {
   initialData: any[];
@@ -23,12 +26,12 @@ type PageBaseProps = {
 };
 
 export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
-  const {
-    data,
-    pagination,
-    loading,
-    handlePageChange,
-  } = useDataMutation(initialData, initialPagination);
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const { data, pagination, loading, handlePageChange } = useDataMutation(
+    initialData,
+    initialPagination
+  );
   return (
     <div className="mt-8">
       <Table className="mt-5">
@@ -63,11 +66,38 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   {item.astrologer.phone}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">{item.percent}</TableCell>
-                <TableCell className="px-[20px] py-5">{item.addedBy}</TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.updatedBy}
+                  {item.addedByAdmin.name}
                 </TableCell>
-                <TableCell className="px-[20px] py-5">-</TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {item.updatedByAdmin.name}
+                </TableCell>
+                <TableCell
+                  align="right"
+                  className="px-[30px] py-5 gap-3 flex items-center"
+                >
+                  <Button
+                    variant="outline"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setOpen(true);
+                      setSelectedItem(item);
+                    }}
+                  >
+                    <SquarePen
+                      color="currentColor"
+                      size={18}
+                      className=" text-gray-600 hover:text-[#E25016]"
+                    />
+                  </Button>
+                  <Button variant="outline" className="cursor-pointer">
+                    <Trash2
+                      color="currentColor"
+                      size={18}
+                      className=" text-gray-600 hover:text-[#E25016]"
+                    />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))
           ) : (
@@ -85,6 +115,15 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
           onPageChange={handlePageChange}
         />
       </div>
+      <UpdateCommission
+        open={open}
+        onOpenChange={setOpen}
+        type={selectedItem?.type}
+        astrologer={selectedItem?.astrologer}
+        percent={selectedItem?.percent}
+        id={selectedItem?.id}
+        astrologerId={selectedItem?.astrologerId}
+      />
     </div>
   );
 };
