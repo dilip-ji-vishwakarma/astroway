@@ -70,10 +70,10 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 <TableCell className="px-[30px] py-5">{item.id}</TableCell>
                 <TableCell className="px-[30px] py-5">{item.name}</TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.addedByAdmin.name}
+                  {item.addedByAdmin?.name}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.updatedByAdmin.name}
+                  {item.updatedByAdmin?.name}
                 </TableCell>
                 <TableCell className="px-[30px] py-5">
                   {submittingItems.has(item.id) ? (

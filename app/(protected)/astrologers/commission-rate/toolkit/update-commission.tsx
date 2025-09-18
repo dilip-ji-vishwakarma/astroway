@@ -82,8 +82,8 @@ export const UpdateCommission = ({
                         <SelectItem className="text-black" value="chat">
                           Chat
                         </SelectItem>
-                        <SelectItem className="text-black" value="call">
-                          Call
+                        <SelectItem className="text-black" value="voice">
+                          Voice
                         </SelectItem>
                         <SelectItem className="text-black" value="report">
                           Report
