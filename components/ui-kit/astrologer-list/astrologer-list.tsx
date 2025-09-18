@@ -30,8 +30,8 @@ type Astrologer = {
 
 type AstrologerListProps = {
   value?: string | number | null;
-  onChange?: (value: string) => void;
-  selectedAstrologer?: any; // Pre-selected astrologer from props
+  onChange?: (value: number) => void;
+  selectedAstrologer?: any;
   placeholder?: string;
   disabled?: boolean;
 };
@@ -106,17 +106,17 @@ export const AstrologerList = ({
       );
       
       if (matchedAstrologer) {
-        onChange(String(matchedAstrologer.id));
+        onChange(matchedAstrologer.id);
       }
     }
   }, [selectedAstrologer, list, value, onChange]);
 
-  const handleSelect = (astrologerId: string) => {
-    if (onChange) {
-      onChange(astrologerId);
-    }
-    setOpen(false);
-  };
+const handleSelect = (astrologerId: string) => {
+  if (onChange) {
+    onChange(Number(astrologerId)); 
+  }
+  setOpen(false);
+};
 
   const getDisplayText = () => {
     if (loading) return "Loading...";

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { gifts } from "@/lib/api-endpoints";
+import { commision } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -14,12 +14,7 @@ export const useCommissionUpdate = (onOpenChange: any, id: number) => {
 
   const onFormSubmit = async (formProp: any) => {
     try {
-      const formData = new FormData();
-      formData.append("name", formProp.name);
-      formData.append("amount", formProp.amount);
-      formData.append("imageUrl", formProp.imageUrl);
-
-      const response = await apiServices(`${gifts}/${id}`, "put", formData);
+      const response = await apiServices(`${commision}/${id}`, "put", formProp);
 
       if (response.success === true) {
         toast.success(response.message);

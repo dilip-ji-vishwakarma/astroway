@@ -30,7 +30,6 @@ type UpdateCommissionProps = {
   id: number;
   percent: number;
   astrologer: any;
-  astrologerId: number;
 };
 
 export const UpdateCommission = ({
@@ -40,7 +39,6 @@ export const UpdateCommission = ({
   id,
   percent,
   astrologer,
-  astrologerId,
 }: UpdateCommissionProps) => {
   const {
     handleSubmit,
@@ -56,13 +54,10 @@ export const UpdateCommission = ({
         setValue("type", type);
       }
       if (percent) {
-        setValue("percent", String(percent));
-      }
-      if (astrologerId) {
-        setValue("astrologer", String(astrologerId));
+        setValue("percent", percent);
       }
     }
-  }, [open, type, percent, astrologerId, setValue]);
+  }, [open, type, percent, setValue]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -98,8 +93,8 @@ export const UpdateCommission = ({
                         <SelectItem className="text-black" value="report">
                           Report
                         </SelectItem>
-                        <SelectItem className="text-black" value="video-call">
-                          Video Call
+                        <SelectItem className="text-black" value="video">
+                          Video
                         </SelectItem>
                         <SelectItem className="text-black" value="gift">
                           Gift
@@ -117,11 +112,9 @@ export const UpdateCommission = ({
                   Astrologer
                 </Label>
                 <Controller
-                  name="astrologer"
+                  name="astrologerId"
                   control={control}
-                  defaultValue={
-                    astrologer?.id || astrologer?.astrologerId || ""
-                  }
+                  defaultValue={astrologer?.id || astrologer?.astrologerId || ""}
                   rules={{ required: true }}
                   render={({ field: { onChange, value } }) => (
                     <AstrologerList
@@ -143,17 +136,15 @@ export const UpdateCommission = ({
                 <Controller
                   name="percent"
                   control={control}
-                  defaultValue={percent}
+                  defaultValue={percent || 0}
                   rules={{ required: true }}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="number"
                       className=""
                       onChange={(e) =>
-                        onChange(
-                          e.target.value ? parseFloat(e.target.value) : null
-                        )
-                      }
+        onChange(e.target.value ? parseFloat(e.target.value) : null)
+      }
                       value={value}
                     />
                   )}

@@ -122,7 +122,6 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
         astrologer={selectedItem?.astrologer}
         percent={selectedItem?.percent}
         id={selectedItem?.id}
-        astrologerId={selectedItem?.astrologerId}
       />
     </div>
   );
