@@ -28,10 +28,14 @@ type PageBaseProps = {
 export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
-  const { data, pagination, loading, handlePageChange } = useDataMutation(
-    initialData,
-    initialPagination
-  );
+  const {
+    data,
+    pagination,
+    loading,
+    handlePageChange,
+    handleDeleteCommission,
+    deletingItemId,
+  } = useDataMutation(initialData, initialPagination);
   return (
     <div className="mt-8">
       <Table className="mt-5">
@@ -67,10 +71,10 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 </TableCell>
                 <TableCell className="px-[20px] py-5">{item.percent}</TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.addedByAdmin.name}
+                  {item.addedByAdmin?.name}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.updatedByAdmin.name}
+                  {item.updatedByAdmin?.name}
                 </TableCell>
                 <TableCell
                   align="right"
@@ -90,12 +94,20 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                       className=" text-gray-600 hover:text-[#E25016]"
                     />
                   </Button>
-                  <Button variant="outline" className="cursor-pointer">
-                    <Trash2
-                      color="currentColor"
-                      size={18}
-                      className=" text-gray-600 hover:text-[#E25016]"
-                    />
+                  <Button
+                    variant="outline"
+                    className="cursor-pointer"
+                    onClick={() => handleDeleteCommission(item.id)}
+                  >
+                    {deletingItemId === item.id ? (
+                      <div className="w-[15px] h-[15px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
+                    ) : (
+                      <Trash2
+                        color="currentColor"
+                        size={18}
+                        className=" text-gray-600 hover:text-[#E25016]"
+                      />
+                    )}
                   </Button>
                 </TableCell>
               </TableRow>

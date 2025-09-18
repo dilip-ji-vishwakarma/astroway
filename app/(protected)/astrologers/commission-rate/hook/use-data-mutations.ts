@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
+/* eslint-disable @typescript-eslint/no-unused-vars*/
 "use client";
 import { useState, useCallback } from "react";
 import { commision } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
+import { toast } from "sonner";
 
 type Pagination = {
   total: number;
@@ -19,6 +20,7 @@ export const useDataMutation = (
   const [data, setData] = useState<any[]>(initialData);
   const [pagination, setPagination] = useState<Pagination>(initialPagination);
   const [loading, setLoading] = useState(false);
+  const [deletingItemId, setDeletingItemId] = useState<number | null>(null);
 
   const fetchData = useCallback(
     async (pageNumber: number) => {
@@ -47,6 +49,22 @@ export const useDataMutation = (
     fetchData(page);
   };
 
+  const handleDeleteCommission = async (id: any) => {
+    try {
+      setDeletingItemId(id);
+      const response = await apiServices(`${commision}/${id}`, "delete");
+      if (response.success === true) {
+        toast.success(response.message);
+        window.location.reload();
+      } else {
+        toast.error(response.message || "Delete failed");
+      }
+    } catch (error: any) {
+      toast.error("Failed to delete skill");
+    } finally {
+      setDeletingItemId(null);
+    }
+  };
 
   return {
     data,
@@ -54,5 +72,7 @@ export const useDataMutation = (
     loading,
     fetchData,
     handlePageChange,
+    handleDeleteCommission,
+    deletingItemId,
   };
 };

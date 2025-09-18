@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Dialog,
   DialogClose,
@@ -9,11 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useCommissionUpdate } from "../hook/use-commission-update";
-import { Label } from "@/components/ui/label";
-import { Controller } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -21,39 +15,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Controller } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useCommissionCreate } from "../hook/use-commission-create";
 import { AstrologerList } from "@/components/ui-kit/astrologer-list";
 
-type UpdateCommissionProps = {
+type CommissionProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  type: string;
-  id: number;
-  percent: number;
-  astrologer: any;
 };
 
-export const UpdateCommission = ({
-  open,
-  onOpenChange,
-  type,
-  id,
-  percent,
-  astrologer,
-}: UpdateCommissionProps) => {
-  const { handleSubmit, onFormSubmit, control, isSubmitting, setValue } =
-    useCommissionUpdate(onOpenChange, id);
-
-  useEffect(() => {
-    if (open) {
-      if (type) {
-        setValue("type", type);
-      }
-      if (percent) {
-        setValue("percent", percent);
-      }
-    }
-  }, [open, type, percent, setValue]);
-
+export const CreateCommission = ({ open, onOpenChange }: CommissionProps) => {
+  const { isSubmitting, control, handleSubmit, onFormSubmit } =
+    useCommissionCreate(onOpenChange);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -71,7 +47,6 @@ export const UpdateCommission = ({
                 <Controller
                   name="type"
                   control={control}
-                  defaultValue={type || ""}
                   rules={{ required: true }}
                   render={({ field: { onChange, value } }) => (
                     <Select onValueChange={onChange} value={value}>
@@ -109,15 +84,12 @@ export const UpdateCommission = ({
                 <Controller
                   name="astrologerId"
                   control={control}
-                  defaultValue={
-                    astrologer?.id || astrologer?.astrologerId || ""
-                  }
+                  defaultValue={""}
                   rules={{ required: true }}
                   render={({ field: { onChange, value } }) => (
                     <AstrologerList
                       value={value}
                       onChange={onChange}
-                      selectedAstrologer={astrologer}
                       placeholder="Select Astrologer"
                     />
                   )}
@@ -133,7 +105,7 @@ export const UpdateCommission = ({
                 <Controller
                   name="percent"
                   control={control}
-                  defaultValue={percent || 0}
+                  defaultValue={0}
                   rules={{ required: true }}
                   render={({ field: { onChange, value } }) => (
                     <Input

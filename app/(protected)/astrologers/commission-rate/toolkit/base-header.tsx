@@ -6,10 +6,11 @@ import {
 } from "@/components/ui-kit/page-header";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import { CreateCommission } from "./create-commission";
 
 export const BaseHeader = () => {
-
+  const [open, setOpen] = useState(false)
   return (
     <>
     <PageHeader containerVariation="fluid" height="l">
@@ -19,7 +20,7 @@ export const BaseHeader = () => {
           variant={"outline"}
           className="cursor-pointer border border-solid border-[#E25016] text-[#E25016] hover:bg-[#E25016] hover:text-white"
           onClick={() => {
-            // setOpen(true);
+            setOpen(true);
           }}
         >
           <Plus />
@@ -27,7 +28,7 @@ export const BaseHeader = () => {
         </Button>
       </PageHeaderRight>
     </PageHeader>
-    {/* <CreateSkill open={open} onOpenChange={setOpen}/> */}
+    <CreateCommission open={open} onOpenChange={setOpen}/>
     </>
   );
 };
