@@ -35,7 +35,7 @@ export const mainItems = [
       { title: "Gifts", url: "/astrologers/gifts" },
       { title: "Skills", url: "/astrologers/skills" },
       { title: "Categories", url: "/astrologers/categories" },
-      { title: "Commission Rate for Calls/Chats", url: "/astrologers/commissionn-rate" },
+      { title: "Commission Rate for Calls/Chats", url: "/astrologers/commission-rate" },
     ],
   },
   // {

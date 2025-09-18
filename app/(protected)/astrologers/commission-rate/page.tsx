@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Commission Rate for Calls/Chats",
 };
 
-const CommissionnRate = async () => {
+const CommissionRate = async () => {
   const response = await apiServices(commision, "get");
   return (
     <Suspense fallback={<Loader />}>
@@ -23,4 +23,4 @@ const CommissionnRate = async () => {
   );
 };
 
-export default CommissionnRate;
+export default CommissionRate;
