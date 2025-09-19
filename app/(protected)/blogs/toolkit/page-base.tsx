@@ -44,7 +44,7 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
             <TableHead className="px-[20px] py-5">Tags</TableHead>
             <TableHead className="px-[20px] py-5">Draft</TableHead>
             <TableHead className="px-[20px] py-5">Added By</TableHead>
-            <TableHead className="px-[20px] py-5">Publish By</TableHead>
+            <TableHead className="px-[20px] py-5">Updated By</TableHead>
             <TableHead className="px-[20px] py-5">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -93,10 +93,10 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   {item.isDraft == true ? "Yes" : "No"}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.addedById}
+                  {item.addedBy.name}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.publish_by}
+                  {item.updatedBy.name}
                 </TableCell>
                 <TableCell
                   align="right"
