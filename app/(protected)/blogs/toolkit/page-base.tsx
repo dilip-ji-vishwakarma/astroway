@@ -63,8 +63,8 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   {item.previewImage ? (
                     <Image
                       src={getImageUrl(item.previewImage)}
-                      width={50}
-                      height={50}
+                      width={30}
+                      height={30}
                       alt="avatar"
                       className="rounded-full"
                     />
