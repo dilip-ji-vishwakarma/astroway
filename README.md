@@ -16,7 +16,7 @@ cd astroway
 
 ### 2. Setup environment variables
 ```bash
-cp .env_copy .env
+copy env_copy .env
 ```
 
 ### 3. Install dependencies
