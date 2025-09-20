@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { apiServices } from "@/lib/api.services";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export const useDataMutations = (id: any) => {
+export const useDataMutations = (id: any, initialData:any) => {
   const router = useRouter();
   const {
     control,
@@ -13,22 +14,34 @@ export const useDataMutations = (id: any) => {
     watch,
     formState: { isSubmitting },
   } = useForm();
+  const initialValues = useRef(initialData);
   const onSubmit = async (formProp: any) => {
-     const formData = new FormData();
-    formData.append("title", formProp.title);
-    formData.append("contentHTML", formProp.contentHTML);
-    formData.append("summary", formProp.summary);
-    formData.append("slug", formProp.slug);
-    formData.append("publish_by", formProp.publish_by);
-    formData.append("publishedAt", formProp.publishedAt);
-    formData.append("preview", formProp.previewImage);
-    formData.append("cover", formProp.coverImage);
+    const formData = new FormData();
+
+    // Only append fields that changed
+    Object.keys(formProp).forEach((key) => {
+      if (formProp[key] !== initialValues.current[key]) {
+        formData.append(key, formProp[key]);
+      }
+    });
+
+    // If nothing changed, don't call API
+    if (formData.has("title") === false && formData.entries().next().done) {
+      toast.info("No changes to save");
+      return;
+    }
+
     try {
       const response = await apiServices(`/blogs/${id}`, "put", formData);
 
       if (response?.success === true) {
         toast.success(response.message);
-        if (formProp.slug && formProp.slug !== window.location.pathname.split('/').pop()) {
+
+        // Navigate if slug changed
+        if (
+          formProp.slug &&
+          formProp.slug !== window.location.pathname.split("/").pop()
+        ) {
           router.push(`/blogs/${formProp.slug}`);
         } else {
           window.location.reload();

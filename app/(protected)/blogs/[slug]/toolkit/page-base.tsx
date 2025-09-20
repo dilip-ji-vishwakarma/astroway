@@ -29,9 +29,9 @@ import useFilePreview from "@/hooks/use-file-preview";
 
 export const PageBase = ({ initialData }: any) => {
   const { onSubmit, handleSubmit, control, isSubmitting, watch } =
-    useDataMutations(initialData.id);
-  const coverFile = watch("coverImage") as File | null;
-  const previewFile = watch("previewImage") as File | null;
+    useDataMutations(initialData.id, initialData);
+  const coverFile = watch("cover") as File | null;
+  const previewFile = watch("preview") as File | null;
 
   const coverPreview = useFilePreview(coverFile);
   const previewPreview = useFilePreview(previewFile);
@@ -205,15 +205,14 @@ export const PageBase = ({ initialData }: any) => {
               <CardContent className="space-y-3">
                 <>
                   <Label
-                    htmlFor="coverImage"
+                    htmlFor="cover"
                     className="text-slate-900 text-sm font-medium mb-2 block"
                   >
                     Cover Image
                   </Label>
                   <Controller
-                    name="coverImage"
+                    name="cover"
                     control={control}
-                    defaultValue={initialData.coverImage ?? null}
                     render={({ field: { onChange } }) => (
                       <Input
                         accept="image/jpeg,image/png,image/webp"
@@ -255,15 +254,14 @@ export const PageBase = ({ initialData }: any) => {
                 </>
                 <>
                   <Label
-                    htmlFor="previewImage"
+                    htmlFor="preview"
                     className="text-slate-900 text-sm font-medium mb-2 block"
                   >
                     Preview Image
                   </Label>
                   <Controller
-                    name="previewImage"
+                    name="preview"
                     control={control}
-                    defaultValue={initialData.previewImage ?? null}
                     render={({ field: { onChange } }) => (
                       <Input
                         accept="image/jpeg,image/png,image/webp"
