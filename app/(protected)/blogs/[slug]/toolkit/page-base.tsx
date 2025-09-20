@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
 import {
@@ -22,10 +23,18 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import Editor from "react-simple-wysiwyg";
+import Image from "next/image";
+import { getImageUrl } from "@/lib/utils";
+import useFilePreview from "@/hooks/use-file-preview";
 
 export const PageBase = ({ initialData }: any) => {
-  const { onSubmit, handleSubmit, control, isSubmitting } =
+  const { onSubmit, handleSubmit, control, isSubmitting, watch } =
     useDataMutations(initialData.id);
+  const coverFile = watch("coverImage") as File | null;
+  const previewFile = watch("previewImage") as File | null;
+
+  const coverPreview = useFilePreview(coverFile);
+  const previewPreview = useFilePreview(previewFile);
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -93,28 +102,28 @@ export const PageBase = ({ initialData }: any) => {
                   )}
                 />
               </>
-              {/* <>
-              <Label
-                htmlFor="slug"
-                className="text-slate-900 text-sm font-medium mb-2 block"
-              >
-                Slug
-              </Label>
-              <Controller
-                name={`slug`}
-                control={control}
-                defaultValue={initialData.slug || ""}
-                render={({ field: { onChange, value } }) => (
-                  <Input
-                    type="text"
-                    placeholder="Enter Slug"
-                    className="h-10"
-                    value={value}
-                    onChange={onChange}
-                  />
-                )}
-              />
-            </> */}
+              <>
+                <Label
+                  htmlFor="slug"
+                  className="text-slate-900 text-sm font-medium mb-2 block"
+                >
+                  Slug
+                </Label>
+                <Controller
+                  name={`slug`}
+                  control={control}
+                  defaultValue={initialData.slug || ""}
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      type="text"
+                      placeholder="Enter Slug"
+                      className="h-10"
+                      value={value}
+                      onChange={onChange}
+                    />
+                  )}
+                />
+              </>
               <>
                 <Label
                   htmlFor="publish_by"
@@ -204,31 +213,45 @@ export const PageBase = ({ initialData }: any) => {
                   <Controller
                     name="coverImage"
                     control={control}
-                    defaultValue=""
+                    defaultValue={initialData.coverImage ?? null}
                     render={({ field: { onChange } }) => (
                       <Input
                         accept="image/jpeg,image/png,image/webp"
                         type="file"
                         onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const allowedTypes = [
-                              "image/jpeg",
-                              "image/png",
-                              "image/webp",
-                            ];
-                            if (!allowedTypes.includes(file.type)) {
-                              alert(
-                                "Only JPG, PNG, and WEBP files are allowed."
-                              );
-                              return;
-                            }
-                            onChange(file);
+                          const file = e.target.files?.[0] ?? null;
+                          if (!file) return;
+
+                          const allowedTypes = [
+                            "image/jpeg",
+                            "image/png",
+                            "image/webp",
+                          ];
+                          if (!allowedTypes.includes(file.type)) {
+                            alert("Only JPG, PNG, and WEBP files are allowed.");
+                            return;
                           }
+
+                          onChange(file); // store file in react-hook-form
                         }}
                       />
                     )}
                   />
+                  {coverPreview ? (
+                    <Image
+                      src={coverPreview}
+                      alt="preview"
+                      height={300}
+                      width={300}
+                    />
+                  ) : (
+                    <img
+                      src={getImageUrl(initialData.coverImage)}
+                      alt="preview"
+                      height={300}
+                      width={300}
+                    />
+                  )}
                 </>
                 <>
                   <Label
@@ -240,31 +263,46 @@ export const PageBase = ({ initialData }: any) => {
                   <Controller
                     name="previewImage"
                     control={control}
-                    defaultValue=""
+                    defaultValue={initialData.previewImage ?? null}
                     render={({ field: { onChange } }) => (
                       <Input
                         accept="image/jpeg,image/png,image/webp"
                         type="file"
                         onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const allowedTypes = [
-                              "image/jpeg",
-                              "image/png",
-                              "image/webp",
-                            ];
-                            if (!allowedTypes.includes(file.type)) {
-                              alert(
-                                "Only JPG, PNG, and WEBP files are allowed."
-                              );
-                              return;
-                            }
-                            onChange(file);
+                          const file = e.target.files?.[0] ?? null;
+                          if (!file) return;
+
+                          const allowedTypes = [
+                            "image/jpeg",
+                            "image/png",
+                            "image/webp",
+                          ];
+                          if (!allowedTypes.includes(file.type)) {
+                            alert("Only JPG, PNG, and WEBP files are allowed.");
+                            return;
                           }
+
+                          onChange(file); // store file in react-hook-form
                         }}
                       />
                     )}
                   />
+
+                  {previewPreview ? (
+                    <Image
+                      src={previewPreview}
+                      alt="preview"
+                      height={300}
+                      width={300}
+                    />
+                  ) : (
+                    <img
+                      src={getImageUrl(initialData.previewImage)}
+                      alt="preview"
+                      height={300}
+                      width={300}
+                    />
+                  )}
                 </>
               </CardContent>
               <CardFooter>
