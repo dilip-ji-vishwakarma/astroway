@@ -3,6 +3,7 @@
 import { blogs } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
 
 type Pagination = {
   total: number;
@@ -18,6 +19,7 @@ export const useDataMutations = (
   const [data, setData] = useState<any[]>(initialData);
   const [pagination, setPagination] = useState<Pagination>(initialPagination);
   const [loading, setLoading] = useState(false);
+  const [load, setLoad] = useState<number | null>(null);
 
   const fetchData = useCallback(
     async (pageNumber: number) => {
@@ -46,10 +48,31 @@ export const useDataMutations = (
     fetchData(page);
   };
 
+  const handleDelete = async (id: number) => {
+  
+    try {
+        setLoad(id)
+      const response = await apiServices(`/blogs/${id}`, "delete");
+      if (response?.success === true) {
+        toast.success(response.message);
+        window.location.reload();
+      } else {
+        toast.error(response.message);
+        setLoad(null)
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Something went wrong");
+      setLoad(null)
+      throw error;
+    }
+  }
+
   return {
     data,
     pagination,
     loading,
     handlePageChange,
+    handleDelete,
+    load
   };
 };
