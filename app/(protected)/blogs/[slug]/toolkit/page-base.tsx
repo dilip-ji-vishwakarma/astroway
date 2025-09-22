@@ -28,7 +28,7 @@ import { getImageUrl } from "@/lib/utils";
 import useFilePreview from "@/hooks/use-file-preview";
 
 export const PageBase = ({ initialData }: any) => {
-  const { onSubmit, handleSubmit, control, isSubmitting, watch } =
+  const { onSubmit, handleSubmit, control, isSubmitting, watch, handleDelete, loading } =
     useDataMutations(initialData.id, initialData);
   const coverFile = watch("cover") as File | null;
   const previewFile = watch("preview") as File | null;
@@ -303,7 +303,7 @@ export const PageBase = ({ initialData }: any) => {
                   )}
                 </>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="block space-y-3">
                 <Button
                   type="submit"
                   className="w-full py-2 px-5 text-[15px] font-medium tracking-wide rounded-md text-white primary-color focus:outline-none cursor-pointer"
@@ -312,6 +312,13 @@ export const PageBase = ({ initialData }: any) => {
                     <span className="w-[20px] h-[20px] animate-spin rounded-[50%] border-t-[#3498db] border-2 border-solid border-[#f3f3f3]"></span>
                   ) : (
                     <span>Update</span>
+                  )}
+                </Button>
+                <Button type="button" className="w-full py-2 px-5 text-[15px] font-medium tracking-wide rounded-md text-white bg-red-500 focus:outline-none cursor-pointer" onClick={handleDelete}>
+                  {loading ? (
+                    <span className="w-[20px] h-[20px] animate-spin rounded-[50%] border-t-[#3498db] border-2 border-solid border-[#f3f3f3]"></span>
+                  ) : (
+                    <span>Delete</span>
                   )}
                 </Button>
               </CardFooter>

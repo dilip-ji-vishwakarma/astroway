@@ -7,25 +7,21 @@ import {
 } from "@/components/ui-kit/page-header";
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 
 export const BaseHeader = () => {
-  const [open, setOpen] = useState(false);
   return (
     <PageHeader containerVariation="fluid" height="l">
       <PageHeaderLeft>Blogs</PageHeaderLeft>
       <PageHeaderRight>
-        <Button
-          variant={"outline"}
-          className="cursor-pointer border border-solid border-[#E25016] text-[#E25016] hover:bg-[#E25016] hover:text-white"
-          onClick={() => {
-            setOpen(true);
-          }}
+        <Link
+        href={"/blogs/new-post"}
+          className="border border-solid border-[#E25016] text-[#E25016] hover:bg-[#E25016] hover:text-white flex p-2 rounded-sm font-semibold"
         >
           <Plus />
-          Add Blog
-        </Button>
+          Add Post
+        </Link>
       </PageHeaderRight>
     </PageHeader>
   );

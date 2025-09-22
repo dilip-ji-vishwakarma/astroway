@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { apiServices } from "@/lib/api.services";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export const useDataMutations = (id: any, initialData:any) => {
+  const [loading, setLoading] = useState(false)
   const router = useRouter();
   const {
     control,
@@ -55,5 +56,26 @@ export const useDataMutations = (id: any, initialData:any) => {
       throw error;
     }
   };
-  return { onSubmit, handleSubmit, control, setValue, isSubmitting, watch };
+
+  const handleDelete = async () => {
+    setLoading(true)
+    try {
+      const response = await apiServices(`/blogs/${id}`, "delete");
+      if (response?.success === true) {
+        setLoading(false)
+        toast.success(response.message);
+        router.push(`/blogs`);
+      } else {
+        toast.error(response.message);
+        setLoading(false)
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Something went wrong");
+      setLoading(false)
+      throw error;
+    }
+  }
+
+
+  return { onSubmit, handleSubmit, control, setValue, isSubmitting, watch, handleDelete, loading };
 };

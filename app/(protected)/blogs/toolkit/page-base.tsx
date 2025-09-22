@@ -93,10 +93,10 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   {item.isDraft == true ? "Yes" : "No"}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.addedBy.name}
+                  {item.addedBy?.name}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.updatedBy.name}
+                  {item.updatedBy?.name}
                 </TableCell>
                 <TableCell
                   align="right"
