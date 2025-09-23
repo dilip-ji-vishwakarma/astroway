@@ -15,7 +15,7 @@ type PageBaseProps = {
 export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
   return (
     <code>
-      <pre>{JSON.stringify(initialData, null, 2)}</pre>
+      <pre>{JSON.stringify(initialData, null, 2)}</pre> 
     </code>
   );
 };
