@@ -109,7 +109,7 @@ export const PageBase= ({ initialData, initialPagination }: PageBaseProps) => {
                     {item.email}
                   </Link>
                 </TableCell>
-                <TableCell className="px-[10px] py-5">{formatSingleDate(item.createdAt)}</TableCell>
+                <TableCell className="px-[10px] py-5">{formatSingleDate(item.createdAt, true)}</TableCell>
                 <TableCell className="px-[10px] py-5">{item.blockedReason ? (item.blockedReason) : "Not Added"}</TableCell>
                 <TableCell className="px-[10px] py-5 text-center">
                   {submittingItems.has(item.id) ? (

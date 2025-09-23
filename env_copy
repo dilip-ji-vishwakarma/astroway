@@ -3,3 +3,4 @@ NEXT_PUBLIC_API_URL="https://astrova-backend-t1zo.onrender.com/api/v1"
 AUTH_SECRET="bMhAyvEBSf8XJuybetquY0lR9RqCW5qgOPerhYQJ6gM=" # Added by npx auth. Read more: https://cli.authjs.dev
 NEXT_PUBLIC_BASE_URL="https://astrova-backend-t1zo.onrender.com"
 # NEXTAUTH_URL="https://astroway.vercel.app"
+NEXT_PUBLIC_LOGIN_URL=/login

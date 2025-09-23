@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const formatSingleDate = (date: any) => {
+export const formatSingleDate = (date: any, forceYear?: boolean) => {
   if (!date) {
     return 'No date'
   }
@@ -17,7 +17,7 @@ export const formatSingleDate = (date: any) => {
   let dateFormatted = moment(date).format('MMM DD')
   const currentYear = new Date().getFullYear().toString()
 
-  if (currentYear !== moment(date).format('Y')) {
+  if (currentYear !== moment(date).format('Y') || forceYear) {
     dateFormatted = moment(date).format('MMM DD, YYYY')
   }
 
