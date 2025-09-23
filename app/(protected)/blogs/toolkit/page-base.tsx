@@ -17,6 +17,8 @@ import { getImageUrl } from "@/lib/utils";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Controller, useForm } from "react-hook-form";
+import { Switch } from "@/components/ui/switch";
 
 type PageBaseProps = {
   initialData: any[];
@@ -29,10 +31,17 @@ type PageBaseProps = {
 };
 
 export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
-  const { data, pagination, loading, handlePageChange, handleDelete, load } = useDataMutations(
-    initialData,
-    initialPagination
-  );
+  const {
+    data,
+    pagination,
+    loading,
+    handlePageChange,
+    handleDelete,
+    load,
+    submittingItems,
+    handleSwitchChange,
+  } = useDataMutations(initialData, initialPagination);
+  const { control } = useForm();
   return (
     <div className="mt-8">
       <Table className="mt-5">
@@ -91,7 +100,26 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 </TableCell>
 
                 <TableCell className="px-[20px] py-5">
-                  {item.isDraft == true ? "Yes" : "No"}
+                  {submittingItems.has(item.id) ? (
+                    <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
+                  ) : (
+                    <Controller
+                      name={`isPublished-${item.id}`}
+                      control={control}
+                      defaultValue={item.isDraft}
+                      render={({ field: { onChange, value } }) => (
+                        <Switch
+                          className="cursor-pointer"
+                          checked={value}
+                          disabled={submittingItems.has(item.id)}
+                          onCheckedChange={(checked) => {
+                            onChange(checked);
+                            handleSwitchChange(item.id, checked);
+                          }}
+                        />
+                      )}
+                    />
+                  )}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
                   {item.addedBy?.name}
@@ -113,15 +141,12 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   <Button
                     variant={"outline"}
                     className="cursor-pointer"
-                     onClick={() => handleDelete(item.id)}
+                    onClick={() => handleDelete(item.id)}
                   >
                     {load === item.id ? (
                       <span className="w-[15px] h-[15px] animate-spin rounded-[50%] border-t-[#3498db] border-2 border-solid border-[#f3f3f3]"></span>
                     ) : (
-                      <Trash2
-                        color="currentColor"
-                        size={18}
-                      />
+                      <Trash2 color="currentColor" size={18} />
                     )}
                   </Button>
                 </TableCell>

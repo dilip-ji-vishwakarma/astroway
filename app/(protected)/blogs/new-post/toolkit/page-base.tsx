@@ -24,6 +24,7 @@ import Editor from "react-simple-wysiwyg";
 import Image from "next/image";
 import useFilePreview from "@/hooks/use-file-preview";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 
 export const PageBase = () => {
   const {
@@ -163,6 +164,7 @@ export const PageBase = () => {
                 <span className="text-red-500 text-sm ">Please Enter Slug</span>
               )}
             </>
+            
             <>
               <Label
                 htmlFor="publish_by"
@@ -192,6 +194,29 @@ export const PageBase = () => {
               <CardTitle className="text-xl">Preview</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
+              <span className="flex items-center justify-between">
+              <Label
+                htmlFor="isDraft"
+                className="text-slate-900 text-sm font-medium mb-2 block"
+              >
+                Draft
+              </Label>
+              <Controller
+                name="isDraft"
+                control={control}
+                defaultValue={false}
+                rules={{ required: false }}
+                render={({ field: { onChange, value } }) => (
+                  <Switch
+                    className="cursor-pointer"
+                    checked={value}
+                    onCheckedChange={(checked) => {
+                      onChange(checked);
+                    }}
+                  />
+                )}
+              />
+            </span>
               <>
                 <Label
                   htmlFor="publishedAt"

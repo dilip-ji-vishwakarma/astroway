@@ -26,10 +26,19 @@ import Editor from "react-simple-wysiwyg";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/utils";
 import useFilePreview from "@/hooks/use-file-preview";
+import { Switch } from "@/components/ui/switch";
 
 export const PageBase = ({ initialData }: any) => {
-  const { onSubmit, handleSubmit, control, isSubmitting, watch, handleDelete, loading } =
-    useDataMutations(initialData.id, initialData);
+  const {
+    onSubmit,
+    handleSubmit,
+    control,
+    isSubmitting,
+    watch,
+    handleDelete,
+    loading,
+    errors
+  } = useDataMutations(initialData.id, initialData);
   const coverFile = watch("cover") as File | null;
   const previewFile = watch("preview") as File | null;
 
@@ -153,6 +162,29 @@ export const PageBase = ({ initialData }: any) => {
                 <CardTitle className="text-xl">Preview</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
+                <span className="flex items-center justify-between">
+                  <Label
+                    htmlFor="isDraft"
+                    className="text-slate-900 text-sm font-medium mb-2 block"
+                  >
+                    Draft
+                  </Label>
+                  <Controller
+                    name="isDraft"
+                    control={control}
+                    defaultValue={initialData.isDraft || ""}
+                    rules={{ required: false }}
+                    render={({ field: { onChange, value } }) => (
+                      <Switch
+                        className="cursor-pointer"
+                        checked={value}
+                        onCheckedChange={(checked) => {
+                          onChange(checked);
+                        }}
+                      />
+                    )}
+                  />
+                </span>
                 <>
                   <Label
                     htmlFor="publishedAt"
@@ -195,6 +227,11 @@ export const PageBase = ({ initialData }: any) => {
                       </Popover>
                     )}
                   />
+                 {errors["publishedAt"] && (
+                  <span className="text-red-500 text-sm ">
+                    Please Select published date
+                  </span>
+                )}
                 </>
               </CardContent>
             </Card>
@@ -314,7 +351,11 @@ export const PageBase = ({ initialData }: any) => {
                     <span>Update</span>
                   )}
                 </Button>
-                <Button type="button" className="w-full py-2 px-5 text-[15px] font-medium tracking-wide rounded-md text-white bg-red-500 focus:outline-none cursor-pointer" onClick={handleDelete}>
+                <Button
+                  type="button"
+                  className="w-full py-2 px-5 text-[15px] font-medium tracking-wide rounded-md text-white bg-red-500 focus:outline-none cursor-pointer"
+                  onClick={handleDelete}
+                >
                   {loading ? (
                     <span className="w-[20px] h-[20px] animate-spin rounded-[50%] border-t-[#3498db] border-2 border-solid border-[#f3f3f3]"></span>
                   ) : (

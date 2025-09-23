@@ -13,7 +13,7 @@ export const useDataMutations = (id: any, initialData:any) => {
     handleSubmit,
     setValue,
     watch,
-    formState: { isSubmitting },
+    formState: {errors, isSubmitting },
   } = useForm();
   const initialValues = useRef(initialData);
   const onSubmit = async (formProp: any) => {
@@ -77,5 +77,5 @@ export const useDataMutations = (id: any, initialData:any) => {
   }
 
 
-  return { onSubmit, handleSubmit, control, setValue, isSubmitting, watch, handleDelete, loading };
+  return { onSubmit, handleSubmit, control, setValue, isSubmitting, watch, handleDelete, loading, errors };
 };

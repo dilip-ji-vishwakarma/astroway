@@ -20,6 +20,7 @@ export const useDataMutations = (
   const [pagination, setPagination] = useState<Pagination>(initialPagination);
   const [loading, setLoading] = useState(false);
   const [load, setLoad] = useState<number | null>(null);
+  const [submittingItems, setSubmittingItems] = useState<Set<number>>(new Set());
 
   const fetchData = useCallback(
     async (pageNumber: number) => {
@@ -49,23 +50,45 @@ export const useDataMutations = (
   };
 
   const handleDelete = async (id: number) => {
-  
     try {
-        setLoad(id)
+      setLoad(id);
       const response = await apiServices(`/blogs/${id}`, "delete");
       if (response?.success === true) {
         toast.success(response.message);
         window.location.reload();
       } else {
         toast.error(response.message);
-        setLoad(null)
+        setLoad(null);
       }
     } catch (error: any) {
       toast.error(error?.message || "Something went wrong");
-      setLoad(null)
+      setLoad(null);
       throw error;
     }
+  };
+
+  const handleSwitchChange = async (itemId: number, checked: boolean) => {
+    setSubmittingItems((prev) => new Set(prev).add(itemId));
+    try {
+      const response = await apiServices(`/blogs/${itemId}/toggle`, "put", {
+      isPublished: checked,
+    });
+      if (response.success) {
+        toast.success(response.message);
+        window.location.reload();
+      } else {
+        toast.success(response.message);
+      }
+    } catch (error: any) {
+      toast.error(error);
+    } finally {
+    setSubmittingItems((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(itemId);
+      return newSet;
+    });
   }
+  };
 
   return {
     data,
@@ -73,6 +96,8 @@ export const useDataMutations = (
     loading,
     handlePageChange,
     handleDelete,
-    load
+    load,
+    handleSwitchChange,
+    submittingItems,
   };
 };
