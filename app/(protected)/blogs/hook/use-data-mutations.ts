@@ -20,7 +20,10 @@ export const useDataMutations = (
   const [pagination, setPagination] = useState<Pagination>(initialPagination);
   const [loading, setLoading] = useState(false);
   const [load, setLoad] = useState<number | null>(null);
-  const [submittingItems, setSubmittingItems] = useState<Set<number>>(new Set());
+  const [submittingItems, setSubmittingItems] = useState<Set<number>>(
+    new Set()
+  );
+  const [toggle, setToggle] = useState(false);
 
   const fetchData = useCallback(
     async (pageNumber: number) => {
@@ -69,10 +72,16 @@ export const useDataMutations = (
 
   const handleSwitchChange = async (itemId: number, checked: boolean) => {
     setSubmittingItems((prev) => new Set(prev).add(itemId));
+
     try {
+      if (checked === true) {
+        setToggle(false);
+      } else {
+        setToggle(true);
+      }
       const response = await apiServices(`/blogs/${itemId}/toggle`, "put", {
-      isPublished: checked,
-    });
+        isPublished: toggle,
+      });
       if (response.success) {
         toast.success(response.message);
         window.location.reload();
@@ -82,12 +91,12 @@ export const useDataMutations = (
     } catch (error: any) {
       toast.error(error);
     } finally {
-    setSubmittingItems((prev) => {
-      const newSet = new Set(prev);
-      newSet.delete(itemId);
-      return newSet;
-    });
-  }
+      setSubmittingItems((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(itemId);
+        return newSet;
+      });
+    }
   };
 
   return {
