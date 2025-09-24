@@ -93,7 +93,7 @@ export const AdminHeader = ({ session }: any) => {
             ? session.name.split(" ")[0].charAt(0).toUpperCase()
             : "?"}
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent align="end">
           <DropdownMenuLabel>astroway admin</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem

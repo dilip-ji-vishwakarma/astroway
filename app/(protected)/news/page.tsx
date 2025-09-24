@@ -10,8 +10,9 @@ export const metadata: Metadata = {
   title: "News",
 };
 
+
 const News = async () => {
-  const response = await apiServices(`${news}?page=1&limit=10`, "get");
+  const response = await apiServices(news, "get");
   return (
     <Suspense fallback={<Loader />}>
       <BaseHeader />

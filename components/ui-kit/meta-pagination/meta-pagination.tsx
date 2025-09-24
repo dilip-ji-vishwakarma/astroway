@@ -24,6 +24,7 @@ interface MetaPaginationProps {
 }
 
 export const MetaPagination = ({ pagination, onPageChange }: MetaPaginationProps) => {
+  if (!pagination) return null;
   const { page, totalPages } = pagination;
 
   return (
