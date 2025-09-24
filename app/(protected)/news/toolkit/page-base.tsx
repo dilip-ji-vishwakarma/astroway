@@ -10,6 +10,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -52,7 +53,7 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="z-1" align="end">
                   <DropdownMenuItem>
-                   <Link href={`/news/${item.id}`}>Edit News</Link> 
+                    <Link href={`/news/${item.id}`}>Edit News</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer"

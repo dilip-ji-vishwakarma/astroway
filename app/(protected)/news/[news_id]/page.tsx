@@ -19,7 +19,7 @@ const NewsId = async ({ params }: PageProps) => {
   const response = await apiServices(`${news}/${news_id}`, "get");
   return (
     <Suspense fallback={<Loader />}>
-      <PageBase response={response} />
+      <PageBase response={response.data} />
     </Suspense>
   );
 };
