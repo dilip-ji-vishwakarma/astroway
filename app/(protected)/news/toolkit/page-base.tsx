@@ -2,15 +2,13 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useDataMutations } from "../hook/use-data-mutations";
-import { useForm } from "react-hook-form";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -24,6 +22,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { EllipsisVertical } from "lucide-react";
+import { toast } from "sonner";
+import { apiServices } from "@/lib/api.services";
+import { news } from "@/lib/api-endpoints";
 
 type PageBaseProps = {
   initialData: any[];
@@ -40,7 +41,27 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
     initialData,
     initialPagination
   );
-  const { control } = useForm();
+
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const handleDelete = async (id: any) => {
+    alert("asdf");
+    setDeletingId(id);
+    try {
+      const response = await apiServices(`${news}/${id}`, "delete");
+      if (response?.success === true) {
+        toast.success(response.message);
+        window.location.reload();
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Something went wrong");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   return (
     <div className="mt-5">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -56,10 +77,16 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     <Link href={`/news/${item.id}`}>Edit News</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={() => {}}
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      handleDelete(item.id);
+                    }}
                   >
-                    Delete News
+                    {deletingId === item.id ? (
+                      <span>Deleting</span>
+                    ) : (
+                      <span>Delete</span>
+                    )}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer"
