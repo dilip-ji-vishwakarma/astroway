@@ -8,7 +8,6 @@ import { Plus } from "lucide-react";
 import React from "react";
 import Link from "next/link";
 
-
 export const BaseHeader = () => {
   return (
     <PageHeader containerVariation="fluid" height="l">
