@@ -43,9 +43,8 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
   );
 
   const [deletingId, setDeletingId] = useState<number | null>(null);
-
+  const [tooglegId, setTooglegId] = useState<number | null>(null);
   const handleDelete = async (id: any) => {
-    alert("asdf");
     setDeletingId(id);
     try {
       const response = await apiServices(`${news}/${id}`, "delete");
@@ -61,6 +60,29 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
       setDeletingId(null);
     }
   };
+
+  const handleToogle = async (id: number, currentStatus: boolean) => {
+  setTooglegId(id);
+  try {
+    const response = await apiServices(
+      `${news}/${id}/toggle`,
+      "patch",
+      { isActive: !currentStatus }   // yaha ulta bhej diya
+    );
+
+    if (response?.success === true) {
+      toast.success(response.message);
+      window.location.reload();
+    } else {
+      toast.error(response.message);
+    }
+  } catch (error: any) {
+    toast.error(error?.message || "Something went wrong");
+  } finally {
+    setTooglegId(null);
+  }
+};
+
 
   return (
     <div className="mt-5">
@@ -90,9 +112,18 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer"
-                    onClick={() => {}}
+                    onSelect={(e) => {
+                      e.preventDefault();
+                       handleToogle(item.id, item.isActive);
+                    }}
                   >
-                    {item.isActive ? "Active" : "Inactive"}
+                    {tooglegId === item.id ? (
+                      <div className="loader"></div> 
+                    ) : item.isActive ? (
+                      "Inactive"
+                    ) : (
+                      "Active"
+                    )}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

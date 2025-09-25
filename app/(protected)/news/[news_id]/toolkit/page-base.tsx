@@ -25,7 +25,7 @@ import { Calendar } from "@/components/ui/calendar";
 import useFilePreview from "@/hooks/use-file-preview";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/utils";
-import { Switch } from "@/components/ui/switch";
+// import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 
 export const PageBase = (response: any) => {
@@ -141,7 +141,7 @@ export const PageBase = (response: any) => {
                   {data.updatedByAdmin?.name}
                 </span>
               </div>
-              <div className="flex items-center justify-between py-2">
+              {/* <div className="flex items-center justify-between py-2">
                 <Label
                   htmlFor="isActive"
                   className="text-slate-900 text-sm font-medium mb-2 block"
@@ -163,9 +163,13 @@ export const PageBase = (response: any) => {
                     />
                   )}
                 />
-              </div>
+                {errors["isActive"] && (
+                <span className="text-red-500 text-sm ">
+                  Please Select isActive
+                </span>
+              )}
+              </div> */}
             </div>
-
             <>
               <Label
                 htmlFor="date"
