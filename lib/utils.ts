@@ -27,3 +27,8 @@ export const formatSingleDate = (date: any, forceYear?: boolean) => {
 export const getImageUrl = (imagePath:any) => {
   return `${BASE_URL}${imagePath}`;
 };
+
+export const getYoutubeVideoId = (url: string) => {
+  const match = url.match(/[?&]v=([^&]+)/);
+  return match ? match[1] : '';
+}

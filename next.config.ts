@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'astrova-backend-t1zo.onrender.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
     ],
   },
 };
