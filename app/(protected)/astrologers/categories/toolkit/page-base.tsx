@@ -171,11 +171,11 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
         name={selectedItem?.name}
         id={selectedItem?.id}
       />
-              <DeleteCategory 
-               openAlert={openAlert}
-                onOpenChange={setOpenAlert}
-                id={selectedItemAlert?.id}
-              />
+      <DeleteCategory
+        openAlert={openAlert}
+        onOpenChange={setOpenAlert}
+        id={selectedItemAlert?.id}
+      />
     </div>
   );
 };

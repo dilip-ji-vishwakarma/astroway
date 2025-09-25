@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
-import {stories } from "@/lib/api-endpoints";
+"use client";
+import { stories } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
 
 type Pagination = {
   total: number;
@@ -18,6 +19,7 @@ export const useDataMutations = (
   const [data, setData] = useState<any[]>(initialData);
   const [pagination, setPagination] = useState<Pagination>(initialPagination);
   const [loading, setLoading] = useState(false);
+    const [load, setLoad] = useState<number | null>(null);
 
   const fetchData = useCallback(
     async (pageNumber: number) => {
@@ -46,11 +48,28 @@ export const useDataMutations = (
     fetchData(page);
   };
 
+  const handleDelete = async (id: any) => {
+    try {
+      setLoad(id);
+      const response = await apiServices(`${stories}/${id}`, "delete");
+      if (response.success == true) {
+        toast.success(response.message);
+        window.location.reload();
+      } else {
+        setLoad(null);
+      }
+    } catch (error) {
+      console.error("❌ Failed to fetch astrologers:", error);
+      setLoad(null);
+    }
+  };
 
   return {
     data,
     pagination,
     loading,
-    handlePageChange
+    handlePageChange,
+    load,
+    handleDelete,
   };
 };

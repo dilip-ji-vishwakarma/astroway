@@ -12,10 +12,9 @@ import {
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import { useDataMutations } from "../hook/use-data-mutations";
 import Image from "next/image";
-import { formatSingleDate, getImageUrl, getYoutubeVideoId } from "@/lib/utils";
+import { formatSingleDate, getImageUrl } from "@/lib/utils";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import Link from "next/link";
-import { SquarePen, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type PageBaseProps = {
@@ -29,10 +28,9 @@ type PageBaseProps = {
 };
 
 export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
-  const { data, pagination, loading, handlePageChange } = useDataMutations(
-    initialData,
-    initialPagination
-  );
+  const { data, pagination, loading, handlePageChange, load, handleDelete } =
+    useDataMutations(initialData, initialPagination);
+
   return (
     <div className="mt-8">
       <Table className="mt-5">
@@ -42,9 +40,9 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
             <TableHead className="px-[20px] py-5">Profile</TableHead>
             <TableHead className="px-[20px] py-5">Name</TableHead>
             <TableHead className="px-[20px] py-5">Media Type</TableHead>
-            <TableHead className="px-[20px] py-5">Media</TableHead>
             <TableHead className="px-[20px] py-5">Views</TableHead>
             <TableHead className="px-[20px] py-5">Created At</TableHead>
+            <TableHead className="px-[20px] py-5">Expired At</TableHead>
             <TableHead className="px-[20px] py-5">Active</TableHead>
             <TableHead className="px-[20px] py-5">Action</TableHead>
           </TableRow>
@@ -82,50 +80,33 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                   {item.mediaType}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.mediaUrl ? (
-                    <Image
-                      src={`https://img.youtube.com/vi/${getYoutubeVideoId(
-                        item.mediaUrl
-                      )}/hqdefault.jpg`}
-                      width={40}
-                      height={40}
-                      alt="video preview"
-                      className="rounded-md"
-                    />
-                  ) : (
-                    <span>Not Available</span>
-                  )}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">
                   {item.viewsCount}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
                   {formatSingleDate(item.createdAt, true)}
                 </TableCell>
                 <TableCell className="px-[20px] py-5">
-                  {item.isActive === true ? "Yes" : "No"}
+                  {formatSingleDate(item.expiresAt, true)}
+                </TableCell>
+                <TableCell className="px-[20px] py-5">
+                  {item.isActive ? "True" : "False"}
                 </TableCell>
                 <TableCell
                   align="right"
                   className="px-[30px] py-5 gap-3 flex items-center"
                 >
-                  <Link
-                    href={`/stories/${item.id}`}
-                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 cursor-pointer"
-                  >
-                    <SquarePen size={"18px"} />
-                  </Link>
-
                   <Button
                     variant={"outline"}
                     className="cursor-pointer"
-                    onClick={() => {}}
+                    onClick={() => {
+                      handleDelete(item.id);
+                    }}
                   >
-                    {/* {load === item.id ? ( */}
-                      {/* <span className="w-[15px] h-[15px] animate-spin rounded-[50%] border-t-[#3498db] border-2 border-solid border-[#f3f3f3]"></span> */}
-                    {/* ) : ( */}
+                    {load === item.id ? (
+                      <span className="w-[15px] h-[15px] animate-spin rounded-[50%] border-t-[#3498db] border-2 border-solid border-[#f3f3f3]"></span>
+                    ) : (
                       <Trash2 color="currentColor" size={18} />
-                    {/* )} */}
+                    )}
                   </Button>
                 </TableCell>
               </TableRow>

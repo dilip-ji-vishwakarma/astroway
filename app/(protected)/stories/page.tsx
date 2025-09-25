@@ -4,7 +4,7 @@ import { apiServices } from "@/lib/api.services";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
 import { PageBase } from "./toolkit/page-base";
-import { BaseHeader } from "./toolkit/base-header";
+import { TextH1 } from "@/components/ui-kit/TextH1";
 
 export const metadata: Metadata = {
   title: "Stories",
@@ -15,7 +15,7 @@ const Stories = async () => {
 
   return (
     <Suspense fallback={<Loader />}>
-      <BaseHeader />
+      <TextH1>Stories</TextH1>
       <PageBase
         initialData={response.data}
         initialPagination={response.pagination}
