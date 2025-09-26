@@ -6,9 +6,14 @@ import {
   // Calendar,
   // Video,
   Image,
-  MessageSquare,
   Settings,
   FileText,
+  PlayCircle,
+  Bell,
+  Newspaper,
+  Smile,
+  UserPlus,
+  Layers,
   // Award,
 } from "lucide-react";
 
@@ -67,7 +72,7 @@ export const mainItems = [
   {
     title: "News",
     url: "/news",
-    icon: FileText,
+    icon: Newspaper,
   },
   // {
   //   title: "Videos",
@@ -82,12 +87,12 @@ export const mainItems = [
   {
     title: "Stories",
     url: "/stories",
-    icon: MessageSquare,
+    icon: PlayCircle,
   },
   {
     title: "Notifications",
     url: "/notifications",
-    icon: MessageSquare,
+    icon: Bell,
   },
   // {
   //   title: "Support Management",
@@ -149,16 +154,16 @@ export const mainItems = [
   {
     title: "Feedback",
     url: "/feedback",
-    icon: MessageSquare,
+    icon: Smile,
   },
   {
     title: "Page Management",
     url: "/page-management",
-    icon: FileText,
+    icon: Layers,
   },
   {
     title: "Contact Form",
     url: "/contact-form",
-    icon: MessageSquare,
+    icon: UserPlus,
   },
 ];
