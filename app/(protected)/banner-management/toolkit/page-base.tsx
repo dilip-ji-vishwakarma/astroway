@@ -23,6 +23,9 @@ import {
 import { formatSingleDate, getImageUrl } from "@/lib/utils";
 import Image from "next/image";
 import { UpdateBanner } from "./update-banner";
+import { apiServices } from "@/lib/api.services";
+import { toast } from "sonner";
+import { banner } from "@/lib/api-endpoints";
 
 type PageBaseProps = {
   initialData: any[];
@@ -37,10 +40,49 @@ type PageBaseProps = {
 export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [tooglegId, setTooglegId] = useState<number | null>(null);
   const { data, pagination, handlePageChange } = useDataMutations(
     initialData,
     initialPagination
   );
+
+  const handleDelete = async (id: any) => {
+    setDeletingId(id);
+    try {
+      const response = await apiServices(`${banner}/${id}`, "delete");
+      if (response?.success === true) {
+        toast.success(response.message);
+        window.location.reload();
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Something went wrong");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const handleToogle = async (id: number, currentStatus: boolean) => {
+    setTooglegId(id);
+    try {
+      const response = await apiServices(`${banner}/status/${id}`, "patch", {
+        isActive: !currentStatus,
+      });
+
+      if (response?.success === true) {
+        toast.success(response.message);
+        window.location.reload();
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Something went wrong");
+    } finally {
+      setTooglegId(null);
+    }
+  };
 
   return (
     <div className="mt-5">
@@ -71,8 +113,16 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem className="flex items-center gap-2 text-slate-700 hover:bg-slate-100">
-                  {item.isActive ? (
+                <DropdownMenuItem
+                  className="flex items-center gap-2 cursor-pointer hover:bg-slate-100"
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    handleToogle(item.id, item.isActive);
+                  }}
+                >
+                  {tooglegId === item.id ? (
+                    <span className="text-xs text-slate-500">Loading...</span>
+                  ) : item.isActive ? (
                     <>
                       <CheckCircle size={16} className="text-green-500" />
                       <span>Active</span>
@@ -84,12 +134,22 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     </>
                   )}
                 </DropdownMenuItem>
-
                 <DropdownMenuSeparator />
-
-                <DropdownMenuItem className="flex items-center gap-2 text-red-600 hover:bg-red-50">
-                  <Trash2 size={16} />
-                  <span>Delete</span>
+                <DropdownMenuItem
+                  className="flex items-center gap-2 text-red-600 hover:bg-red-50 cursor-pointer"
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    handleDelete(item.id);
+                  }}
+                >
+                  {deletingId === item.id ? (
+                    <span>Deleting...</span>
+                  ) : (
+                    <>
+                      <Trash2 size={16} />
+                      <span>Delete</span>
+                    </>
+                  )}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
