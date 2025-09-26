@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useDataMutations } from "../hook/use-data-mutations";
 import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import {
@@ -11,10 +11,18 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Calendar1, EllipsisVertical, Video, Pencil, Trash2, CheckCircle, Circle } from "lucide-react";
-import Link from "next/link";
+import {
+  Calendar1,
+  EllipsisVertical,
+  Video,
+  Pencil,
+  Trash2,
+  CheckCircle,
+  Circle,
+} from "lucide-react";
 import { formatSingleDate, getImageUrl } from "@/lib/utils";
 import Image from "next/image";
+import { UpdateBanner } from "./update-banner";
 
 type PageBaseProps = {
   initialData: any[];
@@ -27,6 +35,8 @@ type PageBaseProps = {
 };
 
 export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const { data, pagination, handlePageChange } = useDataMutations(
     initialData,
     initialPagination
@@ -48,9 +58,15 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 align="end"
                 className="w-44 rounded-xl shadow-xl border border-slate-100"
               >
-                <DropdownMenuItem className="flex items-center gap-2 text-slate-700 hover:bg-slate-100">
+                <DropdownMenuItem
+                  className="flex items-center gap-2 text-slate-700 hover:bg-slate-100"
+                  onSelect={() => {
+                    setOpen(true);
+                    setSelectedItem(item);
+                  }}
+                >
                   <Pencil size={16} className="text-blue-500" />
-                  <Link href={`/news/${item.id}`}>Edit Banner</Link>
+                  Edit Banner
                 </DropdownMenuItem>
 
                 <DropdownMenuSeparator />
@@ -125,8 +141,17 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
         ))}
       </div>
       <div className="flex justify-end w-full mt-6">
-        <MetaPagination pagination={pagination} onPageChange={handlePageChange} />
+        <MetaPagination
+          pagination={pagination}
+          onPageChange={handlePageChange}
+        />
       </div>
+      <UpdateBanner
+        open={open}
+        onOpenChange={setOpen}
+        data={selectedItem}
+        id={selectedItem?.id}
+      />
     </div>
   );
 };

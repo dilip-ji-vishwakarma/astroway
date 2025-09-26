@@ -1,27 +1,32 @@
 "use client";
 import {
+  CallToActionButton,
   PageHeader,
   PageHeaderLeft,
   PageHeaderRight,
 } from "@/components/ui-kit/page-header";
 import { Plus } from "lucide-react";
-import React from "react";
-import Link from "next/link";
-
+import React, { useState } from "react";
+import { CreateBanner } from "./create-banner";
 
 export const BaseHeader = () => {
+  const [open, setOpen] = useState(false);
   return (
-    <PageHeader containerVariation="fluid" height="l">
-      <PageHeaderLeft>Banners</PageHeaderLeft>
-      <PageHeaderRight>
-        <Link
-        href={"/blogs/new-post"}
-          className="border border-solid border-[#E25016] text-[#E25016] hover:bg-[#E25016] hover:text-white flex p-2 rounded-sm font-semibold"
-        >
-          <Plus />
-          Add Banners
-        </Link>
-      </PageHeaderRight>
-    </PageHeader>
+    <>
+      <PageHeader containerVariation="fluid" height="l">
+        <PageHeaderLeft>Banners</PageHeaderLeft>
+        <PageHeaderRight>
+          <CallToActionButton
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            <Plus />
+            Add Banners
+          </CallToActionButton>
+        </PageHeaderRight>
+      </PageHeader>
+      <CreateBanner open={open} onOpenChange={setOpen} />
+    </>
   );
 };
