@@ -16,6 +16,7 @@ import { formatSingleDate, getImageUrl } from "@/lib/utils";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type PageBaseProps = {
   initialData: any[];
@@ -32,95 +33,112 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
     useDataMutations(initialData, initialPagination);
 
   return (
-    <div className="mt-8">
-      <Table className="mt-5">
-        <TableHeader className="bg-gray-100">
-          <TableRow>
-            <TableHead className="px-[20px] py-5">#</TableHead>
-            <TableHead className="px-[20px] py-5">Profile</TableHead>
-            <TableHead className="px-[20px] py-5">Name</TableHead>
-            <TableHead className="px-[20px] py-5">Media Type</TableHead>
-            <TableHead className="px-[20px] py-5">Views</TableHead>
-            <TableHead className="px-[20px] py-5">Created At</TableHead>
-            <TableHead className="px-[20px] py-5">Expired At</TableHead>
-            <TableHead className="px-[20px] py-5">Active</TableHead>
-            <TableHead className="px-[20px] py-5">Action</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {loading ? (
+    <div className="mt-10">
+      <div className="overflow-hidden border rounded-2xl shadow-sm">
+        <Table>
+          <TableHeader className="bg-gray-50">
             <TableRow>
-              <TableCell colSpan={11} className="text-center py-8">
-                <div className="w-7 h-7 border-[3px] border-primary/10 border-t-primary border-b-primary rounded-full animate-spin m-auto" />
-              </TableCell>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">#</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Profile</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Name</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Media Type</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Views</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Created At</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Expired At</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Status</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Action</TableHead>
             </TableRow>
-          ) : data?.length > 0 ? (
-            data.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className="px-[20px] py-5">{item.id}</TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {item?.astrologer.avatarUrl ? (
-                    <Image
-                      src={getImageUrl(item?.astrologer.avatarUrl)}
-                      width={30}
-                      height={30}
-                      alt="avatar"
-                      className="rounded-full"
-                    />
-                  ) : (
-                    <Avatar>
-                      <AvatarImage src="/images/astrologer-placeholder.png" />
-                    </Avatar>
-                  )}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {item.astrologer.firstName} {item.astrologer.lastName}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {item.mediaType}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {item.viewsCount}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {formatSingleDate(item.createdAt, true)}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {formatSingleDate(item.expiresAt, true)}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {item.isActive ? "True" : "False"}
-                </TableCell>
-                <TableCell
-                  align="right"
-                  className="px-[30px] py-5 gap-3 flex items-center"
-                >
-                  <Button
-                    variant={"outline"}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      handleDelete(item.id);
-                    }}
-                  >
-                    {load === item.id ? (
-                      <span className="w-[15px] h-[15px] animate-spin rounded-[50%] border-t-[#3498db] border-2 border-solid border-[#f3f3f3]"></span>
-                    ) : (
-                      <Trash2 color="currentColor" size={18} />
-                    )}
-                  </Button>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center py-10">
+                  <div className="w-7 h-7 border-[3px] border-primary/20 border-t-primary rounded-full animate-spin m-auto" />
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={8} className="text-center py-8 text-gray-500">
-                No data available
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <div className="flex justify-end w-full mt-4">
+            ) : data?.length > 0 ? (
+              data.map((item, index) => (
+                <TableRow
+                  key={item.id}
+                  className="hover:bg-gray-50 transition-colors"
+                >
+                  <TableCell className="px-6 py-5 text-gray-700 font-medium">{index + 1}</TableCell>
+                  <TableCell className="px-6 py-5">
+                    {item?.astrologer.avatarUrl ? (
+                      <Image
+                        src={getImageUrl(item?.astrologer.avatarUrl)}
+                        width={40}
+                        height={40}
+                        alt="avatar"
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage src="/images/astrologer-placeholder.png" />
+                      </Avatar>
+                    )}
+                  </TableCell>
+                  <TableCell className="px-6 py-5 font-medium text-gray-800">
+                    {item.astrologer.firstName} {item.astrologer.lastName}
+                  </TableCell>
+                  <TableCell className="px-6 py-5">
+                    <span className="px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700">
+                      {item.mediaType}
+                    </span>
+                  </TableCell>
+                  <TableCell className="px-6 py-5 text-gray-600 font-semibold">
+                    {item.viewsCount}
+                  </TableCell>
+                  <TableCell className="px-6 py-5 text-gray-600">
+                    {formatSingleDate(item.createdAt, true)}
+                  </TableCell>
+                  <TableCell className="px-6 py-5 text-gray-600">
+                    {formatSingleDate(item.expiresAt, true)}
+                  </TableCell>
+                  <TableCell className="px-6 py-5">
+                    <span
+                      className={cn(
+                        "px-3 py-1 text-xs font-medium rounded-full",
+                        item.isActive
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                      )}
+                    >
+                      {item.isActive ? "Active" : "Inactive"}
+                    </span>
+                  </TableCell>
+                  <TableCell className="px-6 py-5 flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer"
+                      onClick={() => {
+                        handleDelete(item.id);
+                      }}
+                    >
+                      {load === item.id ? (
+                        <span className="w-[15px] h-[15px] animate-spin rounded-full border-2 border-t-primary border-gray-300"></span>
+                      ) : (
+                        <Trash2 size={16} />
+                      )}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={9}
+                  className="text-center py-12 text-gray-500 text-sm"
+                >
+                  🚀 No records found. Try adjusting filters or add new entries.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex justify-end w-full mt-6">
         <MetaPagination
           pagination={pagination}
           onPageChange={handlePageChange}

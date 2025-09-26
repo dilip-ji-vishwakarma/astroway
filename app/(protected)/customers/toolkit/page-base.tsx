@@ -33,95 +33,95 @@ const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
     useDataMutation(initialData, initialPagination);
 
   return (
-    <div className="mt-8">
+    <div className="mt-10">
       <SearchAndFilter
         label={`${initialPagination.total} Listings`}
-        placeholder="Search"
+        placeholder="Search customers"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      <Table className="mt-5">
-        <TableHeader className="bg-gray-100">
-          <TableRow>
-            <TableHead className="px-[20px] py-5">#</TableHead>
-            <TableHead className="px-[20px] py-5">Profile</TableHead>
-            <TableHead className="px-[20px] py-5">First Name</TableHead>
-            <TableHead className="px-[20px] py-5">Last Name</TableHead>
-            <TableHead className="px-[20px] py-5">Phone</TableHead>
-            <TableHead className="px-[20px] py-5">Email</TableHead>
-            <TableHead className="px-[20px] py-5">Date Of Birth</TableHead>
-            <TableHead className="px-[20px] py-5">Time Of Birth</TableHead>
-            <TableHead className="px-[20px] py-5">Action</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {loading ? (
+      <div className="overflow-hidden border rounded-2xl shadow-sm mt-5">
+        <Table>
+          <TableHeader className="bg-gray-50">
             <TableRow>
-              <TableCell colSpan={10} className="text-center py-8">
-                <div className="w-7 h-7 border-[3px] border-primary/10 border-t-primary border-b-primary rounded-full animate-spin m-auto" />
-              </TableCell>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">#</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Profile</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">First Name</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Last Name</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Phone</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Email</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Date Of Birth</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Time Of Birth</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Action</TableHead>
             </TableRow>
-          ) : data.length > 0 ? (
-            data.map((item: any) => (
-              <TableRow key={item.id}>
-                <TableCell className="px-[20px] py-5">{item.id}</TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {item.avatarUrl ? (
-                    <Image
-                      src={getImageUrl(item.avatarUrl)}
-                      width={40}
-                      height={40}
-                      alt="avatar"
-                      className="rounded-full"
-                    />
-                  ) : (
-                    <Avatar>
-                      <AvatarImage src="/images/astrologer-placeholder.png" />
-                    </Avatar>
-                  )}
-                </TableCell>
-                <TableCell className="px-[30px] py-5 font-semibold">
-                  {item.firstName}
-                </TableCell>
-                <TableCell className="px-[30px] py-5 font-semibold">
-                  {" "}
-                  {item.lastName}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">{item.phone}</TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {item.email}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {formatSingleDate(item.dateOfBirth)}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {item.timeOfBirth}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">
-                  <Link
-                    href={`/customers/${item.id}`}
-                    className="flex gap-2 items-center hover:text-[#e25016]"
-                  >
-                    <SquarePen size={"18px"} /> Edit
-                  </Link>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center py-10">
+                  <div className="w-7 h-7 border-[3px] border-primary/20 border-t-primary rounded-full animate-spin m-auto" />
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={8} className="text-center py-8 text-gray-500">
-                No data available
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <div className="flex justify-end w-full mt-4">
-        <MetaPagination
-          pagination={pagination}
-          onPageChange={handlePageChange}
-        />
+            ) : data.length > 0 ? (
+              data.map((item: any, index: number) => (
+                <TableRow key={item.id} className="hover:bg-gray-50 transition-colors">
+                  <TableCell className="px-6 py-5 text-gray-700 font-medium">{index + 1}</TableCell>
+
+                  {/* Profile */}
+                  <TableCell className="px-6 py-5">
+                    {item.avatarUrl ? (
+                      <Image
+                        src={getImageUrl(item.avatarUrl)}
+                        width={40}
+                        height={40}
+                        alt="avatar"
+                        className="rounded-full object-cover shadow-sm"
+                      />
+                    ) : (
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage src="/images/astrologer-placeholder.png" />
+                      </Avatar>
+                    )}
+                  </TableCell>
+
+                  {/* Names */}
+                  <TableCell className="px-6 py-5 font-semibold text-gray-800">{item.firstName}</TableCell>
+                  <TableCell className="px-6 py-5 font-semibold text-gray-800">{item.lastName}</TableCell>
+
+                  {/* Contact */}
+                  <TableCell className="px-6 py-5 text-gray-600">{item.phone}</TableCell>
+                  <TableCell className="px-6 py-5 text-gray-600">{item.email}</TableCell>
+
+                  {/* DOB / TOB */}
+                  <TableCell className="px-6 py-5 text-gray-600">{formatSingleDate(item.dateOfBirth)}</TableCell>
+                  <TableCell className="px-6 py-5 text-gray-600">{item.timeOfBirth}</TableCell>
+
+                  {/* Action */}
+                  <TableCell className="px-6 py-5">
+                    <Link
+                      href={`/customers/${item.id}`}
+                      className="flex gap-2 items-center text-blue-600 hover:text-orange-500 transition"
+                    >
+                      <SquarePen size={18} /> Edit
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center py-12 text-gray-500 text-sm">
+                  🙋 No customers found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-end w-full mt-6">
+        <MetaPagination pagination={pagination} onPageChange={handlePageChange} />
       </div>
     </div>
   );
