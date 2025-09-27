@@ -1,4 +1,3 @@
-// app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -17,10 +16,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Astrova",
   description: "",
-  icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
-  },
 };
 
 
@@ -32,7 +27,6 @@ export default function RootLayout({
   return (
     <html lang="en">
        <head>
-        <link rel="icon" type="image/png" href="/favicon.png" sizes="any" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
