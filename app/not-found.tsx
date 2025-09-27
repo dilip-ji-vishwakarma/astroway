@@ -1,23 +1,30 @@
-"use client";
-
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 
-export default function NotFound() {
+const NotFound = () => {
   return (
-    <div className="flex h-screen flex-col items-center justify-center bg-gray-100 text-center px-4">
-      <h1 className="text-7xl font-bold text-red-500">404</h1>
-      <p className="mt-4 text-2xl font-semibold text-gray-800">
-        Page Not Found
-      </p>
-      <p className="mt-2 text-gray-600">
-        Sorry, the page you’re looking for doesn’t exist.
-      </p>
-      <Link
-        href="/dashboard"
-        className="mt-6 inline-block rounded-2xl bg-blue-600 px-6 py-3 text-white font-medium shadow hover:bg-blue-700"
-      >
-        Go Dashboard
-      </Link>
+    <div className="flex justify-center items-center gap-10 text-center flex-col py-10">
+      <Image
+        width={699}
+        height={380}
+        alt=""
+        src="/images/page-404-image.png"
+        className="w-auto h-[330px]"
+      />
+      <div>
+        <h1 className="md:text-4xl text-xl font-medium">{`Oops! That page can't be found.`}</h1>
+        <p className="pt-3 pb-6">
+          It looks like nothing was found at this location. Maybe try one of the
+          links below or a search?
+        </p>
+        <Button className="max-w-max primary-color">
+          <Link href="/dashboard">Go back to homepage</Link>
+        </Button>
+      </div>
     </div>
   );
-}
+};
+
+export default NotFound;
