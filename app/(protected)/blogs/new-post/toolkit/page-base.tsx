@@ -228,7 +228,7 @@ export const PageBase = () => {
                   name="publishedAt"
                   control={control}
                   defaultValue={new Date().toISOString()}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Popover>
                       <PopoverTrigger asChild>

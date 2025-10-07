@@ -72,7 +72,7 @@ export const UpdateCommission = ({
                   name="type"
                   control={control}
                   defaultValue={type || ""}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Select onValueChange={onChange} value={value}>
                       <SelectTrigger className="w-full">
@@ -112,7 +112,7 @@ export const UpdateCommission = ({
                   defaultValue={
                     astrologer?.id || astrologer?.astrologerId || ""
                   }
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <AstrologerList
                       value={value}
@@ -134,7 +134,7 @@ export const UpdateCommission = ({
                   name="percent"
                   control={control}
                   defaultValue={percent || 0}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="number"

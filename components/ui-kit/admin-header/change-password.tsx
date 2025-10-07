@@ -45,7 +45,7 @@ const ChangePassword = ({ open, onOpenChange }: EditProfileProps) => {
                   <Controller
                     name="old_password"
                     control={control}
-                    rules={{ required: true }}
+                    rules={{ required: false}}
                     render={({ field: { onChange, value } }) => (
                       <Input
                         type={oldmasked ? "password" : "text"}
@@ -93,7 +93,7 @@ const ChangePassword = ({ open, onOpenChange }: EditProfileProps) => {
                   <Controller
                     name="new_password"
                     control={control}
-                    rules={{ required: true }}
+                    rules={{ required: false}}
                     render={({ field: { onChange, value } }) => (
                       <Input
                         type={newmasked ? "password" : "text"}

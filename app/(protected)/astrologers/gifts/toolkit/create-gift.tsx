@@ -40,7 +40,7 @@ export const CreateGift = ({ open, onOpenChange }: GiftProps) => {
                 <Controller
                   name="name"
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="text"
@@ -67,7 +67,7 @@ export const CreateGift = ({ open, onOpenChange }: GiftProps) => {
                 <Controller
                   name="amount"
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="number"

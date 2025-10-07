@@ -52,7 +52,7 @@ export const PageBase = () => {
                     name="email"
                     control={control}
                     defaultValue=""
-                    rules={{ required: true }}
+                    rules={{ required: false}}
                     render={({ field: { onChange, value } }) => (
                       <Input
                         type="email"
@@ -85,7 +85,7 @@ export const PageBase = () => {
                     name="password"
                     control={control}
                     defaultValue=""
-                    rules={{ required: true }}
+                    rules={{ required: false}}
                     render={({ field: { onChange, value } }) => (
                       <Input
                         type={masked ? "password" : "text"}

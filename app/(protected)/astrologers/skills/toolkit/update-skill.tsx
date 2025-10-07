@@ -50,7 +50,7 @@ export const UpdateSkill = ({
                 name="name"
                 control={control}
                 defaultValue={name}
-                rules={{ required: true }}
+                rules={{ required: false}}
                 render={({ field: { onChange, value } }) => (
                   <Input
                     type="text"

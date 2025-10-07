@@ -47,7 +47,7 @@ export const CreateCommission = ({ open, onOpenChange }: CommissionProps) => {
                 <Controller
                   name="type"
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Select onValueChange={onChange} value={value}>
                       <SelectTrigger className="w-full">
@@ -85,7 +85,7 @@ export const CreateCommission = ({ open, onOpenChange }: CommissionProps) => {
                   name="astrologerId"
                   control={control}
                   defaultValue={""}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <AstrologerList
                       value={value}
@@ -106,7 +106,7 @@ export const CreateCommission = ({ open, onOpenChange }: CommissionProps) => {
                   name="percent"
                   control={control}
                   defaultValue={0}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="number"

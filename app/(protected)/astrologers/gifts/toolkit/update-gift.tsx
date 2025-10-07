@@ -63,7 +63,7 @@ export const UpdateGift = ({
                   name="name"
                   defaultValue={name}
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="text"
@@ -91,7 +91,7 @@ export const UpdateGift = ({
                   name="amount"
                   control={control}
                   defaultValue={amount}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="number"

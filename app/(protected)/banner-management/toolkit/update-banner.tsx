@@ -78,7 +78,7 @@ export const UpdateBanner = ({
                   name="bannerType"
                   control={control}
                   defaultValue={data?.bannerType}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="text"
@@ -106,7 +106,7 @@ export const UpdateBanner = ({
                   name="fromDate"
                   control={control}
                   defaultValue={data?.fromDate || null}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Popover>
                       <PopoverTrigger asChild>
@@ -154,7 +154,7 @@ export const UpdateBanner = ({
                   name="toDate"
                   control={control}
                   defaultValue={data?.toDate || null}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Popover>
                       <PopoverTrigger asChild>

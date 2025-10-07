@@ -129,7 +129,7 @@ export const AvailabilityForm = ({ response, id }: any) => {
                       name={`availability[${dayIndex}][${timeIndex}].from`}
                       control={control}
                       defaultValue={time.from}
-                      rules={{ required: true }}
+                      rules={{ required: false}}
                       render={({ field: { onChange, value } }) => (
                         <Input
                           type="time"
@@ -155,7 +155,7 @@ export const AvailabilityForm = ({ response, id }: any) => {
                       name={`availability[${dayIndex}][${timeIndex}].to`}
                       control={control}
                       defaultValue={time.to}
-                      rules={{ required: true }}
+                      rules={{ required: false}}
                       render={({ field: { onChange, value } }) => (
                         <Input
                           type="time"

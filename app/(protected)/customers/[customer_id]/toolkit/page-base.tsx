@@ -120,7 +120,7 @@ export const PageBase = ({ response, id }: any) => {
               name="blockedReason"
               control={control}
               defaultValue={data.blockedReason || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Textarea className="" onChange={onChange} value={value} />
               )}
@@ -139,7 +139,7 @@ export const PageBase = ({ response, id }: any) => {
               name="firstName"
               control={control}
               defaultValue={data.firstName || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"
@@ -161,7 +161,7 @@ export const PageBase = ({ response, id }: any) => {
               name="lastName"
               control={control}
               defaultValue={data.lastName || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"
@@ -183,7 +183,7 @@ export const PageBase = ({ response, id }: any) => {
               name="email"
               control={control}
               defaultValue={data.email || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="email"
@@ -205,7 +205,7 @@ export const PageBase = ({ response, id }: any) => {
               name="phone"
               control={control}
               defaultValue={data.phone || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="tel"
@@ -227,7 +227,7 @@ export const PageBase = ({ response, id }: any) => {
               name="isPhoneVerified"
               control={control}
               defaultValue={data.isPhoneVerified || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"
@@ -250,7 +250,7 @@ export const PageBase = ({ response, id }: any) => {
               name="dateOfBirth"
               control={control}
               defaultValue={data.dateOfBirth || null}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Popover>
                   <PopoverTrigger asChild>
@@ -293,7 +293,7 @@ export const PageBase = ({ response, id }: any) => {
               name="timeOfBirth"
               control={control}
               defaultValue={data.timeOfBirth || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="time"
@@ -315,7 +315,7 @@ export const PageBase = ({ response, id }: any) => {
               name="placeOfBirth"
               control={control}
               defaultValue={data.placeOfBirth || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"
@@ -337,7 +337,7 @@ export const PageBase = ({ response, id }: any) => {
               name="gender"
               control={control}
               defaultValue={data.gender || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Select onValueChange={onChange} value={value}>
                   <SelectTrigger className="w-full">
@@ -362,7 +362,7 @@ export const PageBase = ({ response, id }: any) => {
             <Controller
               name="languages"
               control={control}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <MultiSelect
                   options={languageOptions}
@@ -387,7 +387,7 @@ export const PageBase = ({ response, id }: any) => {
               name="referCode"
               control={control}
               defaultValue={data.referCode || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"
@@ -409,7 +409,7 @@ export const PageBase = ({ response, id }: any) => {
               name="walletBalance"
               control={control}
               defaultValue={data.walletBalance}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="number"
@@ -496,7 +496,7 @@ export const PageBase = ({ response, id }: any) => {
               name="currentAddress"
               control={control}
               defaultValue={data.currentAddress}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"

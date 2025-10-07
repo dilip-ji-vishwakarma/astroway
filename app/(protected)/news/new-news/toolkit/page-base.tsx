@@ -56,7 +56,7 @@ export const PageBase = () => {
                 name="channel"
                 control={control}
                 defaultValue={""}
-                rules={{ required: true }}
+                rules={{ required: false}}
                 render={({ field: { onChange, value } }) => (
                   <Input
                     type="text"
@@ -84,7 +84,7 @@ export const PageBase = () => {
                 name="link"
                 control={control}
                 defaultValue={""}
-                rules={{ required: true }}
+                rules={{ required: false}}
                 render={({ field: { onChange, value } }) => (
                   <Input
                     type="url"
@@ -110,7 +110,7 @@ export const PageBase = () => {
                 name="description"
                 control={control}
                 defaultValue={""}
-                rules={{ required: true }}
+                rules={{ required: false}}
                 render={({ field: { onChange, value } }) => (
                   <Textarea value={value} onChange={onChange} />
                 )}
@@ -131,7 +131,7 @@ export const PageBase = () => {
               name="isActive"
               control={control}
               defaultValue={false}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Switch
                   className="cursor-pointer"
@@ -154,7 +154,7 @@ export const PageBase = () => {
                 name="date"
                 control={control}
                 defaultValue={new Date().toISOString()}
-                rules={{ required: true }}
+                rules={{ required: false}}
                 render={({ field: { onChange, value } }) => (
                   <Popover>
                     <PopoverTrigger asChild>

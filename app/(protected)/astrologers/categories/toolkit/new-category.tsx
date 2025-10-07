@@ -40,7 +40,7 @@ export const NewCategory = ({ open, onOpenChange }: NewCategoryProps) => {
                   name="name"
                   defaultValue=""
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="text"

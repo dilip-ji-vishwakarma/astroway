@@ -53,7 +53,7 @@ export const UpdateCategory = ({
                   name="name"
                   defaultValue={name}
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="text"

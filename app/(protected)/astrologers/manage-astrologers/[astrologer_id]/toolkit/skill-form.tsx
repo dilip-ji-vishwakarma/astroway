@@ -59,7 +59,7 @@ export const SkillForm = ({ response, id }: any) => {
               name="gender"
               control={control}
               defaultValue={data.gender || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Select onValueChange={onChange} value={value}>
                   <SelectTrigger className="w-full">
@@ -86,7 +86,7 @@ export const SkillForm = ({ response, id }: any) => {
               name="dateOfBirth"
               control={control}
               defaultValue={data.dateOfBirth || null}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Popover>
                   <PopoverTrigger asChild>
@@ -128,7 +128,7 @@ export const SkillForm = ({ response, id }: any) => {
             <Controller
               name="astrologerCategory"
               control={control}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <MultiSelect
                   options={categoryOption}
@@ -154,7 +154,7 @@ export const SkillForm = ({ response, id }: any) => {
             <Controller
               name="primarySkills"
               control={control}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <MultiSelect
                   options={primarySkillsOption}
@@ -178,7 +178,7 @@ export const SkillForm = ({ response, id }: any) => {
             <Controller
               name="allSkills"
               control={control}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <MultiSelect
                   options={primarySkillsOption}
@@ -202,7 +202,7 @@ export const SkillForm = ({ response, id }: any) => {
             <Controller
               name="languages"
               control={control}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <MultiSelect
                   options={languageOptions}
@@ -227,7 +227,7 @@ export const SkillForm = ({ response, id }: any) => {
               name="voiceCallRate"
               control={control}
               defaultValue={data.voiceCallRate}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="number"
@@ -249,7 +249,7 @@ export const SkillForm = ({ response, id }: any) => {
               name="videoCallRate"
               control={control}
               defaultValue={data.videoCallRate}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="number"
@@ -271,7 +271,7 @@ export const SkillForm = ({ response, id }: any) => {
               name="reportRate"
               control={control}
               defaultValue={data.reportRate}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="number"
@@ -293,7 +293,7 @@ export const SkillForm = ({ response, id }: any) => {
               name="experienceYrs"
               control={control}
               defaultValue={data.experienceYrs}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="number"
@@ -315,7 +315,7 @@ export const SkillForm = ({ response, id }: any) => {
               name="dailyContributionHrs"
               control={control}
               defaultValue={data.dailyContributionHrs}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="number"
@@ -337,7 +337,7 @@ export const SkillForm = ({ response, id }: any) => {
               name="heardFrom"
               control={control}
               defaultValue={data.heardFrom || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"

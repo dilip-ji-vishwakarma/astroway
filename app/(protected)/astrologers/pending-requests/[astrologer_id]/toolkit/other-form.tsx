@@ -57,7 +57,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="whyOnBoard"
               control={control}
               defaultValue={data.whyOnBoard || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"
@@ -79,7 +79,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="interviewTime"
               control={control}
               defaultValue={data.interviewTime || null}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Popover>
                   <PopoverTrigger asChild>
@@ -122,7 +122,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="city"
               control={control}
               defaultValue={data.city || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"
@@ -144,7 +144,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="mainBusiness"
               control={control}
               defaultValue={data.mainBusiness || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Select onValueChange={onChange} value={value}>
                   <SelectTrigger className="w-full">
@@ -176,7 +176,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="qualification"
               control={control}
               defaultValue={data.qualification || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Select onValueChange={onChange} value={value}>
                   <SelectTrigger className="w-full">
@@ -208,7 +208,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="degree"
               control={control}
               defaultValue={data.degree || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Select onValueChange={onChange} value={value}>
                   <SelectTrigger className="w-full">
@@ -242,7 +242,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="university"
               control={control}
               defaultValue={data.university || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"
@@ -264,7 +264,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="learnedAstrologyBy"
               control={control}
               defaultValue={data.learnedAstrologyBy || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"
@@ -286,7 +286,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="instagramUrl"
               control={control}
               defaultValue={data.instagramUrl || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="url"
@@ -308,7 +308,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="facebookUrl"
               control={control}
               defaultValue={data.facebookUrl || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="url"
@@ -330,7 +330,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="linkedinUrl"
               control={control}
               defaultValue={data.linkedinUrl || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="url"
@@ -352,7 +352,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="youtubeUrl"
               control={control}
               defaultValue={data.youtubeUrl || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="url"
@@ -374,7 +374,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="websiteUrl"
               control={control}
               defaultValue={data.websiteUrl || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="url"
@@ -396,7 +396,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="minEarningExpect"
               control={control}
               defaultValue={data.minEarningExpect ?? null}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="number"
@@ -418,7 +418,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="maxEarningExpect"
               control={control}
               defaultValue={data.maxEarningExpect ?? null}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="number"
@@ -440,7 +440,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="foreignCountries"
               control={control}
               defaultValue={data.foreignCountries ?? null}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="number"
@@ -462,7 +462,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="workingFullTime"
               control={control}
               defaultValue={data.workingFullTime || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Select onValueChange={onChange} value={value}>
                   <SelectTrigger className="w-full">
@@ -497,7 +497,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="referedBySomeone"
               control={control}
               defaultValue={data.referedBySomeone || "no"}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <RadioGroup onValueChange={onChange} value={value}>
                   <div className="flex items-center space-x-2">
@@ -524,7 +524,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="longBio"
               control={control}
               defaultValue={data.longBio}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Textarea className="" onChange={onChange} value={value} />
               )}
@@ -541,7 +541,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="goodQualities"
               control={control}
               defaultValue={data.goodQualities || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Textarea className="" onChange={onChange} value={value} />
               )}
@@ -559,7 +559,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="biggestChallenge"
               control={control}
               defaultValue={data.biggestChallenge || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Textarea className="" onChange={onChange} value={value} />
               )}
@@ -577,7 +577,7 @@ export const OtherForm = ({ response, id }: any) => {
               name="repeatQuestions"
               control={control}
               defaultValue={data.repeatQuestions || ""}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Textarea className="" onChange={onChange} value={value} />
               )}

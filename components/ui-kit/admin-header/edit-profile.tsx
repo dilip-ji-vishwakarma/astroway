@@ -68,7 +68,7 @@ const EditProfile = ({ open, onOpenChange }: EditProfileProps) => {
                 <Controller
                   name="name"
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="text"
@@ -95,7 +95,7 @@ const EditProfile = ({ open, onOpenChange }: EditProfileProps) => {
                 <Controller
                   name="email"
                   control={control}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="email"

@@ -195,7 +195,7 @@ export const PageBase = ({ initialData }: any) => {
                     name="publishedAt"
                     control={control}
                     defaultValue={initialData.publishedAt || ""}
-                    rules={{ required: true }}
+                    rules={{ required: false}}
                     render={({ field: { onChange, value } }) => (
                       <Popover>
                         <PopoverTrigger asChild>

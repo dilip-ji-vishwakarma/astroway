@@ -77,7 +77,7 @@ export const PersonalForm = ({ response, id }: any) => {
               name="firstName"
               control={control}
               defaultValue={data.firstName}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"
@@ -105,7 +105,7 @@ export const PersonalForm = ({ response, id }: any) => {
               name="lastName"
               control={control}
               defaultValue={data.lastName}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="text"
@@ -133,7 +133,7 @@ export const PersonalForm = ({ response, id }: any) => {
               name="email"
               control={control}
               defaultValue={data.email}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="email"
@@ -157,7 +157,7 @@ export const PersonalForm = ({ response, id }: any) => {
               name="phone"
               control={control}
               defaultValue={data.phone}
-              rules={{ required: true }}
+              rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
                 <Input
                   type="phone"

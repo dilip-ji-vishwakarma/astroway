@@ -35,7 +35,7 @@ export const Address = ({ control, data }: AddressProps) => {
             name="city"
             control={control}
             defaultValue={data.city || ""}
-            rules={{ required: true }}
+            rules={{ required: false}}
             render={({ field: { onChange, value } }) => (
               <Input type="text" onChange={onChange} value={value} />
             )}
@@ -54,7 +54,7 @@ export const Address = ({ control, data }: AddressProps) => {
             name="state"
             control={control}
             defaultValue={data.state || ""}
-            rules={{ required: true }}
+            rules={{ required: false}}
             render={({ field: { onChange, value } }) => (
               <Input type="text" onChange={onChange} value={value} />
             )}
@@ -102,7 +102,7 @@ export const Address = ({ control, data }: AddressProps) => {
             name="pincode"
             control={control}
             defaultValue={data.pincode || ""}
-            rules={{ required: true }}
+            rules={{ required: false}}
             render={({ field: { onChange, value } }) => (
               <Input type="text" onChange={onChange} value={value} />
             )}

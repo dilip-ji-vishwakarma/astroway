@@ -59,7 +59,7 @@ export const CreateBanner = ({ open, onOpenChange }: CreateBannerProps) => {
                   name="bannerType"
                   control={control}
                   defaultValue={""}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       type="text"
@@ -87,7 +87,7 @@ export const CreateBanner = ({ open, onOpenChange }: CreateBannerProps) => {
                   name="fromDate"
                   control={control}
                   defaultValue={""}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Popover>
                       <PopoverTrigger asChild>
@@ -135,7 +135,7 @@ export const CreateBanner = ({ open, onOpenChange }: CreateBannerProps) => {
                   name="toDate"
                   control={control}
                   defaultValue={""}
-                  rules={{ required: true }}
+                  rules={{ required: false}}
                   render={({ field: { onChange, value } }) => (
                     <Popover>
                       <PopoverTrigger asChild>
