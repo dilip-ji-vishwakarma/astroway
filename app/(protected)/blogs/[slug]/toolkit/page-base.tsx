@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
 import {
@@ -281,7 +280,7 @@ export const PageBase = ({ initialData }: any) => {
                       width={300}
                     />
                   ) : (
-                    <img
+                    <Image
                       src={getImageUrl(initialData.coverImage)}
                       alt="preview"
                       height={300}
@@ -331,7 +330,7 @@ export const PageBase = ({ initialData }: any) => {
                       width={300}
                     />
                   ) : (
-                    <img
+                    <Image
                       src={getImageUrl(initialData.previewImage)}
                       alt="preview"
                       height={300}

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState } from "react";
 import { useDataMutations } from "../hook/use-data-mutations";
@@ -155,10 +154,12 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
             </DropdownMenu>
 
             {item.url ? (
-              <img
+              <Image
                 src={getImageUrl(item.url)}
                 alt="banner"
                 className="w-full h-60 object-cover transition-transform duration-500 group-hover:scale-105"
+              width={150}
+                  height={150}
               />
             ) : (
               <Image

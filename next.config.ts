@@ -4,8 +4,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'astrova-backend-t1zo.onrender.com',
+        protocol: "http",
+        hostname: "testing.nextgendiluents.com",
+        pathname: "/backend-images/**",
       },
     ],
   },

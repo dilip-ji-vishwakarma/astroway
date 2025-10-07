@@ -1,5 +1,4 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-/* eslint-disable   @next/next/no-img-element */
 "use client";
 import React from "react";
 import {
@@ -260,7 +259,10 @@ export const PageBase = (response: any) => {
                 />
               )}
               {data.image ? (
-                <img src={getImageUrl(data.image)} alt={data.channel} />
+                <Image src={getImageUrl(data.image)} alt={data.channel} 
+                width={150}
+                  height={150}
+                />
               ) : (
                 <span>Image Not Fund</span>
               )}

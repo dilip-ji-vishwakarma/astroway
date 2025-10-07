@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState } from "react";
 import {
@@ -37,6 +36,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { apiServices } from "@/lib/api.services";
 import { toast } from "sonner";
+import Image from "next/image";
 
 export const PageBase = ({ response, id }: any) => {
   const data = response.data;
@@ -470,7 +470,7 @@ export const PageBase = ({ response, id }: any) => {
           
                       {uploadedImageUrl && (
                         <div className="mt-2">
-                          <img
+                          <Image
                             src={
                               uploadedImageUrl.startsWith("http")
                                 ? uploadedImageUrl
@@ -478,6 +478,8 @@ export const PageBase = ({ response, id }: any) => {
                             }
                             alt="Preview"
                             className="w-20 h-20 object-cover rounded-md"
+                            width={150}
+                            height={150}
                           />
                         </div>
                       )}

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable  @next/next/no-img-element */
 import React, { useEffect } from "react";
 import { useBannerMutations } from "../hook/use-banner-mutations";
 import { Controller, useForm } from "react-hook-form";
@@ -234,7 +233,7 @@ export const UpdateBanner = ({
                     width={100}
                   />
                 ) : (
-                  <img
+                  <Image
                     src={getImageUrl(data?.url)}
                     alt="preview"
                     height={300}
