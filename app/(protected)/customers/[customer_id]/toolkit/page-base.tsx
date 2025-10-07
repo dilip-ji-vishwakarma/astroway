@@ -474,7 +474,7 @@ export const PageBase = ({ response, id }: any) => {
                             src={
                               uploadedImageUrl.startsWith("http")
                                 ? uploadedImageUrl
-                                : `https://astrova-backend-t1zo.onrender.com${uploadedImageUrl}`
+                                : `http://testing.nextgendiluents.com/backend-images${uploadedImageUrl}`
                             }
                             alt="Preview"
                             className="w-20 h-20 object-cover rounded-md"
