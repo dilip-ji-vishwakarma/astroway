@@ -9,7 +9,6 @@ export const metadata: Metadata = {
 }
 
 const PendingAstrologer = async () => {
-
   return (
     <Suspense fallback={<Loader />}>
       <TextH1 className="mt-3">

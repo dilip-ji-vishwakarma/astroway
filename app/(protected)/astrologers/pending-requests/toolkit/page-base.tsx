@@ -53,7 +53,7 @@ export const PageBase = () => {
           <Table>
             <TableHeader className="bg-gray-100">
               <TableRow>
-                <TableHead className="px-[10px] py-5">#</TableHead>
+                <TableHead className="px-[10px] py-5">ID</TableHead>
                 <TableHead className="px-[10px] py-5">Profile</TableHead>
                 <TableHead className="px-[10px] py-5">First Name</TableHead>
                 <TableHead className="px-[10px] py-5">Last Name</TableHead>
@@ -155,7 +155,7 @@ export const PageBase = () => {
                     <TableCell className="px-[10px] py-5 text-center">
                       <Link
                         href={`/astrologers/pending-requests/${item.id}`}
-                        className="inline-flex items-center gap-2 text-blue-600 hover:text-[#e25016]"
+                        className="flex gap-2 items-center hover:text-[#e25016]"
                       >
                         <SquarePen size={18} /> Edit
                       </Link>

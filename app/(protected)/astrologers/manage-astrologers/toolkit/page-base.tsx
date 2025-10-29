@@ -170,9 +170,7 @@ export default function PageBase() {
               </TableBody>
             </Table>
           </div>
-
-          {/* PAGINATION BLOCK */}
-          {data.length > 0 && (
+          {!loading && data.length > 0 && (
             <div className="flex justify-between items-center w-full mt-6">
               <MetaPagination
                 total={pagination.total}
