@@ -1,68 +1,74 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { admin_users, approved_astrologer } from "@/lib/api-endpoints";
+"use client";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
+import { admin_users } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
-import { useEffect, useState, useCallback } from "react";
 
-type Pagination = {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
+export const useDataMutation = () => {
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export const useDataMutation = (
-   initialData: any[],
-  initialPagination: Pagination
-) => {
-  const [data, setData] = useState<any[]>(initialData);
-    const [pagination, setPagination] = useState<Pagination>(initialPagination);
-    const [loading, setLoading] = useState(false);
-    const [search, setSearch] = useState("");
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0,
+  });
+  const [search, setSearch] = useState("");
 
-    const fetchData = useCallback(
-        async (pageNumber: number, searchTerm: string = "") => {
-          try {
-            setLoading(true);
-    
-            const response = await apiServices(
-              `${admin_users}?page=${pageNumber}&limit=${pagination.limit}&search=${searchTerm}`,
-              "get"
-            );
-    
-            if (response.statusCode == 200) {
-              setData(response.data || []);
-              setPagination(response.pagination);
-            }
-          } catch (error) {
-            console.error("❌ Failed to fetch astrologers:", error);
-          } finally {
-            setLoading(false);
-          }
-        },
-        [pagination?.limit]
-      );
+  const getData = async (page = 1, limit = 10, search = "") => {
+    try {
+      setLoading(true);
+      const query = new URLSearchParams({
+        page: String(page),
+        limit: String(limit),
+        search,
+      }).toString();
 
-  const handlePageChange = (page: number) => {
-    fetchData(page, search);
+      const res = await apiServices(`${admin_users}?${query}`, "get");
+
+      if (res?.success) {
+        setData(res.data || []);
+        setPagination({
+          page: res.pagination.page,
+          limit: res.pagination.limit,
+          total: res.pagination.total,
+          totalPages: res.pagination.totalPages,
+        });
+      } else {
+        toast.error("Failed to fetch data", {
+          description: res?.message || "Something went wrong.",
+        });
+      }
+    } catch (err: any) {
+      toast.error("Error fetching data", { description: err.message });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Handle search
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      fetchData(1, search);
-    }, 500);
+    getData(pagination.page, pagination.limit, search);
+  }, [pagination.page, pagination.limit, search]);
 
-    return () => clearTimeout(delayDebounce);
-  }, [search, fetchData]);
+  const handlePageChange = (newPage: number) => {
+    setPagination((prev) => ({ ...prev, page: newPage }));
+    getData(newPage, pagination.limit, search);
+  };
 
+  const handleLimitChange = (newLimit: number) => {
+    setPagination((prev) => ({ ...prev, limit: newLimit, page: 1 }));
+    getData(1, newLimit, search);
+  };
 
   return {
     data,
-    search,
+    loading,
     pagination,
     handlePageChange,
-    loading,
-     setSearch,
+    handleLimitChange,
+    search,
+    setSearch,
   };
 };

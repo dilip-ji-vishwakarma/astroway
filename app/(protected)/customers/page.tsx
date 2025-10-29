@@ -15,10 +15,7 @@ const Customers = async () => {
   return (
     <Suspense fallback={<Loader />}>
       <BaseHeader response={response.data}/>
-      <PageBase
-        initialData={response.data}
-        initialPagination={response.pagination}
-      />
+      <PageBase/>
     </Suspense>
   );
 };
