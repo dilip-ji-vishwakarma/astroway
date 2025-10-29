@@ -101,7 +101,7 @@ export default function PageBase() {
                         {item.lastName}
                       </TableCell>
                       <TableCell className="px-4 py-2 text-sm text-gray-700">
-                        {item.email}
+                        <Link className="text-blue-500 hover:underline" href={`mailto:${item.email}`}>{item.email}</Link>
                       </TableCell>
                       <TableCell className="px-4 py-2 text-sm text-gray-700">
                         {item.phone}

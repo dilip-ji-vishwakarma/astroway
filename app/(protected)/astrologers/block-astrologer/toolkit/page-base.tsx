@@ -15,141 +15,160 @@ import Link from "next/link";
 import { useDataMutation } from "../hook/use-data-mutations";
 import { Switch } from "@/components/ui/switch";
 import { Controller, useForm } from "react-hook-form";
-import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import Image from "next/image";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { formatSingleDate, getImageUrl } from "@/lib/utils";
+import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
+import { Loader2 } from "lucide-react";
 
-type PageBaseProps = {
-  initialData: any[];
-  initialPagination: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-  };
-};
-export const PageBase= ({ initialData, initialPagination }: PageBaseProps) => {
+export const PageBase = () => {
   const {
-    data,
+    data = [],
+    loading,
     pagination,
     handlePageChange,
-    loading,
-    submittingItems,
-    setSearch,
+    handleLimitChange,
     search,
+    setSearch,
+    submittingItems,
     handleSwitchChange,
-  } = useDataMutation(initialData, initialPagination);
+  } = useDataMutation();
 
   const { control } = useForm();
 
   return (
     <div className="mt-8">
       <SearchAndFilter
-        label={`${initialPagination.total} Listings`}
+        label={`${pagination.total} Listings`}
         placeholder="Search"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
+      {loading ? (
+        <div className="flex justify-center items-center h-48">
+          <Loader2 className="animate-spin text-muted-foreground" size={32} />
+        </div>
+      ) : (
+        <div className="mt-5 border border-solid rounded-lg overflow-hidden">
+          <Table>
+            <TableHeader className="bg-gray-100">
+              <TableRow>
+                <TableHead className="px-[10px] py-5">ID</TableHead>
+                <TableHead className="px-[10px] py-5">Profile</TableHead>
+                <TableHead className="px-[10px] py-5">First Name</TableHead>
+                <TableHead className="px-[10px] py-5">Last Name</TableHead>
+                <TableHead className="px-[10px] py-5">Phone</TableHead>
+                <TableHead className="px-[10px] py-5">Email</TableHead>
+                <TableHead className="px-[10px] py-5">Date</TableHead>
+                <TableHead className="px-[10px] py-5">Reason</TableHead>
+                <TableHead className="px-[10px] py-5 text-center">
+                  Blocked
+                </TableHead>
+              </TableRow>
+            </TableHeader>
 
-      <Table className="mt-5 border border-solid">
-        <TableHeader className="bg-gray-100">
-          <TableRow>
-            <TableHead className="px-[10px] py-5">#</TableHead>
-            <TableHead className="px-[10px] py-5">Profile</TableHead>
-            <TableHead className="px-[10px] py-5">First Name</TableHead>
-            <TableHead className="px-[10px] py-5">Last Name</TableHead>
-            <TableHead className="px-[10px] py-5">Phone</TableHead>
-            <TableHead className="px-[10px] py-5">Email</TableHead>
-            <TableHead className="px-[10px] py-5">Date</TableHead>
-            <TableHead className="px-[10px] py-5">Reason</TableHead>
-            <TableHead className="px-[10px] py-5">Blocked</TableHead>
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {loading ? (
-            <TableRow>
-              <TableCell colSpan={8} className="text-center py-8">
-                <div className="w-7 h-7 border-[3px] border-primary/10 border-t-primary border-b-primary rounded-full animate-spin m-auto" />
-              </TableCell>
-            </TableRow>
-          ) : data.length > 0 ? (
-            data.map((item: any) => (
-              <TableRow key={item.id}>
-                <TableCell className="px-[10px] py-5">{item.id}</TableCell>
-                <TableCell className="px-[10px] py-5">
-                  {item.avatarUrl ? (
-                    <Image
-                      src={getImageUrl(item.avatarUrl)}
-                      width={40}
-                      height={40}
-                      alt="avatar"
-                      className="rounded-full"
-                    />
-                  ) : (
-                    // <span>{item.avatarUrl}</span>
-                    <Avatar>
-                      <AvatarImage src="/images/astrologer-placeholder.png" />
-                    </Avatar>
-                  )}
-                </TableCell>
-                <TableCell className="px-[10px] py-5">
-                  {item.firstName}
-                </TableCell>
-                <TableCell className="px-[10px] py-5">
-                  {item.lastName}
-                </TableCell>
-                <TableCell className="px-[10px] py-5">{item.phone}</TableCell>
-                <TableCell className="px-[10px] py-5">
-                  <Link
-                    href={`mailto:${item.email}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    {item.email}
-                  </Link>
-                </TableCell>
-                <TableCell className="px-[10px] py-5">{formatSingleDate(item.createdAt, true)}</TableCell>
-                <TableCell className="px-[10px] py-5">{item.blockedReason ? (item.blockedReason) : "Not Added"}</TableCell>
-                <TableCell className="px-[10px] py-5 text-center">
-                  {submittingItems.has(item.id) ? (
-                    <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500"></div>
-                  ) : (
-                    <Controller
-                      name={`isBlocked-${item.id}`}
-                      control={control}
-                      defaultValue={item.isBlocked}
-                      render={({ field: { onChange, value } }) => (
-                        <Switch
-                          className="cursor-pointer"
-                          checked={value}
-                          disabled={submittingItems.has(item.id)}
-                          onCheckedChange={(checked) => {
-                            onChange(checked);
-                            handleSwitchChange(item.id, checked);
-                          }}
+            <TableBody>
+              {data.length > 0 ? (
+                data.map((item: any) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="px-[10px] py-5">{item.id}</TableCell>
+                    <TableCell className="px-[10px] py-5">
+                      {item.avatarUrl ? (
+                        <Image
+                          src={getImageUrl(item.avatarUrl)}
+                          width={40}
+                          height={40}
+                          alt="avatar"
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <Avatar>
+                          <AvatarImage src="/images/astrologer-placeholder.png" />
+                        </Avatar>
+                      )}
+                    </TableCell>
+                    <TableCell className="px-[10px] py-5">
+                      {item.firstName || "-"}
+                    </TableCell>
+                    <TableCell className="px-[10px] py-5">
+                      {item.lastName || "-"}
+                    </TableCell>
+                    <TableCell className="px-[10px] py-5">
+                      {item.phone || "-"}
+                    </TableCell>
+                    <TableCell className="px-[10px] py-5">
+                      {item.email ? (
+                        <Link
+                          href={`mailto:${item.email}`}
+                          className="text-blue-500 hover:underline"
+                        >
+                          {item.email}
+                        </Link>
+                      ) : (
+                        "-"
+                      )}
+                    </TableCell>
+                    <TableCell className="px-[10px] py-5">
+                      {item.createdAt
+                        ? formatSingleDate(item.createdAt, true)
+                        : "-"}
+                    </TableCell>
+                    <TableCell className="px-[10px] py-5">
+                      {item.blockedReason || "Not Added"}
+                    </TableCell>
+                    <TableCell className="px-[10px] py-5 text-center">
+                      {submittingItems.has(item.id) ? (
+                        <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500"></div>
+                      ) : (
+                        <Controller
+                          name={`isBlocked-${item.id}`}
+                          control={control}
+                          defaultValue={item.isBlocked}
+                          render={({ field: { onChange, value } }) => (
+                            <Switch
+                              className="cursor-pointer"
+                              checked={value}
+                              disabled={submittingItems.has(item.id)}
+                              onCheckedChange={(checked) => {
+                                onChange(checked);
+                                handleSwitchChange(item.id, checked);
+                              }}
+                            />
+                          )}
                         />
                       )}
-                    />
-                  )}
-                </TableCell>
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-                          <TableCell colSpan={8} className="text-center py-8 text-gray-500">
-                            No data available
-                          </TableCell>
-                        </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <div className="flex justify-end w-full mt-4">
-              <MetaPagination
-                pagination={pagination}
-                onPageChange={handlePageChange}
-              />
-            </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={9}
+                    className="py-10 text-center text-gray-500 text-sm"
+                  >
+                    No data found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+
+      {!loading && data.length > 0 && (
+        <div className="flex justify-between items-center w-full mt-6">
+          <MetaPagination
+            total={pagination.total}
+            value={pagination.page}
+            recordPerPage={pagination.limit}
+            onChange={handlePageChange}
+          />
+          <MetaPagination.PerPage
+            value={pagination.limit}
+            onChange={handleLimitChange}
+          />
+        </div>
+      )}
     </div>
   );
 };
