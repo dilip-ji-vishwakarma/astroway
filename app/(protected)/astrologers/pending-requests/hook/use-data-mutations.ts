@@ -1,83 +1,85 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { approved_astrologer } from "@/lib/api-endpoints";
-import { apiServices } from "@/lib/api.services";
-import { useEffect, useState, useCallback } from "react";
+"use client";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { approved_astrologer, manage_astrologer } from "@/lib/api-endpoints";
+import { apiServices } from "@/lib/api.services";
 
-type Pagination = {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
-
-export const useDataMutation = (
-   initialData: any[],
-  initialPagination: Pagination
-) => {
+export const useDataMutation = () => {
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [submittingItems, setSubmittingItems] = useState<Set<string>>(
     new Set()
   );
-  const [data, setData] = useState<any[]>(initialData);
-    const [pagination, setPagination] = useState<Pagination>(initialPagination);
-    const [loading, setLoading] = useState(false);
-    const [search, setSearch] = useState("");
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0,
+  });
+  const [search, setSearch] = useState("");
 
-    const fetchData = useCallback(
-        async (pageNumber: number, searchTerm: string = "") => {
-          try {
-            setLoading(true);
-    
-            const response = await apiServices(
-              `/admin/astrologers?page=${pageNumber}&limit=${pagination.limit}&isApproved=false&search=${searchTerm}`,
-              "get"
-            );
-    
-            if (response.statusCode == 200) {
-              setData(response.data || []);
-              setPagination(response.pagination);
-            }
-          } catch (error) {
-            console.error("❌ Failed to fetch astrologers:", error);
-          } finally {
-            setLoading(false);
-          }
-        },
-        [pagination?.limit]
-      );
+  const getData = async (page = 1, limit = 10, search = "") => {
+    try {
+      setLoading(true);
+      const query = new URLSearchParams({
+        page: String(page),
+        limit: String(limit),
+        isApproved: "false",
+        search,
+      }).toString();
 
-  const handlePageChange = (page: number) => {
-    fetchData(page, search);
+      const res = await apiServices(`${manage_astrologer}?${query}`, "get");
+
+      if (res?.success) {
+        setData(res.data || []);
+        setPagination({
+          page: res.pagination.page,
+          limit: res.pagination.limit,
+          total: res.pagination.total,
+          totalPages: res.pagination.totalPages,
+        });
+      } else {
+        toast.error("Failed to fetch data", {
+          description: res?.message || "Something went wrong.",
+        });
+      }
+    } catch (err: any) {
+      toast.error("Error fetching data", { description: err.message });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Handle search
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      fetchData(1, search);
-    }, 500);
+    getData(pagination.page, pagination.limit, search);
+  }, [pagination.page, pagination.limit, search]);
 
-    return () => clearTimeout(delayDebounce);
-  }, [search, fetchData]);
+  const handlePageChange = (newPage: number) => {
+    setPagination((prev) => ({ ...prev, page: newPage }));
+    getData(newPage, pagination.limit, search);
+  };
 
-const onSubmit = async (formProp: any) => {
-  if (!formProp.astrologerId) {
-    toast.error("Missing ID");
-    return;
-  }
-  try {
-    const response = await apiServices(approved_astrologer, "post", formProp);
-    toast.success(response.message);
-    window.location.reload()
-  } catch (error: any) {
-    toast.error("Approval failed");
-  }
-};
+  const handleLimitChange = (newLimit: number) => {
+    setPagination((prev) => ({ ...prev, limit: newLimit, page: 1 }));
+    getData(1, newLimit, search);
+  };
 
-
+  const onSubmit = async (formProp: any) => {
+    if (!formProp.astrologerId) {
+      toast.error("Missing ID");
+      return;
+    }
+    try {
+      const response = await apiServices(approved_astrologer, "post", formProp);
+      toast.success(response.message);
+      window.location.reload();
+    } catch (error: any) {
+      toast.error("Approval failed", error);
+    }
+  };
 
   const handleSwitchChange = async (itemId: string, checked: boolean) => {
-    // Add item to submitting state
     setSubmittingItems((prev) => new Set([...prev, itemId]));
 
     try {
@@ -87,9 +89,7 @@ const onSubmit = async (formProp: any) => {
       });
     } catch (error) {
       console.error("Error updating approval status:", error);
-      // You might want to show an error message to the user here
     } finally {
-      // Remove item from submitting state
       setSubmittingItems((prev) => {
         const newSet = new Set([...prev]);
         newSet.delete(itemId);
@@ -100,13 +100,13 @@ const onSubmit = async (formProp: any) => {
 
   return {
     data,
-    search,
-    onSubmit,
+    loading,
     pagination,
     handlePageChange,
+    handleLimitChange,
+    search,
+    setSearch,
     submittingItems,
-    loading,
     handleSwitchChange,
-     setSearch,
   };
 };
