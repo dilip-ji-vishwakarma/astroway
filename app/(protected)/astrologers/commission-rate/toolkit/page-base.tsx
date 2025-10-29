@@ -42,7 +42,7 @@ export const PageBase = () => {
           <Table className="mt-5">
             <TableHeader className="bg-gray-100">
               <TableRow>
-                <TableHead className="px-[20px] py-5">#</TableHead>
+                <TableHead className="px-[20px] py-5">ID</TableHead>
                 <TableHead className="px-[20px] py-5">
                   Commission Type
                 </TableHead>

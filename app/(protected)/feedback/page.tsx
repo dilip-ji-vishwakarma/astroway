@@ -1,5 +1,3 @@
-import { feedback } from "@/lib/api-endpoints";
-import { apiServices } from "@/lib/api.services";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
 import { PageBase } from "./toolkit/page-base";
@@ -10,14 +8,10 @@ export const metadata: Metadata = {
 };
 
 const Feedback = async () => {
-  const response = await apiServices(feedback, "get");
   return (
     <Suspense>
       <TextH1>Feedback</TextH1>
-      <PageBase
-        initialData={response.data}
-        initialPagination={response.pagination}
-      />
+      <PageBase />
     </Suspense>
   );
 };

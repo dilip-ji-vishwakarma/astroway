@@ -53,7 +53,7 @@ const PageBase = () => {
         <Table className="mt-5">
           <TableHeader className="bg-gray-100">
             <TableRow>
-              <TableHead className="px-[30px] py-5">#</TableHead>
+              <TableHead className="px-[30px] py-5">ID</TableHead>
               <TableHead className="px-[30px] py-5">Image</TableHead>
               <TableHead className="px-[30px] py-5">Name</TableHead>
               <TableHead className="px-[30px] py-5">Added By</TableHead>

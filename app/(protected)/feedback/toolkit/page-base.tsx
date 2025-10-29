@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React from "react";
 import {
@@ -9,71 +8,52 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import Image from "next/image";
 import { formatSingleDate, getImageUrl, cn } from "@/lib/utils";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { useDataMutations } from "../hook/use-data-mutations";
+import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
+import { useDataMutation } from "../hook/use-data-mutation";
+import { Label } from "@/components/ui/label";
+import { Loader2 } from "lucide-react";
 
-type PageBaseProps = {
-  initialData: any[];
-  initialPagination: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-  };
-};
-
-export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
-  const { data, pagination, loading, handlePageChange } = useDataMutations(
-    initialData,
-    initialPagination
-  );
+export const PageBase = () => {
+  const {
+    data = [],
+    pagination,
+    loading,
+    handlePageChange,
+    handleLimitChange,
+  } = useDataMutation();
 
   return (
-    <div className="mt-10">
-      {/* Table container with rounded corners + shadow */}
-      <div className="overflow-hidden border rounded-2xl shadow-sm">
-        <Table>
+    <div className="mt-8 relative">
+      <Label className="text-md font-semibold">{`${pagination.total} Listings`}</Label>
+        {loading ? (
+         <div className="flex justify-center items-center h-48">
+          <Loader2 className="animate-spin text-muted-foreground" size={32} />
+        </div>
+        ) : (
+        <Table className="mt-4">
           <TableHeader className="bg-gray-50">
             <TableRow>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
-                #
-              </TableHead>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
-                Profile
-              </TableHead>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
-                User
-              </TableHead>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
-                App
-              </TableHead>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
-                Feedback Date
-              </TableHead>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
-                Feedback
-              </TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">ID</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Profile</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">User</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">App</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Feedback Date</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Feedback</TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-10">
-                  <div className="w-7 h-7 border-[3px] border-primary/20 border-t-primary rounded-full animate-spin m-auto" />
-                </TableCell>
-              </TableRow>
-            ) : data?.length > 0 ? (
+            {!loading && data?.length > 0 ? (
               data.map((item, index) => (
                 <TableRow
-                  key={item.id}
+                  key={index}
                   className="hover:bg-gray-50 transition-colors"
                 >
-                  {/* ID */}
                   <TableCell className="px-6 py-5 text-gray-700 font-medium">
-                    {index + 1}
+                    {item.id}
                   </TableCell>
 
                   {/* Profile */}
@@ -124,9 +104,7 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                           : "bg-blue-100 text-blue-700"
                       )}
                     >
-                      {item.by === "astrologer"
-                        ? "Astrologer App"
-                        : "User App"}
+                      {item.by === "astrologer" ? "Astrologer App" : "User App"}
                     </span>
                   </TableCell>
 
@@ -144,26 +122,35 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={6}
-                  className="text-center py-12 text-gray-500 text-sm"
-                >
-                  🙌 No feedback available yet.
-                </TableCell>
-              </TableRow>
+              !loading && (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-center py-12 text-gray-500 text-sm"
+                  >
+                    🙌 No feedback available yet.
+                  </TableCell>
+                </TableRow>
+              )
             )}
           </TableBody>
         </Table>
-      </div>
+        )}
 
-      {/* Pagination */}
-      <div className="flex justify-end w-full mt-6">
-        <MetaPagination
-          pagination={pagination}
-          onPageChange={handlePageChange}
-        />
-      </div>
+      {!loading && data.length > 0 && (
+        <div className="flex justify-between items-center w-full mt-6">
+          <MetaPagination
+            total={pagination.total}
+            value={pagination.page}
+            recordPerPage={pagination.limit}
+            onChange={handlePageChange}
+          />
+          <MetaPagination.PerPage
+            value={pagination.limit}
+            onChange={handleLimitChange}
+          />
+        </div>
+      )}
     </div>
   );
 };

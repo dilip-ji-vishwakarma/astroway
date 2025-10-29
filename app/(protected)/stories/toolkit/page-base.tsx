@@ -47,7 +47,7 @@ export const PageBase = () => {
             <TableHeader className="bg-gray-50">
               <TableRow>
                 <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
-                  #
+                  ID
                 </TableHead>
                 <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
                   Profile
