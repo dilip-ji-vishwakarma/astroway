@@ -17,6 +17,7 @@ import { Loader2, SquarePen, Trash2 } from "lucide-react";
 import { UpdateSkill } from "./update-skill";
 import { DeleteSkill } from "./delete-skill";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
+import { Label } from "@/components/ui/label";
 
 export const PageBase = () => {
   const [open, setOpen] = useState(false);
@@ -38,14 +39,12 @@ export const PageBase = () => {
 
   return (
     <div className="mt-8 relative">
-      {/* Loader Overlay */}
-      {loading && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/70 backdrop-blur-sm rounded-lg">
+      <Label className="text-md font-semibold">{`${pagination.total} Listings`}</Label>
+      {loading ? (
+        <div className="flex justify-center items-center h-48">
           <Loader2 className="animate-spin text-muted-foreground" size={32} />
         </div>
-      )}
-
-      {/* Table */}
+      ) : (
       <Table
         className={`mt-5 ${loading ? "opacity-50 pointer-events-none" : ""}`}
       >
@@ -53,8 +52,6 @@ export const PageBase = () => {
           <TableRow>
             <TableHead className="px-[30px] py-5">#</TableHead>
             <TableHead className="px-[30px] py-5">Name</TableHead>
-            <TableHead className="px-[20px] py-5">Added By</TableHead>
-            <TableHead className="px-[20px] py-5">Updated By</TableHead>
             <TableHead className="px-[30px] py-5">Status</TableHead>
             <TableHead className="px-[30px] py-5">Action</TableHead>
           </TableRow>
@@ -66,12 +63,6 @@ export const PageBase = () => {
               <TableRow key={item.id}>
                 <TableCell className="px-[30px] py-5">{item.id}</TableCell>
                 <TableCell className="px-[30px] py-5">{item.name}</TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {item.addedByAdmin?.name}
-                </TableCell>
-                <TableCell className="px-[20px] py-5">
-                  {item.updatedByAdmin?.name}
-                </TableCell>
                 <TableCell className="px-[30px] py-5">
                   {submittingItems.has(item.id) ? (
                     <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-gray-200 border-t-blue-500"></div>
@@ -135,7 +126,7 @@ export const PageBase = () => {
           )}
         </TableBody>
       </Table>
-
+)}
       {/* Pagination */}
       {!loading && data && data.length > 0 && (
         <div className="flex justify-between items-center w-full mt-6">

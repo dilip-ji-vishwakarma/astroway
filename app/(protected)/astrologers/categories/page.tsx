@@ -1,8 +1,6 @@
 import { Loader } from "@/components/ui-kit/Loader";
 import React, { Suspense } from "react";
 import PageBase from "./toolkit/page-base";
-import { Category } from "@/lib/api-endpoints";
-import { apiServices } from "@/lib/api.services";
 import { BaseHeader } from "./toolkit/base-header";
 import { Metadata } from "next";
 
@@ -11,14 +9,10 @@ export const metadata: Metadata = {
 }
 
 const page = async () => {
-  const response = await apiServices(Category, "get");
   return (
     <Suspense fallback={<Loader />}>
       <BaseHeader />
-      <PageBase
-        initialData={response.data}
-        initialPagination={response.pagination}
-      />
+      <PageBase />
     </Suspense>
   );
 };

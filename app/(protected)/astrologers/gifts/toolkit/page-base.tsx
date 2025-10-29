@@ -19,6 +19,7 @@ import { Loader2, SquarePen, Trash2 } from "lucide-react";
 import { UpdateGift } from "./update-gift";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 import { useDataMutation } from "../hook/use-data-mutation";
+import { Label } from "@/components/ui/label";
 
 export const PageBase = () => {
   const [open, setOpen] = useState(false);
@@ -40,6 +41,7 @@ export const PageBase = () => {
 
   return (
     <div className="mt-8 relative">
+      <Label className="text-md font-semibold">{`${pagination.total} Listings`}</Label>
       <div className="relative">
         {loading ? (
           <div className="flex justify-center items-center h-48">
