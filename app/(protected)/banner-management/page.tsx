@@ -1,5 +1,3 @@
-import { banner } from "@/lib/api-endpoints";
-import { apiServices } from "@/lib/api.services";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
 import { BaseHeader } from "./toolkit/base-header";
@@ -10,14 +8,10 @@ export const metadata: Metadata = {
 };
 
 const BannerManagement = async () => {
-  const response = await apiServices(banner, "get");
   return (
     <Suspense>
       <BaseHeader />
-      <PageBase
-        initialData={response.data}
-        initialPagination={response.pagination}
-      />
+      <PageBase />
     </Suspense>
   );
 };
