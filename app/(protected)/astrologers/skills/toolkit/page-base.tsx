@@ -9,30 +9,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MetaPagination } from "@/components/ui-kit/meta-pagination/meta-pagination";
 import { useDataMutation } from "../hook/use-data-mutations";
 import { Controller, useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { SquarePen, Trash2 } from "lucide-react";
+import { Loader2, SquarePen, Trash2 } from "lucide-react";
 import { UpdateSkill } from "./update-skill";
 import { DeleteSkill } from "./delete-skill";
+import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 
-type PageBaseProps = {
-  initialData: any[];
-  initialPagination: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-  };
-};
-
-export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
+export const PageBase = () => {
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [openAlert, setOpenAlert] = useState(false);
   const [selectedItemAlert, setSelectedItemAlert] = useState<any | null>(null);
+
   const {
     data,
     pagination,
@@ -40,13 +31,24 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
     loading,
     handleSwitchChange,
     submittingItems,
-  } = useDataMutation(initialData, initialPagination);
+    handleLimitChange,
+  } = useDataMutation();
 
   const { control } = useForm();
 
   return (
-    <div className="mt-8">
-      <Table className="mt-5">
+    <div className="mt-8 relative">
+      {/* Loader Overlay */}
+      {loading && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/70 backdrop-blur-sm rounded-lg">
+          <Loader2 className="animate-spin text-muted-foreground" size={32} />
+        </div>
+      )}
+
+      {/* Table */}
+      <Table
+        className={`mt-5 ${loading ? "opacity-50 pointer-events-none" : ""}`}
+      >
         <TableHeader className="bg-gray-100">
           <TableRow>
             <TableHead className="px-[30px] py-5">#</TableHead>
@@ -57,14 +59,9 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
             <TableHead className="px-[30px] py-5">Action</TableHead>
           </TableRow>
         </TableHeader>
+
         <TableBody>
-          {loading ? (
-            <TableRow>
-              <TableCell colSpan={7} className="text-center py-8">
-                <div className="w-7 h-7 border-[3px] border-primary/10 border-t-primary border-b-primary rounded-full animate-spin m-auto" />
-              </TableCell>
-            </TableRow>
-          ) : data && data.length > 0 ? (
+          {data && data.length > 0 ? (
             data.map((item: any) => (
               <TableRow key={item.id}>
                 <TableCell className="px-[30px] py-5">{item.id}</TableCell>
@@ -77,7 +74,7 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                 </TableCell>
                 <TableCell className="px-[30px] py-5">
                   {submittingItems.has(item.id) ? (
-                    <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500"></div>
+                    <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-gray-200 border-t-blue-500"></div>
                   ) : (
                     <Controller
                       name={`isActive-${item.id}`}
@@ -97,10 +94,7 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     />
                   )}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  className="px-[30px] py-5 gap-3 flex items-center"
-                >
+                <TableCell className="px-[30px] py-5 flex items-center gap-3">
                   <Button
                     variant="outline"
                     className="cursor-pointer"
@@ -112,7 +106,7 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     <SquarePen
                       color="currentColor"
                       size={18}
-                      className=" text-gray-600 hover:text-[#E25016]"
+                      className="text-gray-600 hover:text-[#E25016]"
                     />
                   </Button>
                   <Button
@@ -126,7 +120,7 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
                     <Trash2
                       color="currentColor"
                       size={18}
-                      className=" text-gray-600 hover:text-[#E25016]"
+                      className="text-gray-600 hover:text-[#E25016]"
                     />
                   </Button>
                 </TableCell>
@@ -142,27 +136,35 @@ export const PageBase = ({ initialData, initialPagination }: PageBaseProps) => {
         </TableBody>
       </Table>
 
-      <div className="flex justify-end w-full mt-4">
-        <MetaPagination
-          pagination={pagination}
-          onPageChange={handlePageChange}
-        />
-      </div>
-      <div>
-        <UpdateSkill
-          open={open}
-          onOpenChange={setOpen}
-          name={selectedItem?.name}
-          id={selectedItem?.id}
-        />
-      </div>
-      <div>
-        <DeleteSkill
-          openAlert={openAlert}
-          onOpenChange={setOpenAlert}
-          id={selectedItemAlert?.id}
-        />
-      </div>
+      {/* Pagination */}
+      {!loading && data && data.length > 0 && (
+        <div className="flex justify-between items-center w-full mt-6">
+          <MetaPagination
+            total={pagination.total}
+            value={pagination.page}
+            recordPerPage={pagination.limit}
+            onChange={handlePageChange}
+          />
+          <MetaPagination.PerPage
+            value={pagination.limit}
+            onChange={handleLimitChange}
+          />
+        </div>
+      )}
+
+      {/* Modals */}
+      <UpdateSkill
+        open={open}
+        onOpenChange={setOpen}
+        name={selectedItem?.name}
+        id={selectedItem?.id}
+      />
+
+      <DeleteSkill
+        openAlert={openAlert}
+        onOpenChange={setOpenAlert}
+        id={selectedItemAlert?.id}
+      />
     </div>
   );
 };
