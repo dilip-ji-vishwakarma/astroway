@@ -26,3 +26,4 @@ export const banner = "/admin/banner"
 export const pages = "/pages"
 export const dashboard = "/admin/dashboard"
 export const role = "/admin/role"
+
