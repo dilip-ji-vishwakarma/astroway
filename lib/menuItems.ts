@@ -14,6 +14,7 @@ import {
   Smile,
   UserPlus,
   Layers,
+  Users2,
   // Award,
 } from "lucide-react";
 
@@ -155,6 +156,15 @@ export const mainItems = [
     title: "Feedback",
     url: "/feedback",
     icon: Smile,
+  },
+  {
+    title: "Team Management",
+    url: "#",
+    icon: Users2,
+    children: [
+      { title: "Team Role", url: "/team-management/team-role" },
+      { title: "Team List", url: "/team-management/team-list" },
+    ],
   },
   {
     title: "Page Management",
