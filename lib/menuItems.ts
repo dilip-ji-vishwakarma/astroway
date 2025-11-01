@@ -12,6 +12,16 @@ import {
   UserPlus,
   Layers,
   Users2,
+  Wallet,
+  Gift,
+  Star,
+  Blocks,
+  ClipboardList,
+  BookOpen,
+  Coins,
+  CreditCard,
+  DollarSign,
+  CalendarClock,
 } from "lucide-react";
 
 export const mainItems = [
@@ -30,16 +40,17 @@ export const mainItems = [
     url: "#",
     icon: UserCheck,
     children: [
-      { title: "Block Astrologer", url: "/astrologers/block-astrologer" },
-      { title: "Manage Astrologers", url: "/astrologers/manage-astrologers" },
-      { title: "Pending Requests", url: "/astrologers/pending-requests" },
-      { title: "Reviews", url: "/astrologers/reviews" },
-      { title: "Gifts", url: "/astrologers/gifts" },
-      { title: "Skills", url: "/astrologers/skills" },
-      { title: "Categories", url: "/astrologers/categories" },
+      { title: "Block Astrologer", url: "/astrologers/block-astrologer", icon: Blocks },
+      { title: "Manage Astrologers", url: "/astrologers/manage-astrologers", icon: ClipboardList },
+      { title: "Pending Requests", url: "/astrologers/pending-requests", icon: CalendarClock },
+      { title: "Reviews", url: "/astrologers/reviews", icon: Star },
+      { title: "Gifts", url: "/astrologers/gifts", icon: Gift },
+      { title: "Skills", url: "/astrologers/skills", icon: BookOpen },
+      { title: "Categories", url: "/astrologers/categories", icon: Layers },
       {
         title: "Commission Rate for Calls/Chats",
         url: "/astrologers/commission-rate",
+        icon: DollarSign,
       },
     ],
   },
@@ -64,14 +75,29 @@ export const mainItems = [
     icon: PlayCircle,
   },
   {
-    title: "Notifications",
-    url: "/notifications",
+    title: "Custom Notifications",
+    url: "/custom-notifications",
     icon: Bell,
+  },
+  {
+    title: "Earning",
+    url: "#",
+    icon: Wallet,
+    children: [
+      { title: "Withdrawal Requests", url: "/earning/withdrawal-requests", icon: CreditCard },
+      { title: "Withdrawal Methods", url: "/earning/withdrawal-methods", icon: Coins },
+      { title: "Wallet History", url: "/earning/wallet-history", icon: Wallet },
+    ],
   },
   {
     title: "General Settings",
     url: "/general-settings",
     icon: Settings,
+  },
+  {
+    title: "Session",
+    url: "/session",
+    icon: CalendarClock,
   },
   {
     title: "Feedback",
@@ -83,8 +109,8 @@ export const mainItems = [
     url: "#",
     icon: Users2,
     children: [
-      { title: "Team Role", url: "/team-management/team-role" },
-      { title: "Team List", url: "/team-management/team-list" },
+      { title: "Team Role", url: "/team-management/team-role", icon: UserCheck },
+      { title: "Team List", url: "/team-management/team-list", icon: Users },
     ],
   },
   {
