@@ -24,7 +24,7 @@ export const useDataMutation = () => {
       const res = await apiServices(role, "post", payload);
       if (res.success) {
         toast.success("Created");
-        router.push("/roles");
+        router.push("/team-management/team-role");
       } else {
         throw new Error("Failed to update permissions");
       }
