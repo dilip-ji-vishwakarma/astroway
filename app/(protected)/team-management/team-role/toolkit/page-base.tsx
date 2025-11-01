@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/table";
 import { formatSingleDate } from "@/lib/utils";
 import Link from "next/link";
-import { SquarePen, Trash2 } from "lucide-react";
+import { Loader2, SquarePen, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
 export const PageBase = ({ response }: any) => {
-  const { handleDelete } = useDataMutation();
+  const { handleDelete, deleteId } = useDataMutation();
 
   return (
     <>
@@ -60,14 +60,18 @@ export const PageBase = ({ response }: any) => {
                     >
                       <SquarePen size={18} />
                     </Link>
-
-                    <Button
-                      variant="outline"
-                      className="cursor-pointer"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <Trash2 size={18} />
-                    </Button>
+                      <Button
+                        variant="outline"
+                        className="cursor-pointer flex items-center justify-center"
+                        onClick={() => handleDelete(item.id)}
+                        disabled={deleteId === item.id}
+                      >
+                        {deleteId === item.id ? (
+                          <Loader2 className="animate-spin text-[#E25016]" size={18} />
+                        ) : (
+                          <Trash2 size={18} className="text-[#E25016]" />
+                        )}
+                      </Button>
                   </div>
                 </TableCell>
               </TableRow>
