@@ -17,6 +17,7 @@ import { Controller } from "react-hook-form";
 import { apiServices } from "@/lib/api.services";
 import { toast } from "sonner";
 import Image from "next/image";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 export const PersonalForm = ({ response, id }: any) => {
   const data = response.data;
@@ -159,14 +160,7 @@ export const PersonalForm = ({ response, id }: any) => {
               defaultValue={data.phone}
               rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
-                <Input
-                  type="phone"
-                  className=""
-                  placeholder="Phone"
-                  onChange={onChange}
-                  value={value}
-                  disabled
-                />
+                <PhoneInput onChange={onChange} value={value} disabled/>
               )}
             />
           </div>

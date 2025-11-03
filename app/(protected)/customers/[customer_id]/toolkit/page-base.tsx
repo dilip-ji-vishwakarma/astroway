@@ -37,6 +37,7 @@ import { format } from "date-fns";
 import { apiServices } from "@/lib/api.services";
 import { toast } from "sonner";
 import Image from "next/image";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 export const PageBase = ({ response, id }: any) => {
   const data = response.data;
@@ -207,12 +208,7 @@ export const PageBase = ({ response, id }: any) => {
               defaultValue={data.phone || ""}
               rules={{ required: false}}
               render={({ field: { onChange, value } }) => (
-                <Input
-                  type="tel"
-                  className=""
-                  onChange={onChange}
-                  value={value}
-                />
+                <PhoneInput onChange={onChange} value={value} />
               )}
             />
           </div>
