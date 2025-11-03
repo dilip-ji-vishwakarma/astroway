@@ -8,6 +8,7 @@ import { apiServices } from "@/lib/api.services";
 export const useDataMutation = () => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -60,11 +61,33 @@ export const useDataMutation = () => {
     getData(1, newLimit);
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      setDeletingId(id);
+      const response = await apiServices(`${notification}/${id}`, "delete");
+
+      if (response.success) {
+        toast.success(response.message);
+        window.location.reload();
+      } else {
+        toast.error("Failed to fetch data", {
+          description: response?.message || "Something went wrong.",
+        });
+      }
+    } catch (err: any) {
+      toast.error("Error fetching data", { description: err.message });
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   return {
     data,
     loading,
     pagination,
     handlePageChange,
-    handleLimitChange
+    handleLimitChange,
+    handleDelete,
+    deletingId
   };
 };

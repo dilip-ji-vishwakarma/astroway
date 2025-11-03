@@ -1,20 +1,36 @@
-"use client"
+"use client";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 import React from "react";
 import { useDataMutation } from "../hook/use-data-mutation";
 import { Loader2, SquarePen, Trash2 } from "lucide-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import Image from "next/image";
 import { formatSingleDate, getImageUrl } from "@/lib/utils";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 export const PageBase = () => {
-  const { data, loading, pagination, handlePageChange, handleLimitChange } =
-    useDataMutation();
+  const {
+    data,
+    loading,
+    pagination,
+    handlePageChange,
+    handleLimitChange,
+    deletingId,
+    handleDelete,
+  } = useDataMutation();
   return (
-    <div>
-        {loading ? (
+    <div className="mt-4 relative">
+      <Label className="text-md font-semibold">{`${pagination.total} Listings`}</Label>
+      {loading ? (
         <div className="flex justify-center items-center h-48">
           <Loader2 className="animate-spin text-muted-foreground" size={32} />
         </div>
@@ -44,7 +60,7 @@ export const PageBase = () => {
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <TableCell className="px-[10px] py-5 font-medium text-gray-700">
-                     {item.id}
+                      {item.id}
                     </TableCell>
                     <TableCell className="px-[10px] py-5">
                       {item.imageUrl ? (
@@ -75,29 +91,29 @@ export const PageBase = () => {
                         ? formatSingleDate(item.createdAt, true)
                         : "-"}
                     </TableCell>
-                    
+
                     <TableCell className="px-6 py-5 flex gap-2">
-                          <div className="flex justify-end items-center gap-3">
-                            <Button
-                              variant="outline"
-                              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 cursor-pointer"
-                              onClick={() => {}}
-                            >
-                              <SquarePen size={18} />
-                            </Button>
-                            <Button
-                              variant="outline"
-                              className="cursor-pointer flex items-center justify-center"
-                              onClick={() => {}}
-                            >
-                              {/* {deletingId == item.id ? (
-                                <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500 m-auto" />
-                              ) : ( */}
-                                <Trash2 size={18} className="text-[#E25016]" />
-                              {/* )} */}
-                            </Button>
-                          </div>
-                        </TableCell>
+                      <div className="flex justify-end items-center gap-3">
+                        <Button
+                          variant="outline"
+                          className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 cursor-pointer"
+                          onClick={() => {}}
+                        >
+                          <SquarePen size={18} />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          className="cursor-pointer flex items-center justify-center"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          {deletingId == item.id ? (
+                            <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500 m-auto" />
+                          ) : (
+                            <Trash2 size={18} className="text-[#E25016]" />
+                          )}
+                        </Button>
+                      </div>
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
