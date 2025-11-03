@@ -2,7 +2,7 @@ import { apiServices } from "@/lib/api.services";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export const useHandleList = () => {
+export const useAddList = () => {
    const {
       handleSubmit,
       control,
@@ -12,14 +12,14 @@ export const useHandleList = () => {
 
 
      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-     const onSubmit = async (formData: any, id: number) => {
+     const onSubmit = async (formData: any) => {
   try {
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
       data.append(key, formData[key]);
     });
 
-    const response = await apiServices(`/admin/user/${id}`, "put", data, {
+    const response = await apiServices(`/admin/user`, "post", data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

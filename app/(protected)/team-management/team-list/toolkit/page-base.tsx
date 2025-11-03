@@ -93,7 +93,7 @@ export const PageBase = ({roles}: any) => {
                           {item.id}
                         </TableCell>
                         <TableCell className="px-6 py-5">
-                          {item?.astrologer?.avatarUrl ? (
+                          {item?.avatarUrl ? (
                             <Image
                               src={getImageUrl(item.avatarUrl)}
                               width={40}

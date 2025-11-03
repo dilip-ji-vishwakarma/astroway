@@ -10,7 +10,7 @@ const TeamList = async () => {
   const roles = await apiServices(role, "get");
   return (
     <Suspense fallback={<Loader />}>
-      <BaseHeader response={response.data} />
+      <BaseHeader response={response.data} role={roles.data} />
       <PageBase roles={roles.data}/>
     </Suspense>
   )

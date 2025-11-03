@@ -46,7 +46,7 @@ export const UpdateTeam = ({
 
   return (
     <Dialog open={action} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[800px]">
         <form onSubmit={handleSubmit((formData) => onSubmit(formData, data.id))}>
           <DialogHeader>
             <DialogTitle>Edit Role</DialogTitle>
@@ -54,7 +54,7 @@ export const UpdateTeam = ({
               Make changes to your role here. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
-          <div className="py-5 space-y-3">
+          <div className="py-5 space-y-3 grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2">
             <div>
               <Label
                 htmlFor="name"
@@ -70,7 +70,7 @@ export const UpdateTeam = ({
                 render={({ field: { onChange, value } }) => (
                   <Input
                     type="text"
-                    placeholder="Type role name"
+                    placeholder="Name"
                     onChange={onChange}
                     value={value}
                   />
@@ -127,8 +127,8 @@ export const UpdateTeam = ({
                   <PhoneInput onChange={onChange} value={value} />
                 )}
               />
-              {errors["email"] && (
-                <span className="text-red-500 text-sm">Please Enter email</span>
+              {errors["phone"] && (
+                <span className="text-red-500 text-sm">Please Type Mobile Number</span>
               )}
             </div>
             <div>
