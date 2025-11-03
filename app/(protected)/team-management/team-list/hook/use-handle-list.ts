@@ -1,3 +1,4 @@
+import { admin_user } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -19,7 +20,7 @@ export const useHandleList = () => {
       data.append(key, formData[key]);
     });
 
-    const response = await apiServices(`/admin/user/${id}`, "put", data, {
+    const response = await apiServices(`${admin_user}/${id}`, "put", data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

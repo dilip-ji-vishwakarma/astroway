@@ -19,7 +19,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { UpdateTeam } from "./update_team";
 
-export const PageBase = ({roles}: any) => {
+export const PageBase = ({ roles }: any) => {
   const [roleEdit, setRoleEdit] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const {
@@ -28,6 +28,8 @@ export const PageBase = ({roles}: any) => {
     pagination,
     handlePageChange,
     handleLimitChange,
+    handleDelete,
+    deletingId,
   } = useDataMutation();
 
   const handleEdit = (item: any) => {
@@ -137,9 +139,13 @@ export const PageBase = ({roles}: any) => {
                             <Button
                               variant="outline"
                               className="cursor-pointer flex items-center justify-center"
-                              onClick={() => {}}
+                              onClick={() => handleDelete(item.id)}
                             >
-                              <Trash2 size={18} className="text-[#E25016]" />
+                              {deletingId == item.id ? (
+                                <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500 m-auto" />
+                              ) : (
+                                <Trash2 size={18} className="text-[#E25016]" />
+                              )}
                             </Button>
                           </div>
                         </TableCell>

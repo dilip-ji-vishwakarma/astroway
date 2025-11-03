@@ -2,12 +2,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import {  user_list} from "@/lib/api-endpoints";
+import { admin_user, user_list } from "@/lib/api-endpoints";
 import { apiServices } from "@/lib/api.services";
 
 export const useDataMutation = () => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -59,6 +60,25 @@ export const useDataMutation = () => {
     getData(1, newLimit);
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      setDeletingId(id);
+      const response = await apiServices(`${admin_user}/${id}`, "delete");
+
+      if (response.success) {
+        toast.success(response.message);
+        window.location.reload();
+      } else {
+        toast.error("Failed to fetch data", {
+          description: response?.message || "Something went wrong.",
+        });
+      }
+    } catch (err: any) {
+      toast.error("Error fetching data", { description: err.message });
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   return {
     data,
@@ -66,5 +86,7 @@ export const useDataMutation = () => {
     pagination,
     handlePageChange,
     handleLimitChange,
+    handleDelete,
+    deletingId
   };
 };
