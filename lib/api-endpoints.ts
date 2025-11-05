@@ -29,4 +29,4 @@ export const role = "/admin/role"
 export const user_list = "/admin/list"
 export const admin_user = "/admin/user"
 export const notification = "/admin/notifications"
-
+export const settings = "/admin/settings"
