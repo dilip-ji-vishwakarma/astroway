@@ -12,7 +12,6 @@ import {
 import { Loader2, SquarePen, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/utils";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Controller, useForm } from "react-hook-form";
@@ -66,19 +65,13 @@ export const PageBase = () => {
                   <TableCell className="px-[20px] py-5">{item.id}</TableCell>
 
                   <TableCell className="px-[20px] py-5">
-                    {item.previewImage ? (
-                      <Image
+                    <Image
                         src={getImageUrl(item.previewImage)}
                         width={30}
                         height={30}
                         alt="avatar"
                         className="rounded-full"
                       />
-                    ) : (
-                      <Avatar>
-                        <AvatarImage src="/images/astrologer-placeholder.png" />
-                      </Avatar>
-                    )}
                   </TableCell>
 
                   <TableCell className="px-[20px] py-5">{item.title}</TableCell>

@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/utils";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Controller, useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import Link from "next/link";
@@ -80,19 +79,13 @@ export default function PageBase() {
                         {item.id}
                       </TableCell>
                       <TableCell className="px-[20px] py-5">
-                        {item.avatarUrl ? (
-                          <Image
+                        <Image
                             src={getImageUrl(item.avatarUrl)}
                             width={40}
                             height={40}
                             alt="avatar"
                             className="rounded-full"
                           />
-                        ) : (
-                          <Avatar>
-                            <AvatarImage src="/images/astrologer-placeholder.png" />
-                          </Avatar>
-                        )}
                       </TableCell>
                       <TableCell className="px-4 py-2 text-sm text-gray-700">
                         {item.firstName}

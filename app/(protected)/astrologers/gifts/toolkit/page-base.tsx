@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/utils";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Controller, useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -68,19 +67,13 @@ export const PageBase = () => {
                   <TableRow key={item.id}>
                     <TableCell className="px-[20px] py-5">{item.id}</TableCell>
                     <TableCell className="px-[20px] py-5">
-                      {item.imageUrl ? (
-                        <Image
+                      <Image
                           src={getImageUrl(item.imageUrl)}
                           width={40}
                           height={40}
                           alt="avatar"
                           className="rounded-full"
                         />
-                      ) : (
-                        <Avatar>
-                          <AvatarImage src="/images/astrologer-placeholder.png" />
-                        </Avatar>
-                      )}
                     </TableCell>
                     <TableCell className="px-[20px] py-5">
                       {item.name}

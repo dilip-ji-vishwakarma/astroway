@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
   TableBody,
@@ -36,19 +35,13 @@ export const DataTable = ({ unverifiedAstrologers }: any) => {
           <TableRow key={index}>
             <TableCell className="px-[20px] py-5">{item.id}</TableCell>
             <TableCell className="px-[20px] py-5">
-              {item.avatarUrl ? (
-                <Image
+              <Image
                   src={getImageUrl(item.avatarUrl)}
                   width={40}
                   height={40}
                   alt="avatar"
                   className="rounded-full"
                 />
-              ) : (
-                <Avatar>
-                  <AvatarImage src="/images/astrologer-placeholder.png" />
-                </Avatar>
-              )}
             </TableCell>
             <TableCell className="px-[20px] py-5">{item.firstName}</TableCell>
             <TableCell className="px-[20px] py-5">{item.lastName}</TableCell>

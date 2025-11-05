@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import { formatSingleDate, getImageUrl, cn } from "@/lib/utils";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useDataMutation } from "../hook/use-data-mutation";
@@ -86,19 +85,13 @@ export const PageBase = () => {
                         {index + 1}
                       </TableCell>
                       <TableCell className="px-6 py-5">
-                        {item?.astrologer?.avatarUrl ? (
-                          <Image
+                        <Image
                             src={getImageUrl(item.astrologer.avatarUrl)}
                             width={40}
                             height={40}
                             alt="avatar"
                             className="rounded-full object-cover"
                           />
-                        ) : (
-                          <Avatar className="w-10 h-10">
-                            <AvatarImage src="/images/astrologer-placeholder.png" />
-                          </Avatar>
-                        )}
                       </TableCell>
                       <TableCell className="px-6 py-5 font-medium text-gray-800">
                         {item.astrologer.firstName} {item.astrologer.lastName}

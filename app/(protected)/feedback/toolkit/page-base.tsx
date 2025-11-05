@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import { formatSingleDate, getImageUrl, cn } from "@/lib/utils";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 import { useDataMutation } from "../hook/use-data-mutation";
 import { Label } from "@/components/ui/label";
@@ -28,38 +27,49 @@ export const PageBase = () => {
   return (
     <div className="mt-8 relative">
       <Label className="text-md font-semibold">{`${pagination.total} Listings`}</Label>
-        {loading ? (
-         <div className="flex justify-center items-center h-48">
+      {loading ? (
+        <div className="flex justify-center items-center h-48">
           <Loader2 className="animate-spin text-muted-foreground" size={32} />
         </div>
-        ) : (
+      ) : (
         <Table className="mt-4">
           <TableHeader className="bg-gray-50">
             <TableRow>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">ID</TableHead>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Profile</TableHead>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">User</TableHead>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">App</TableHead>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Feedback Date</TableHead>
-              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">Feedback</TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
+                ID
+              </TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
+                Profile
+              </TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
+                User
+              </TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
+                App
+              </TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
+                Feedback Date
+              </TableHead>
+              <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
+                Feedback
+              </TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {!loading && data?.length > 0 ? (
-              data.map((item, index) => (
-                <TableRow
-                  key={index}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <TableCell className="px-6 py-5 text-gray-700 font-medium">
-                    {item.id}
-                  </TableCell>
+            {!loading && data?.length > 0
+              ? data.map((item, index) => (
+                  <TableRow
+                    key={index}
+                    className="hover:bg-gray-50 transition-colors"
+                  >
+                    <TableCell className="px-6 py-5 text-gray-700 font-medium">
+                      {item.id}
+                    </TableCell>
 
-                  {/* Profile */}
-                  <TableCell className="px-6 py-5">
-                    {item?.by === "astrologer" ? (
-                      item?.astrologer?.avatarUrl ? (
+                    {/* Profile */}
+                    <TableCell className="px-6 py-5">
+                      {item?.by === "astrologer" ? (
                         <Image
                           src={getImageUrl(item?.astrologer?.avatarUrl)}
                           width={40}
@@ -68,74 +78,65 @@ export const PageBase = () => {
                           className="rounded-full object-cover"
                         />
                       ) : (
-                        <Avatar className="w-10 h-10">
-                          <AvatarImage src="/images/astrologer-placeholder.png" />
-                        </Avatar>
-                      )
-                    ) : item?.user?.avatarUrl ? (
-                      <Image
-                        src={getImageUrl(item?.user?.avatarUrl)}
-                        width={40}
-                        height={40}
-                        alt="User"
-                        className="rounded-full object-cover"
-                      />
-                    ) : (
-                      <Avatar className="w-10 h-10">
-                        <AvatarImage src="/images/astrologer-placeholder.png" />
-                      </Avatar>
-                    )}
-                  </TableCell>
-
-                  {/* Name */}
-                  <TableCell className="px-6 py-5 font-medium text-gray-800">
-                    {item.by === "astrologer"
-                      ? `${item.astrologer.firstName} ${item.astrologer.lastName}`
-                      : `${item.user.firstName} ${item.user.lastName}`}
-                  </TableCell>
-
-                  {/* App badge */}
-                  <TableCell className="px-6 py-5">
-                    <span
-                      className={cn(
-                        "px-3 py-1 text-xs font-medium rounded-full",
-                        item.by === "astrologer"
-                          ? "bg-purple-100 text-purple-700"
-                          : "bg-blue-100 text-blue-700"
+                        <Image
+                          src={getImageUrl(item?.user?.avatarUrl)}
+                          width={40}
+                          height={40}
+                          alt="User"
+                          className="rounded-full object-cover"
+                        />
                       )}
+                    </TableCell>
+
+                    {/* Name */}
+                    <TableCell className="px-6 py-5 font-medium text-gray-800">
+                      {item.by === "astrologer"
+                        ? `${item.astrologer.firstName} ${item.astrologer.lastName}`
+                        : `${item.user.firstName} ${item.user.lastName}`}
+                    </TableCell>
+
+                    {/* App badge */}
+                    <TableCell className="px-6 py-5">
+                      <span
+                        className={cn(
+                          "px-3 py-1 text-xs font-medium rounded-full",
+                          item.by === "astrologer"
+                            ? "bg-purple-100 text-purple-700"
+                            : "bg-blue-100 text-blue-700"
+                        )}
+                      >
+                        {item.by === "astrologer"
+                          ? "Astrologer App"
+                          : "User App"}
+                      </span>
+                    </TableCell>
+
+                    {/* Feedback Date */}
+                    <TableCell className="px-6 py-5 text-gray-600">
+                      {formatSingleDate(item.createdAt, true)}
+                    </TableCell>
+
+                    {/* Feedback */}
+                    <TableCell className="px-6 py-5 max-w-[300px] text-gray-700">
+                      <p className="truncate" title={item.content}>
+                        {item.content}
+                      </p>
+                    </TableCell>
+                  </TableRow>
+                ))
+              : !loading && (
+                  <TableRow>
+                    <TableCell
+                      colSpan={6}
+                      className="text-center py-12 text-gray-500 text-sm"
                     >
-                      {item.by === "astrologer" ? "Astrologer App" : "User App"}
-                    </span>
-                  </TableCell>
-
-                  {/* Feedback Date */}
-                  <TableCell className="px-6 py-5 text-gray-600">
-                    {formatSingleDate(item.createdAt, true)}
-                  </TableCell>
-
-                  {/* Feedback */}
-                  <TableCell className="px-6 py-5 max-w-[300px] text-gray-700">
-                    <p className="truncate" title={item.content}>
-                      {item.content}
-                    </p>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              !loading && (
-                <TableRow>
-                  <TableCell
-                    colSpan={6}
-                    className="text-center py-12 text-gray-500 text-sm"
-                  >
-                    🙌 No feedback available yet.
-                  </TableCell>
-                </TableRow>
-              )
-            )}
+                      🙌 No feedback available yet.
+                    </TableCell>
+                  </TableRow>
+                )}
           </TableBody>
         </Table>
-        )}
+      )}
 
       {!loading && data.length > 0 && (
         <div className="flex justify-between items-center w-full mt-6">

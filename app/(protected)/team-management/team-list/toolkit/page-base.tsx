@@ -15,7 +15,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Image from "next/image";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { UpdateTeam } from "./update_team";
 
@@ -95,19 +94,13 @@ export const PageBase = ({ roles }: any) => {
                           {item.id}
                         </TableCell>
                         <TableCell className="px-6 py-5">
-                          {item?.avatarUrl ? (
-                            <Image
+                          <Image
                               src={getImageUrl(item.avatarUrl)}
                               width={40}
                               height={40}
                               alt="avatar"
                               className="rounded-full object-cover"
                             />
-                          ) : (
-                            <Avatar className="w-10 h-10">
-                              <AvatarImage src="/images/astrologer-placeholder.png" />
-                            </Avatar>
-                          )}
                         </TableCell>
                         <TableCell className="px-6 py-5 font-medium text-gray-800">
                           {item.name}

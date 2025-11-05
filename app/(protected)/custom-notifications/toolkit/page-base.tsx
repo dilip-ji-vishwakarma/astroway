@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import { formatSingleDate, getImageUrl } from "@/lib/utils";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
@@ -43,6 +42,7 @@ export const PageBase = () => {
                 <TableHead className="px-[10px] py-5">Image</TableHead>
                 <TableHead className="px-[10px] py-5">Title</TableHead>
                 <TableHead className="px-[10px] py-5">Message</TableHead>
+                <TableHead className="px-[10px] py-5">Type</TableHead>
                 <TableHead className="px-[10px] py-5">Added By</TableHead>
                 <TableHead className="px-[10px] py-5">Created At</TableHead>
                 <TableHead className="px-[10px] py-5 text-center">
@@ -63,24 +63,21 @@ export const PageBase = () => {
                       {item.id}
                     </TableCell>
                     <TableCell className="px-[10px] py-5">
-                      {item.imageUrl ? (
-                        <Image
-                           src={getImageUrl(item.imageUrl) ?? "/images/astrologer-placeholder.png"}
-                          width={40}
-                          height={40}
-                          alt="avatar"
-                        />
-                      ) : (
-                        <Avatar className="w-10 h-10">
-                          <AvatarImage src="/images/astrologer-placeholder.png" />
-                        </Avatar>
-                      )}
+                      <Image
+                        src={getImageUrl(item.imageUrl)}
+                        width={40}
+                        height={40}
+                        alt="avatar"
+                      />
                     </TableCell>
                     <TableCell className="px-[10px] py-5 font-semibold text-gray-800">
                       {item.title || "-"}
                     </TableCell>
                     <TableCell className="px-[10px] py-5 font-semibold text-gray-800">
                       {item.message || "-"}
+                    </TableCell>
+                    <TableCell className="px-[10px] py-5 font-semibold text-gray-800">
+                      {item.type || "-"}
                     </TableCell>
                     <TableCell className="px-[10px] py-5 font-semibold text-gray-800">
                       {item.addedByAdmin.name || "-"}

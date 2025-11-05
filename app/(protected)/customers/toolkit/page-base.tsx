@@ -12,7 +12,6 @@ import {
 import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
 import { useDataMutation } from "../hook/use-data-mutations";
 import Image from "next/image";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { formatSingleDate, getImageUrl } from "@/lib/utils";
 import Link from "next/link";
 import { SquarePen, Loader2 } from "lucide-react";
@@ -72,19 +71,13 @@ const PageBase = () => {
                       {index + 1}
                     </TableCell>
                     <TableCell className="px-[10px] py-5">
-                      {item.avatarUrl ? (
-                        <Image
+                      <Image
                           src={getImageUrl(item.avatarUrl)}
                           width={40}
                           height={40}
                           alt="avatar"
                           className="rounded-full object-cover shadow-sm"
                         />
-                      ) : (
-                        <Avatar className="w-10 h-10">
-                          <AvatarImage src="/images/astrologer-placeholder.png" />
-                        </Avatar>
-                      )}
                     </TableCell>
                     <TableCell className="px-[10px] py-5 font-semibold text-gray-800">
                       {item.firstName || "-"}

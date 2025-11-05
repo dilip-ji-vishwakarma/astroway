@@ -17,7 +17,6 @@ import { Switch } from "@/components/ui/switch";
 import { Loader2, SquarePen, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UpdateCategory } from "./update-category";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
 import { DeleteCategory } from "./delete-category";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
@@ -68,19 +67,13 @@ const PageBase = () => {
                 <TableRow key={item.id}>
                   <TableCell className="px-[30px] py-5">{item.id}</TableCell>
                   <TableCell className="px-[30px] py-5">
-                    {item.icon ? (
-                      <Image
+                    <Image
                         src={getImageUrl(item.icon)}
                         width={40}
                         height={40}
                         alt="avatar"
                         className="rounded-full"
                       />
-                    ) : (
-                      <Avatar>
-                        <AvatarImage src="/images/wedding-ring.png" />
-                      </Avatar>
-                    )}
                   </TableCell>
                   <TableCell className="px-[30px] py-5">{item.name}</TableCell>
                   <TableCell className="px-[30px] py-5">

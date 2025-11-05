@@ -38,6 +38,7 @@ export const AddNotification = ({ open, onOpenChange }: NotificationProps) => {
 
   const selectedFile = watch("imageUrl") as File | null;
   const previewPreview = useFilePreview(selectedFile);
+  const selectedType = watch("type");
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -136,6 +137,7 @@ export const AddNotification = ({ open, onOpenChange }: NotificationProps) => {
                 </span>
               )}
             </div>
+            {selectedType === "specific_users" && (
             <div className="w-full">
               <Label
                 htmlFor="selectedUsers"
@@ -157,6 +159,8 @@ export const AddNotification = ({ open, onOpenChange }: NotificationProps) => {
                 )}
               />
             </div>
+            )}
+            {selectedType === "specific_astrologers" && (
             <div className="w-full">
               <Label
                 htmlFor="selectedUsers"
@@ -178,6 +182,7 @@ export const AddNotification = ({ open, onOpenChange }: NotificationProps) => {
                 )}
               />
             </div>
+            )}
             <div>
               <Label
                 htmlFor="imageUrl"

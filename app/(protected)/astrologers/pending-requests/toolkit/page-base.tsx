@@ -16,7 +16,6 @@ import { Controller, useForm } from "react-hook-form";
 import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/utils";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { MessageSquare, PhoneCall, SquarePen, Loader2 } from "lucide-react";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 
@@ -79,19 +78,13 @@ export const PageBase = () => {
                       {index + 1}
                     </TableCell>
                     <TableCell className="px-[10px] py-5">
-                      {item.avatarUrl ? (
-                        <Image
+                      <Image
                           src={getImageUrl(item.avatarUrl)}
                           width={40}
                           height={40}
                           alt="avatar"
                           className="rounded-full object-cover shadow-sm"
                         />
-                      ) : (
-                        <Avatar className="w-10 h-10">
-                          <AvatarImage src="/images/astrologer-placeholder.png" />
-                        </Avatar>
-                      )}
                     </TableCell>
                     <TableCell className="px-[10px] py-5 font-semibold text-gray-800">
                       {item.firstName || "-"}

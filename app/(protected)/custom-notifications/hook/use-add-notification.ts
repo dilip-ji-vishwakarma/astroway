@@ -50,18 +50,21 @@ export const useAddNotification = () => {
   const onSubmit = async (formData: any) => {
     try {
       if (formData.selectedUsers) {
-        formData.selectedUsers = formData.selectedUsers
-          .split(",")
-          .map((v: string) => v.trim());
-      }
-      const data = new FormData();
-      for (const key in formData) {
-        if (Array.isArray(formData[key])) {
-          data.append(key, JSON.stringify(formData[key]));
+        if (Array.isArray(formData.selectedUsers)) {
+          formData.selectedUsers = [formData.selectedUsers.join(", ")];
         } else {
-          data.append(key, formData[key]);
+          formData.selectedUsers = [String(formData.selectedUsers)];
         }
       }
+
+      if (Array.isArray(formData.selectedUsers)) {
+        formData.selectedUsers = JSON.stringify(formData.selectedUsers);
+      }
+
+      const data = new FormData();
+      Object.keys(formData).forEach((key) => {
+        data.append(key, formData[key]);
+      });
       const response = await apiServices(notification, "post", data, {
         headers: {
           "Content-Type": "multipart/form-data",

@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useDataMutation } from "../hook/use-data-mutations";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { Loader2, Star, X } from "lucide-react";
 import { formatSingleDate, getImageUrl } from "@/lib/utils";
@@ -78,19 +77,13 @@ const PageBase = () => {
                     {/* By User */}
                     <TableCell className="px-6 py-5">
                       <div className="flex items-center gap-2.5 font-semibold">
-                        {item.by?.avatarUrl ? (
-                          <Image
+                        <Image
                             src={getImageUrl(item.by.avatarUrl)}
                             width={40}
                             height={40}
                             alt="avatar"
                             className="rounded-full"
                           />
-                        ) : (
-                          <Avatar className="w-10 h-10">
-                            <AvatarImage src="/images/astrologer-placeholder.png" />
-                          </Avatar>
-                        )}
                         <span>
                           {item.by?.firstName} {item.by?.lastName}
                         </span>

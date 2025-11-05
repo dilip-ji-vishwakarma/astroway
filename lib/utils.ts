@@ -24,7 +24,12 @@ export const formatSingleDate = (date: any, forceYear?: boolean) => {
   return dateFormatted
 }
 
-export const getImageUrl = (imagePath:any) => {
-  if (!imagePath) return "";
-  return `${BASE_URL}${imagePath}`;
+export const getImageUrl = (imagePath: any) => {
+  if (!imagePath || imagePath === "undefined") {
+    return "/images/astrologer-placeholder.png";
+  }
+
+  const path = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
+  return `${BASE_URL}${path}`;
 };
+
