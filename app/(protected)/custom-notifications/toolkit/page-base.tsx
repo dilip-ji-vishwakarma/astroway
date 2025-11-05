@@ -65,11 +65,10 @@ export const PageBase = () => {
                     <TableCell className="px-[10px] py-5">
                       {item.imageUrl ? (
                         <Image
-                          src={getImageUrl(item.imageUrl)}
+                           src={getImageUrl(item.imageUrl) ?? "/images/astrologer-placeholder.png"}
                           width={40}
                           height={40}
                           alt="avatar"
-                          className="rounded-full object-cover shadow-sm"
                         />
                       ) : (
                         <Avatar className="w-10 h-10">
