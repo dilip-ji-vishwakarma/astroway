@@ -8,6 +8,7 @@ import { useDataMutation } from "../hook/use-data-mutation";
 import Image from "next/image";
 // import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff, Mail } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const PageBase = () => {
   const {
@@ -124,7 +125,7 @@ export const PageBase = () => {
                   )}
                 </div>
               </div>
-              {/* <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap items-center justify-between gap-4">
                 <Controller
                   name="remember"
                   control={control}
@@ -140,7 +141,7 @@ export const PageBase = () => {
                     </div>
                   )}
                 />
-              </div> */}
+              </div>
               <div className="mt-5 grid">
                 <Button
                   type="submit"

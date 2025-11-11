@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -29,12 +30,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
-  console.log(session?.user.role)
 
-  let modules = {};
+  let modules: any = {};
+  const role = session?.user.role || "";
 
-  if (session?.user.role) {
-    const res = await apiServices(`/admin/role?role=${session.user.role}`, "get");
+  if (role !== "superadmin" && role) {
+    const res = await apiServices(`/admin/role?name=${role}`, "get");
     if (res?.data && res.data.length > 0) {
       modules = res.data[0].module;
     }
@@ -53,7 +54,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <Providers>
-            <PermissionProvider value={modules}>
+            <PermissionProvider value={{ modules: modules || {}, role }}>
               {children}
             </PermissionProvider>
           </Providers>

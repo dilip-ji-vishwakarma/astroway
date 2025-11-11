@@ -2,21 +2,31 @@
 "use client"
 import { createContext, useContext } from "react";
 
-type ModulePermission = Record<string, {
+export type SinglePermission = {
   view?: boolean;
   edit?: boolean;
   create?: boolean;
   delete?: boolean;
-}>;
+};
 
-const PermissionContext = createContext<ModulePermission>({})
+export type PermissionCTX = {
+  role: string;
+  modules: {
+    [key: string]: SinglePermission;
+  };
+};
+
+const PermissionContext = createContext<PermissionCTX>({
+  role: "",
+  modules: {}
+});
 
 export const PermissionProvider = ({ value, children }: any) => {
   return (
     <PermissionContext.Provider value={value}>
       {children}
     </PermissionContext.Provider>
-  )
-}
+  );
+};
 
-export const usePermission = () => useContext(PermissionContext)
+export const usePermission = () => useContext(PermissionContext);

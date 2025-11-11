@@ -48,7 +48,6 @@
 //   setOpenMobile(false);
 // };
 
-
 //   return (
 //     <Sidebar
 //       className="border-r bg-white"
@@ -71,7 +70,7 @@
 //               {mainItems.map((item) => (
 //                 <SidebarMenuItem key={item.title}>
 //                   {item.children ? (
-//                     <Collapsible 
+//                     <Collapsible
 //                       className="group/collapsible"
 //                       open={openMenus.includes(item.title)}
 //                       onOpenChange={(open) => {
@@ -182,9 +181,8 @@ export function AppSidebar() {
   const [openMenus, setOpenMenus] = useState<string[]>([]);
   const { setOpenMobile } = useSidebar();
 
-  // ✅ permissions from context
-  const permissions = usePermission();
-console.log(permissions, "permissions")
+  const { modules, role } = usePermission();
+
   const isParentActive = useCallback(
     (item: any) => {
       if (!item.children) return false;
@@ -225,20 +223,19 @@ console.log(permissions, "permissions")
 
           <SidebarGroupContent>
             <SidebarMenu className="space-y-2">
-
               {mainItems
                 .filter((item) => {
-                  // parent without children
+                  if (role === "superadmin") return true; // full
+
                   if (!item.children) {
-                    return permissions[item.title]?.view === true;
+                    return modules?.[item?.title]?.view === true;
                   }
 
-                  // parent with children → show only if any child has view = true
-                  const childVisible = item.children.some(
-                    (c) => permissions[c.title]?.view === true
+                  return item.children?.some(
+                    (c) => modules?.[c?.title]?.view === true
                   );
-                  return childVisible;
                 })
+
                 .map((item) => (
                   <SidebarMenuItem key={item.title}>
                     {item.children ? (
@@ -246,14 +243,12 @@ console.log(permissions, "permissions")
                         className="group/collapsible"
                         open={openMenus.includes(item.title)}
                         onOpenChange={(open) => {
-                          if (open) {
+                          if (open)
                             setOpenMenus((prev) => [...prev, item.title]);
-                          } else {
-                            if (!isParentActive(item)) {
-                              setOpenMenus((prev) =>
-                                prev.filter((menu) => menu !== item.title)
-                              );
-                            }
+                          else if (!isParentActive(item)) {
+                            setOpenMenus((prev) =>
+                              prev.filter((menu) => menu !== item.title)
+                            );
                           }
                         }}
                       >
@@ -269,9 +264,10 @@ console.log(permissions, "permissions")
                         <CollapsibleContent>
                           <div className="mt-2 space-y-2 ml-2 rounded-md p-2 custom-shadow">
                             {item.children
-                              .filter(
-                                (child) =>
-                                  permissions[child.title]?.view === true
+                              .filter((child) =>
+                                role === "superadmin"
+                                  ? true
+                                  : modules?.[child.title]?.view === true
                               )
                               .map((child) => (
                                 <Link
@@ -314,7 +310,6 @@ console.log(permissions, "permissions")
                     )}
                   </SidebarMenuItem>
                 ))}
-
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
