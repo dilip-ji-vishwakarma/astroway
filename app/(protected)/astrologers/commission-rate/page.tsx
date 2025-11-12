@@ -1,20 +1,17 @@
+import type { Metadata } from "next";
+import Permission from "./permission";
+import { Suspense } from "react";
 import { Loader } from "@/components/ui-kit/Loader";
-import { Metadata } from "next";
-import React, { Suspense } from "react";
-import { BaseHeader } from "./toolkit/base-header";
-import { PageBase } from "./toolkit/page-base";
 
 export const metadata: Metadata = {
   title: "Commission Rate for Calls/Chats",
 };
 
-const CommissionRate = () => {
+export default function Page() {
   return (
     <Suspense fallback={<Loader />}>
-      <BaseHeader />
-      <PageBase />
+      <Permission  />
     </Suspense>
   );
-};
+}
 
-export default CommissionRate;
