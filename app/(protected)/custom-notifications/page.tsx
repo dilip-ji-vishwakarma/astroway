@@ -1,15 +1,11 @@
-import { Loader } from "@/components/ui-kit/Loader";
-import React, { Suspense } from "react";
-import { PageBase } from "./toolkit/page-base";
-import { BaseHeader } from "./toolkit/base_header";
+import type { Metadata } from "next";
+import Permission from "./permission";
 
-const CustomNotifications = () => {
-  return (
-    <Suspense fallback={<Loader />}>
-      <BaseHeader />
-      <PageBase />
-    </Suspense>
-  );
+export const metadata: Metadata = {
+  title: "Custom Notification",
 };
 
-export default CustomNotifications;
+export default function Page() {
+  return <Permission />;
+}
+

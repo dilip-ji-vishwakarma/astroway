@@ -1,21 +1,20 @@
-import { Loader } from "@/components/ui-kit/Loader";
-import React, { Suspense } from "react";
-import { PageBase } from "./toolkit/page-base";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import Permission from "./permission";
 import { apiServices } from "@/lib/api.services";
+import { Suspense } from "react";
+import { Loader } from "@/components/ui-kit/Loader";
 import { dashboard } from "@/lib/api-endpoints";
 
 export const metadata: Metadata = {
   title: 'Dashboard',
 }
 
-const Dashboard = async () => {
+export default async function Page() {
   const response = await apiServices(dashboard, "get");
   return (
     <Suspense fallback={<Loader />}>
-      <PageBase data={response.data}/>
+      <Permission response={response.data} />
     </Suspense>
   );
-};
+}
 
-export default Dashboard;

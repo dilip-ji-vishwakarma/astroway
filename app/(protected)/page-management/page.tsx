@@ -1,18 +1,19 @@
-import { Loader } from "@/components/ui-kit/Loader";
-import { TextH1 } from "@/components/ui-kit/TextH1";
-import { pages } from "@/lib/api-endpoints";
+import type { Metadata } from "next";
+import Permission from "./permission";
 import { apiServices } from "@/lib/api.services";
-import React, { Suspense } from "react";
-import { PageBase } from "./toolkit/page-base";
+import { pages } from "@/lib/api-endpoints";
+import { Suspense } from "react";
+import { Loader } from "@/components/ui-kit/Loader";
 
-const PageManagement = async () => {
+export const metadata: Metadata = {
+  title: "Page Management",
+};
+
+export default async function Page() {
   const response = await apiServices(pages, "get");
   return (
     <Suspense fallback={<Loader />}>
-      <TextH1>Pages</TextH1>
-      <PageBase initialData={response.data} />
+      <Permission response={response.data} />
     </Suspense>
   );
-};
-
-export default PageManagement;
+}

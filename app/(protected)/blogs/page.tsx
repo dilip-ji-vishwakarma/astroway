@@ -1,20 +1,10 @@
-import { Loader } from "@/components/ui-kit/Loader";
-import { Metadata } from "next";
-import React, { Suspense } from "react";
-import { BaseHeader } from "./toolkit/base-header";
-import { PageBase } from "./toolkit/page-base";
+import type { Metadata } from "next";
+import Permission from "./permission";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Blogs",
 };
 
-const Blogs = async () => {
-  return (
-    <Suspense fallback={<Loader />}>
-      <BaseHeader />
-      <PageBase />
-    </Suspense>
-  );
-};
-
-export default Blogs;
+export default function Page() {
+  return <Permission />;
+}

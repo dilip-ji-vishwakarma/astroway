@@ -1,18 +1,15 @@
-import React, { Suspense } from "react";
-import { PageBase } from "./toolkit/page-base";
-import { Loader } from "@/components/ui-kit/Loader";
-import { BaseHeader } from "./toolkit/base-header";
+import type { Metadata } from "next";
+import Permission from "./permission";
 import { apiServices } from "@/lib/api.services";
 import { role } from "@/lib/api-endpoints";
+import { Suspense } from "react";
+import { Loader } from "@/components/ui-kit/Loader";
 
-const TeamRole = async() => {
-    const response = await apiServices(role, "get");
-  return (
-    <Suspense fallback={<Loader />}>
-      <BaseHeader />
-      <PageBase response={response.data} />
-    </Suspense>
-  );
+export const metadata: Metadata = {
+  title: "Team Role",
 };
 
-export default TeamRole;
+export default async function Page() {
+  const response = await apiServices(role, "get");
+  return (<Suspense fallback={<Loader />}><Permission response={response.data}/></Suspense>);
+}

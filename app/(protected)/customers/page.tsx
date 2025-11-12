@@ -1,23 +1,19 @@
-import { Loader } from "@/components/ui-kit/Loader";
-import React, { Suspense } from "react";
-import PageBase from "./toolkit/page-base";
-import { Metadata } from "next";
-import { admin_users } from "@/lib/api-endpoints";
+import type { Metadata } from "next";
+import Permission from "./permission";
 import { apiServices } from "@/lib/api.services";
-import { BaseHeader } from "./toolkit/base-header";
+import { admin_users } from "@/lib/api-endpoints";
+import { Suspense } from "react";
+import { Loader } from "@/components/ui-kit/Loader";
 
 export const metadata: Metadata = {
-  title: 'Customers',
-}
+  title: "Customers",
+};
 
-const Customers = async () => {
+export default async function Page() {
   const response = await apiServices(admin_users, "get");
   return (
     <Suspense fallback={<Loader />}>
-      <BaseHeader response={response.data}/>
-      <PageBase/>
+      <Permission response={response.data} />
     </Suspense>
   );
-};
-
-export default Customers;
+}

@@ -1,19 +1,21 @@
-import React, { Suspense } from 'react'
-import { PageBase } from './toolkit/page-base'
-import { Loader } from '@/components/ui-kit/Loader'
-import { BaseHeader } from './toolkit/base_header'
-import { apiServices } from '@/lib/api.services'
-import { role, user_list } from '@/lib/api-endpoints'
+import type { Metadata } from "next";
+import Permission from "./permission";
+import { apiServices } from "@/lib/api.services";
+import { role, user_list } from "@/lib/api-endpoints";
+import { Suspense } from "react";
+import { Loader } from "@/components/ui-kit/Loader";
 
-const TeamList = async () => {
+export const metadata: Metadata = {
+  title: "Team List",
+};
+
+export default async function Page() {
   const response = await apiServices(user_list, "get");
   const roles = await apiServices(role, "get");
   return (
     <Suspense fallback={<Loader />}>
-      <BaseHeader response={response.data} role={roles.data} />
-      <PageBase roles={roles.data}/>
+      {" "}
+      <Permission response={response.data} roles={roles.data} />
     </Suspense>
-  )
+  );
 }
-
-export default TeamList

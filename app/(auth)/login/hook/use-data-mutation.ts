@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { apiServices } from "@/lib/api.services";
 import { mainItems } from "@/lib/menuItems";
-import { signIn, getSession } from "next-auth/react"; // <-- IMPORTANT
+import { signIn, getSession } from "next-auth/react"; 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
