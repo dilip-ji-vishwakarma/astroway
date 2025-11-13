@@ -19,6 +19,7 @@ import { Switch } from "@/components/ui/switch";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 import { useDataMutation } from "../hook/use-data-mutations";
 import { Label } from "@/components/ui/label";
+import { usePermission } from "@/src/context/PermissionContext";
 
 export const PageBase = () => {
   const {
@@ -34,6 +35,9 @@ export const PageBase = () => {
   } = useDataMutation();
 
   const { control } = useForm();
+  const { modules, role } = usePermission();
+  const canEdit = role === "superadmin" || modules?.["Blogs"]?.edit;
+  const canDelete = role === "superadmin" || modules?.["Blogs"]?.delete;
 
   return (
     <div className="mt-8">
@@ -66,12 +70,12 @@ export const PageBase = () => {
 
                   <TableCell className="px-[20px] py-5">
                     <Image
-                        src={getImageUrl(item.previewImage)}
-                        width={30}
-                        height={30}
-                        alt="avatar"
-                        className="rounded-full"
-                      />
+                      src={getImageUrl(item.previewImage)}
+                      width={30}
+                      height={30}
+                      alt="avatar"
+                      className="rounded-full"
+                    />
                   </TableCell>
 
                   <TableCell className="px-[20px] py-5">{item.title}</TableCell>
@@ -125,24 +129,27 @@ export const PageBase = () => {
                     align="right"
                     className="px-[30px] py-5 gap-3 flex items-center"
                   >
-                    <Link
-                      href={`/blogs/${item.slug}`}
-                      className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 cursor-pointer"
-                    >
-                      <SquarePen size={18} />
-                    </Link>
-
-                    <Button
-                      variant="outline"
-                      className="cursor-pointer"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      {load === item.id ? (
-                        <div className="w-[15px] h-[15px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
-                      ) : (
-                        <Trash2 size={18} />
-                      )}
-                    </Button>
+                    {canEdit && (
+                      <Link
+                        href={`/blogs/${item.slug}`}
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 cursor-pointer"
+                      >
+                        <SquarePen size={18} />
+                      </Link>
+                    )}
+                    {canDelete && (
+                      <Button
+                        variant="outline"
+                        className="cursor-pointer"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        {load === item.id ? (
+                          <div className="w-[15px] h-[15px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
+                        ) : (
+                          <Trash2 size={18} />
+                        )}
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))

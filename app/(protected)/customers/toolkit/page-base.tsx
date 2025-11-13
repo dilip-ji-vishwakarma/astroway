@@ -16,6 +16,7 @@ import { formatSingleDate, getImageUrl } from "@/lib/utils";
 import Link from "next/link";
 import { SquarePen, Loader2 } from "lucide-react";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
+import { usePermission } from "@/src/context/PermissionContext";
 
 const PageBase = () => {
   const {
@@ -27,6 +28,9 @@ const PageBase = () => {
     search,
     setSearch,
   } = useDataMutation();
+
+  const { modules, role } = usePermission();
+  const canEdit = role === "superadmin" || modules?.["Customers"]?.edit;
 
   return (
     <div className="mt-8">
@@ -54,9 +58,11 @@ const PageBase = () => {
                 <TableHead className="px-[10px] py-5">Email</TableHead>
                 <TableHead className="px-[10px] py-5">Date of Birth</TableHead>
                 <TableHead className="px-[10px] py-5">Time of Birth</TableHead>
-                <TableHead className="px-[10px] py-5 text-center">
-                  Action
-                </TableHead>
+                {canEdit && (
+                  <TableHead className="px-[10px] py-5 text-center">
+                    Action
+                  </TableHead>
+                )}
               </TableRow>
             </TableHeader>
 
@@ -72,12 +78,12 @@ const PageBase = () => {
                     </TableCell>
                     <TableCell className="px-[10px] py-5">
                       <Image
-                          src={getImageUrl(item.avatarUrl)}
-                          width={40}
-                          height={40}
-                          alt="avatar"
-                          className="rounded-full object-cover shadow-sm"
-                        />
+                        src={getImageUrl(item.avatarUrl)}
+                        width={40}
+                        height={40}
+                        alt="avatar"
+                        className="rounded-full object-cover shadow-sm"
+                      />
                     </TableCell>
                     <TableCell className="px-[10px] py-5 font-semibold text-gray-800">
                       {item.firstName || "-"}
@@ -108,15 +114,17 @@ const PageBase = () => {
                     <TableCell className="px-[10px] py-5 text-gray-600">
                       {item.timeOfBirth || "-"}
                     </TableCell>
+                    {canEdit && (
                     <TableCell className="px-[10px] py-5 text-center">
-                      <Link
-                        href={`/customers/${item.id}`}
-                        className="flex gap-2 items-center hover:text-[#e25016]"
-                      >
-                        <SquarePen size={18} />
-                        Edit
-                      </Link>
+                        <Link
+                          href={`/customers/${item.id}`}
+                          className="flex gap-2 items-center hover:text-[#e25016]"
+                        >
+                          <SquarePen size={18} />
+                          Edit
+                        </Link>
                     </TableCell>
+                     )}
                   </TableRow>
                 ))
               ) : (

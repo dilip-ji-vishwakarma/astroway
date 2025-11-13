@@ -7,12 +7,16 @@ import {
 import { Plus } from "lucide-react";
 import React from "react";
 import Link from "next/link";
+import { usePermission } from "@/src/context/PermissionContext";
 
 
 export const BaseHeader = () => {
+const { modules, role } = usePermission();
+  const canCreate = role === "superadmin" || modules?.["Blogs"]?.create;
   return (
     <PageHeader containerVariation="fluid" height="l">
       <PageHeaderLeft>Blogs</PageHeaderLeft>
+      {canCreate && (
       <PageHeaderRight>
         <Link
         href={"/blogs/new-post"}
@@ -22,6 +26,7 @@ export const BaseHeader = () => {
           Add Post
         </Link>
       </PageHeaderRight>
+      )}
     </PageHeader>
   );
 };
