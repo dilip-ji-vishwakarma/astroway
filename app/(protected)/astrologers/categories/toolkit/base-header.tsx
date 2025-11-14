@@ -13,7 +13,7 @@ import { usePermission } from "@/src/context/PermissionContext";
 export const BaseHeader = () => {
   const [open, setOpen] = useState(false);
   const { modules, role } = usePermission();
-  const canAdd = role === "superadmin" || modules?.["Categories"]?.edit;
+  const canAdd = role === "superadmin" || modules?.["Categories"]?.create;
   return (
     <>
       <PageHeader containerVariation="fluid" height="l">

@@ -14,7 +14,7 @@ export const BaseHeader = () => {
   const [open, setOpen] = useState(false);
   const { modules, role } = usePermission();
   const canAdd =
-    role === "superadmin" || modules?.["Commission Rate for Calls/Chats"]?.edit;
+    role === "superadmin" || modules?.["Commission Rate for Calls/Chats"]?.create;
   return (
     <>
       <PageHeader containerVariation="fluid" height="l">

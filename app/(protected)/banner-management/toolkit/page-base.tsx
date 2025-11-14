@@ -24,6 +24,7 @@ import { UpdateBanner } from "./update-banner";
 import { useDataMutation } from "../hook/use-data-mutation";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 import { Label } from "@/components/ui/label";
+import { usePermission } from "@/src/context/PermissionContext";
 
 export const PageBase = () => {
   const [open, setOpen] = useState(false);
@@ -39,6 +40,11 @@ export const PageBase = () => {
     deletingId,
     tooglegId,
   } = useDataMutation();
+
+  const { modules, role } = usePermission();
+  const canEdit = role === "superadmin" || modules?.["Banner Management"]?.edit;
+  const canDelete =
+    role === "superadmin" || modules?.["Banner Management"]?.delete;
 
   return (
     <div className="mt-5 relative">
@@ -58,72 +64,75 @@ export const PageBase = () => {
               key={index}
               className="relative group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 bg-white"
             >
-              {/* Dropdown Menu */}
-              <DropdownMenu>
-                <DropdownMenuTrigger className="absolute top-3 right-3 bg-black/40 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition duration-300 z-10 cursor-pointer">
-                  <EllipsisVertical size={18} />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="w-44 rounded-xl shadow-xl border border-slate-100"
-                >
-                  <DropdownMenuItem
-                    className="flex items-center gap-2 text-slate-700 hover:bg-slate-100"
-                    onSelect={() => {
-                      setOpen(true);
-                      setSelectedItem(item);
-                    }}
+              {(canEdit || canDelete) && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="absolute top-3 right-3 bg-black/40 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition duration-300 z-10 cursor-pointer">
+                    <EllipsisVertical size={18} />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    className="w-44 rounded-xl shadow-xl border border-slate-100"
                   >
-                    <Pencil size={16} className="text-blue-500" />
-                    Edit Banner
-                  </DropdownMenuItem>
-
-                  <DropdownMenuSeparator />
-
-                  <DropdownMenuItem
-                    className="flex items-center gap-2 cursor-pointer hover:bg-slate-100"
-                    onSelect={(e) => {
-                      e.preventDefault();
-                      handleToogle(item.id, item.isActive);
-                    }}
-                  >
-                    {tooglegId === item.id ? (
-                      <span className="text-xs text-slate-500">Loading...</span>
-                    ) : item.isActive ? (
-                      <>
-                        <CheckCircle size={16} className="text-green-500" />
-                        <span>Active</span>
-                      </>
-                    ) : (
-                      <>
-                        <Circle size={16} className="text-gray-400" />
-                        <span>Inactive</span>
-                      </>
+                    {canEdit && (
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 text-slate-700 hover:bg-slate-100"
+                        onSelect={() => {
+                          setOpen(true);
+                          setSelectedItem(item);
+                        }}
+                      >
+                        <Pencil size={16} className="text-blue-500" />
+                        Edit Banner
+                      </DropdownMenuItem>
                     )}
-                  </DropdownMenuItem>
-
-                  <DropdownMenuSeparator />
-
-                  <DropdownMenuItem
-                    className="flex items-center gap-2 text-red-600 hover:bg-red-50 cursor-pointer"
-                    onSelect={(e) => {
-                      e.preventDefault();
-                      handleDelete(item.id);
-                    }}
-                  >
-                    {deletingId === item.id ? (
-                      <span>Deleting...</span>
-                    ) : (
-                      <>
-                        <Trash2 size={16} />
-                        <span>Delete</span>
-                      </>
+                    <DropdownMenuSeparator />
+                    {canEdit && (
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 cursor-pointer hover:bg-slate-100"
+                        onSelect={(e) => {
+                          e.preventDefault();
+                          handleToogle(item.id, item.isActive);
+                        }}
+                      >
+                        {tooglegId === item.id ? (
+                          <span className="text-xs text-slate-500">
+                            Loading...
+                          </span>
+                        ) : item.isActive ? (
+                          <>
+                            <CheckCircle size={16} className="text-green-500" />
+                            <span>Active</span>
+                          </>
+                        ) : (
+                          <>
+                            <Circle size={16} className="text-gray-400" />
+                            <span>Inactive</span>
+                          </>
+                        )}
+                      </DropdownMenuItem>
                     )}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              {/* Image */}
+                    <DropdownMenuSeparator />
+                    {canDelete && (
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 text-red-600 hover:bg-red-50 cursor-pointer"
+                        onSelect={(e) => {
+                          e.preventDefault();
+                          handleDelete(item.id);
+                        }}
+                      >
+                        {deletingId === item.id ? (
+                          <span>Deleting...</span>
+                        ) : (
+                          <>
+                            <Trash2 size={16} />
+                            <span>Delete</span>
+                          </>
+                        )}
+                      </DropdownMenuItem>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
               {item.url ? (
                 <Image
                   src={getImageUrl(item.url)}
