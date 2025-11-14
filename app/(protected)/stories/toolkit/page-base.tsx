@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { useDataMutation } from "../hook/use-data-mutation";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 import { Label } from "@/components/ui/label";
+import { usePermission } from "@/src/context/PermissionContext";
 
 export const PageBase = () => {
   const {
@@ -27,6 +28,9 @@ export const PageBase = () => {
     handleDelete,
     load,
   } = useDataMutation();
+
+    const { modules, role } = usePermission();
+    const canDelete = role === "superadmin" || modules?.["Stories"]?.delete;
 
   return (
     <div className="mt-8 relative">
@@ -69,9 +73,11 @@ export const PageBase = () => {
                 <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
                   Status
                 </TableHead>
+                {canDelete && (
                 <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
                   Action
                 </TableHead>
+                )}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -122,6 +128,7 @@ export const PageBase = () => {
                           {item.isActive ? "Active" : "Inactive"}
                         </span>
                       </TableCell>
+                      {canDelete && (
                       <TableCell className="px-6 py-5 flex gap-2">
                         <Button
                           variant="outline"
@@ -136,6 +143,7 @@ export const PageBase = () => {
                           )}
                         </Button>
                       </TableCell>
+                      )}
                     </TableRow>
                   ))
                 : !loading && (

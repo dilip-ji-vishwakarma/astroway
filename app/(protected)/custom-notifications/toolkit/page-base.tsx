@@ -15,6 +15,7 @@ import Image from "next/image";
 import { formatSingleDate, getImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { usePermission } from "@/src/context/PermissionContext";
 
 export const PageBase = () => {
   const {
@@ -26,6 +27,13 @@ export const PageBase = () => {
     deletingId,
     handleDelete,
   } = useDataMutation();
+
+  const { modules, role } = usePermission();
+  const canEdit =
+    role === "superadmin" || modules?.["Custom Notifications"]?.edit;
+  const canDelete =
+    role === "superadmin" || modules?.["Custom Notifications"]?.delete;
+
   return (
     <div className="mt-4 relative">
       <Label className="text-md font-semibold">{`${pagination.total} Listings`}</Label>
@@ -45,9 +53,11 @@ export const PageBase = () => {
                 <TableHead className="px-[10px] py-5">Type</TableHead>
                 <TableHead className="px-[10px] py-5">Added By</TableHead>
                 <TableHead className="px-[10px] py-5">Created At</TableHead>
-                <TableHead className="px-[10px] py-5 text-center">
-                  Action
-                </TableHead>
+                {(canEdit || canDelete) && (
+                  <TableHead className="px-[10px] py-5 text-center">
+                    Action
+                  </TableHead>
+                )}
               </TableRow>
             </TableHeader>
 
@@ -87,30 +97,35 @@ export const PageBase = () => {
                         ? formatSingleDate(item.createdAt, true)
                         : "-"}
                     </TableCell>
-
-                    <TableCell className="px-6 py-5 flex gap-2">
-                      <div className="flex justify-end items-center gap-3">
-                        <Button
-                          variant="outline"
-                          className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 cursor-pointer"
-                          onClick={() => {}}
-                          disabled
-                        >
-                          <SquarePen size={18} />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          className="cursor-pointer flex items-center justify-center"
-                          onClick={() => handleDelete(item.id)}
-                        >
-                          {deletingId == item.id ? (
-                            <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500 m-auto" />
-                          ) : (
-                            <Trash2 size={18} className="text-[#E25016]" />
+                    {(canEdit || canDelete) && (
+                      <TableCell className="px-6 py-5 flex gap-2">
+                        <div className="flex justify-end items-center gap-3">
+                          {canEdit && (
+                            <Button
+                              variant="outline"
+                              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 cursor-pointer"
+                              onClick={() => {}}
+                              disabled
+                            >
+                              <SquarePen size={18} />
+                            </Button>
                           )}
-                        </Button>
-                      </div>
-                    </TableCell>
+                          {canDelete && (
+                            <Button
+                              variant="outline"
+                              className="cursor-pointer flex items-center justify-center"
+                              onClick={() => handleDelete(item.id)}
+                            >
+                              {deletingId == item.id ? (
+                                <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500 m-auto" />
+                              ) : (
+                                <Trash2 size={18} className="text-[#E25016]" />
+                              )}
+                            </Button>
+                          )}
+                        </div>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))
               ) : (

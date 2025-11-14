@@ -8,18 +8,24 @@ import {
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { AddNotification } from "./add_notification";
+import { usePermission } from "@/src/context/PermissionContext";
 
 export const BaseHeader = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const { modules, role } = usePermission();
+  const canAdd =
+    role === "superadmin" || modules?.["Custom Notifications"]?.create;
   return (
     <>
       <PageHeader containerVariation="fluid" height="l">
         <PageHeaderLeft>Custom Notification</PageHeaderLeft>
-        <PageHeaderRight>
-          <CallToActionButton onClick={() => setOpen(true)}>
-            <Plus /> Add Notification
-          </CallToActionButton>
-        </PageHeaderRight>
+        {canAdd && (
+          <PageHeaderRight>
+            <CallToActionButton onClick={() => setOpen(true)}>
+              <Plus /> Add Notification
+            </CallToActionButton>
+          </PageHeaderRight>
+        )}
       </PageHeader>
       <AddNotification open={open} onOpenChange={setOpen} />
     </>

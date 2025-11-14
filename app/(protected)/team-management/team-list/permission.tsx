@@ -7,7 +7,7 @@ import { BaseHeader } from "./toolkit/base_header";
 
 const Permission = ({ response, roles }: any) => (
   <>
-    <BaseHeader response={response} role={roles} />
+    <BaseHeader response={response} roles={roles} />
     <PageBase roles={roles} />
   </>
 );
