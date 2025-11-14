@@ -20,6 +20,7 @@ import { UpdateCategory } from "./update-category";
 import { Label } from "@/components/ui/label";
 import { DeleteCategory } from "./delete-category";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
+import { usePermission } from "@/src/context/PermissionContext";
 
 const PageBase = () => {
   const [open, setOpen] = useState(false);
@@ -38,6 +39,9 @@ const PageBase = () => {
   } = useDataMutation();
 
   const { control } = useForm();
+  const { modules, role } = usePermission();
+  const canEdit = role === "superadmin" || modules?.["Categories"]?.edit;
+  const canDelete = role === "superadmin" || modules?.["Categories"]?.delete;
 
   return (
     <div className="mt-8">
@@ -57,8 +61,12 @@ const PageBase = () => {
               <TableHead className="px-[30px] py-5">Name</TableHead>
               <TableHead className="px-[30px] py-5">Added By</TableHead>
               <TableHead className="px-[30px] py-5">Updated By</TableHead>
-              <TableHead className="px-[30px] py-5">Status</TableHead>
-              <TableHead className="px-[30px] py-5">Action</TableHead>
+              {canEdit && (
+                <TableHead className="px-[30px] py-5">Status</TableHead>
+              )}
+              {(canEdit || canDelete) && (
+                <TableHead className="px-[30px] py-5">Action</TableHead>
+              )}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -68,12 +76,12 @@ const PageBase = () => {
                   <TableCell className="px-[30px] py-5">{item.id}</TableCell>
                   <TableCell className="px-[30px] py-5">
                     <Image
-                        src={getImageUrl(item.icon)}
-                        width={40}
-                        height={40}
-                        alt="avatar"
-                        className="rounded-full"
-                      />
+                      src={getImageUrl(item.icon)}
+                      width={40}
+                      height={40}
+                      alt="avatar"
+                      className="rounded-full"
+                    />
                   </TableCell>
                   <TableCell className="px-[30px] py-5">{item.name}</TableCell>
                   <TableCell className="px-[30px] py-5">
@@ -82,58 +90,66 @@ const PageBase = () => {
                   <TableCell className="px-[30px] py-5">
                     {item.updatedByAdmin?.name}
                   </TableCell>
-                  <TableCell className="px-[30px] py-5">
-                    {submittingItems.has(item.id) ? (
-                      <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
-                    ) : (
-                      <Controller
-                        name={`isActive-${item.id}`}
-                        control={control}
-                        defaultValue={item.isActive}
-                        render={({ field: { onChange, value } }) => (
-                          <Switch
-                            className="cursor-pointer"
-                            checked={value}
-                            disabled={submittingItems.has(item.id)}
-                            onCheckedChange={(checked) => {
-                              onChange(checked);
-                              handleSwitchChange(item.id, checked);
-                            }}
+                  {canEdit && (
+                    <TableCell className="px-[30px] py-5">
+                      {submittingItems.has(item.id) ? (
+                        <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
+                      ) : (
+                        <Controller
+                          name={`isActive-${item.id}`}
+                          control={control}
+                          defaultValue={item.isActive}
+                          render={({ field: { onChange, value } }) => (
+                            <Switch
+                              className="cursor-pointer"
+                              checked={value}
+                              disabled={submittingItems.has(item.id)}
+                              onCheckedChange={(checked) => {
+                                onChange(checked);
+                                handleSwitchChange(item.id, checked);
+                              }}
+                            />
+                          )}
+                        />
+                      )}
+                    </TableCell>
+                  )}
+                  {(canEdit || canDelete) && (
+                    <TableCell className="px-[30px] py-5 gap-3 flex items-center">
+                      {canEdit && (
+                        <Button
+                          variant="outline"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setOpen(true);
+                            setSelectedItem(item);
+                          }}
+                        >
+                          <SquarePen
+                            color="currentColor"
+                            size={18}
+                            className="text-gray-600"
                           />
-                        )}
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell className="px-[30px] py-5 gap-3 flex items-center">
-                    <Button
-                      variant="outline"
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setOpen(true);
-                        setSelectedItem(item);
-                      }}
-                    >
-                      <SquarePen
-                        color="currentColor"
-                        size={18}
-                        className="text-gray-600"
-                      />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setOpenAlert(true);
-                        setSelectedItemAlert(item);
-                      }}
-                    >
-                      <Trash2
-                        color="currentColor"
-                        size={18}
-                        className="text-gray-600"
-                      />
-                    </Button>
-                  </TableCell>
+                        </Button>
+                      )}
+                      {canDelete && (
+                        <Button
+                          variant="outline"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setOpenAlert(true);
+                            setSelectedItemAlert(item);
+                          }}
+                        >
+                          <Trash2
+                            color="currentColor"
+                            size={18}
+                            className="text-gray-600"
+                          />
+                        </Button>
+                      )}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             ) : (

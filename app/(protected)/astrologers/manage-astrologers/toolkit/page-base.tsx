@@ -17,6 +17,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import Link from "next/link";
 import { SearchAndFilter } from "@/components/ui-kit/SearchAndFilter";
+import { usePermission } from "@/src/context/PermissionContext";
 
 export default function PageBase() {
   const {
@@ -32,6 +33,8 @@ export default function PageBase() {
   } = useDataMutation();
 
   const { control } = useForm();
+  const { modules, role } = usePermission();
+  const canEdit = role === "superadmin" || modules?.["Manage Astrologers"]?.edit;
 
   return (
     <div className="p-6">
@@ -65,9 +68,13 @@ export default function PageBase() {
                   <TableHead className="px-[20px] py-5">Phone</TableHead>
                   <TableHead className="px-[20px] py-5">Gender</TableHead>
                   <TableHead className="px-[20px] py-5">Request</TableHead>
-                  <TableHead className="px-[20px] py-5">Approved</TableHead>
+                  {canEdit && (
+                    <TableHead className="px-[20px] py-5">Approved</TableHead>
+                  )}
                   <TableHead className="px-[20px] py-5">Block</TableHead>
-                  <TableHead className="px-[20px] py-5">Action</TableHead>
+                  {canEdit && (
+                    <TableHead className="px-[20px] py-5">Action</TableHead>
+                  )}
                 </TableRow>
               </TableHeader>
 
@@ -80,12 +87,12 @@ export default function PageBase() {
                       </TableCell>
                       <TableCell className="px-[20px] py-5">
                         <Image
-                            src={getImageUrl(item.avatarUrl)}
-                            width={40}
-                            height={40}
-                            alt="avatar"
-                            className="rounded-full"
-                          />
+                          src={getImageUrl(item.avatarUrl)}
+                          width={40}
+                          height={40}
+                          alt="avatar"
+                          className="rounded-full"
+                        />
                       </TableCell>
                       <TableCell className="px-4 py-2 text-sm text-gray-700">
                         {item.firstName}
@@ -94,7 +101,12 @@ export default function PageBase() {
                         {item.lastName}
                       </TableCell>
                       <TableCell className="px-4 py-2 text-sm text-gray-700">
-                        <Link className="text-blue-500 hover:underline" href={`mailto:${item.email}`}>{item.email}</Link>
+                        <Link
+                          className="text-blue-500 hover:underline"
+                          href={`mailto:${item.email}`}
+                        >
+                          {item.email}
+                        </Link>
                       </TableCell>
                       <TableCell className="px-4 py-2 text-sm text-gray-700">
                         {item.phone}
@@ -115,39 +127,43 @@ export default function PageBase() {
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell className="px-[20px] py-5">
-                        {submittingItems.has(item.id) ? (
-                          <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
-                        ) : (
-                          <Controller
-                            name={`isApproved-${item.id}`}
-                            control={control}
-                            defaultValue={item.isApproved}
-                            render={({ field: { onChange, value } }) => (
-                              <Switch
-                                className="cursor-pointer"
-                                checked={value}
-                                disabled={submittingItems.has(item.id)}
-                                onCheckedChange={(checked) => {
-                                  onChange(checked);
-                                  handleSwitchChange(item.id, checked);
-                                }}
-                              />
-                            )}
-                          />
-                        )}
-                      </TableCell>
+                      {canEdit && (
+                        <TableCell className="px-[20px] py-5">
+                          {submittingItems.has(item.id) ? (
+                            <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
+                          ) : (
+                            <Controller
+                              name={`isApproved-${item.id}`}
+                              control={control}
+                              defaultValue={item.isApproved}
+                              render={({ field: { onChange, value } }) => (
+                                <Switch
+                                  className="cursor-pointer"
+                                  checked={value}
+                                  disabled={submittingItems.has(item.id)}
+                                  onCheckedChange={(checked) => {
+                                    onChange(checked);
+                                    handleSwitchChange(item.id, checked);
+                                  }}
+                                />
+                              )}
+                            />
+                          )}
+                        </TableCell>
+                      )}
                       <TableCell className="px-[20px] py-5">
                         {item.isBlocked ? "Yes" : "No"}
                       </TableCell>
-                      <TableCell className="px-[20px] py-5">
-                        <Link
-                          href={`/astrologers/manage-astrologers/${item.id}`}
-                          className="flex gap-2 items-center hover:text-[#e25016]"
-                        >
-                          <SquarePen size={"18px"} /> Edit
-                        </Link>
-                      </TableCell>
+                      {canEdit && (
+                        <TableCell className="px-[20px] py-5">
+                          <Link
+                            href={`/astrologers/manage-astrologers/${item.id}`}
+                            className="flex gap-2 items-center hover:text-[#e25016]"
+                          >
+                            <SquarePen size={"18px"} /> Edit
+                          </Link>
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))
                 ) : (

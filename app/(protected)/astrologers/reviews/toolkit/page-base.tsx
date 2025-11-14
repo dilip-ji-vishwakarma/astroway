@@ -15,6 +15,7 @@ import { Loader2, Star, X } from "lucide-react";
 import { formatSingleDate, getImageUrl } from "@/lib/utils";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 import { Label } from "@/components/ui/label";
+import { usePermission } from "@/src/context/PermissionContext";
 
 const PageBase = () => {
   const {
@@ -26,6 +27,9 @@ const PageBase = () => {
     deletingId,
     handleDelete,
   } = useDataMutation();
+
+  const { modules, role } = usePermission();
+  const canDelete = role === "superadmin" || modules?.["Reviews"]?.delete;
 
   return (
     <div className="mt-8">
@@ -57,9 +61,11 @@ const PageBase = () => {
                 <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
                   Created At
                 </TableHead>
-                <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
-                  Action
-                </TableHead>
+                {canDelete && (
+                  <TableHead className="px-6 py-4 text-sm font-semibold text-gray-600">
+                    Action
+                  </TableHead>
+                )}
               </TableRow>
             </TableHeader>
 
@@ -78,12 +84,12 @@ const PageBase = () => {
                     <TableCell className="px-6 py-5">
                       <div className="flex items-center gap-2.5 font-semibold">
                         <Image
-                            src={getImageUrl(item.by.avatarUrl)}
-                            width={40}
-                            height={40}
-                            alt="avatar"
-                            className="rounded-full"
-                          />
+                          src={getImageUrl(item.by.avatarUrl)}
+                          width={40}
+                          height={40}
+                          alt="avatar"
+                          className="rounded-full"
+                        />
                         <span>
                           {item.by?.firstName} {item.by?.lastName}
                         </span>
@@ -123,18 +129,20 @@ const PageBase = () => {
                     </TableCell>
 
                     {/* Action */}
-                    <TableCell className="px-6 py-5 text-center">
-                      {deletingId === item.id ? (
-                        <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500 m-auto" />
-                      ) : (
-                        <X
-                          color="#F70A18"
-                          size={18}
-                          className="border p-0.5 rounded-full border-solid border-[#F70A18] cursor-pointer hover:bg-[#f70a1820] transition"
-                          onClick={() => handleDelete(item.id)}
-                        />
-                      )}
-                    </TableCell>
+                    {canDelete && (
+                      <TableCell className="px-6 py-5 text-center">
+                        {deletingId === item.id ? (
+                          <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500 m-auto" />
+                        ) : (
+                          <X
+                            color="#F70A18"
+                            size={18}
+                            className="border p-0.5 rounded-full border-solid border-[#F70A18] cursor-pointer hover:bg-[#f70a1820] transition"
+                            onClick={() => handleDelete(item.id)}
+                          />
+                        )}
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))
               ) : (
@@ -152,7 +160,6 @@ const PageBase = () => {
         </div>
       )}
 
-      {/* Pagination - visible only when not loading and data exists */}
       {!loading && data.length > 0 && (
         <div className="flex justify-between items-center w-full mt-6">
           <MetaPagination

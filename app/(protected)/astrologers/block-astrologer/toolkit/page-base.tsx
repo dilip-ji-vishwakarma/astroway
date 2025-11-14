@@ -19,6 +19,7 @@ import Image from "next/image";
 import { formatSingleDate, getImageUrl } from "@/lib/utils";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 import { Loader2 } from "lucide-react";
+import { usePermission } from "@/src/context/PermissionContext";
 
 export const PageBase = () => {
   const {
@@ -34,6 +35,8 @@ export const PageBase = () => {
   } = useDataMutation();
 
   const { control } = useForm();
+  const { modules, role } = usePermission();
+  const canEdit = role === "superadmin" || modules?.["Block Astrologer"]?.edit;
 
   return (
     <div className="mt-8">
@@ -60,9 +63,11 @@ export const PageBase = () => {
                 <TableHead className="px-[10px] py-5">Email</TableHead>
                 <TableHead className="px-[10px] py-5">Date</TableHead>
                 <TableHead className="px-[10px] py-5">Reason</TableHead>
-                <TableHead className="px-[10px] py-5 text-center">
-                  Blocked
-                </TableHead>
+                {canEdit && (
+                  <TableHead className="px-[10px] py-5 text-center">
+                    Blocked
+                  </TableHead>
+                )}
               </TableRow>
             </TableHeader>
 
@@ -73,12 +78,12 @@ export const PageBase = () => {
                     <TableCell className="px-[10px] py-5">{item.id}</TableCell>
                     <TableCell className="px-[10px] py-5">
                       <Image
-                          src={getImageUrl(item.avatarUrl)}
-                          width={40}
-                          height={40}
-                          alt="avatar"
-                          className="rounded-full"
-                        />
+                        src={getImageUrl(item.avatarUrl)}
+                        width={40}
+                        height={40}
+                        alt="avatar"
+                        className="rounded-full"
+                      />
                     </TableCell>
                     <TableCell className="px-[10px] py-5">
                       {item.firstName || "-"}
@@ -109,28 +114,30 @@ export const PageBase = () => {
                     <TableCell className="px-[10px] py-5">
                       {item.blockedReason || "Not Added"}
                     </TableCell>
-                    <TableCell className="px-[10px] py-5 text-center">
-                      {submittingItems.has(item.id) ? (
-                        <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500"></div>
-                      ) : (
-                        <Controller
-                          name={`isBlocked-${item.id}`}
-                          control={control}
-                          defaultValue={item.isBlocked}
-                          render={({ field: { onChange, value } }) => (
-                            <Switch
-                              className="cursor-pointer"
-                              checked={value}
-                              disabled={submittingItems.has(item.id)}
-                              onCheckedChange={(checked) => {
-                                onChange(checked);
-                                handleSwitchChange(item.id, checked);
-                              }}
-                            />
-                          )}
-                        />
-                      )}
-                    </TableCell>
+                    {canEdit && (
+                      <TableCell className="px-[10px] py-5 text-center">
+                        {submittingItems.has(item.id) ? (
+                          <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500"></div>
+                        ) : (
+                          <Controller
+                            name={`isBlocked-${item.id}`}
+                            control={control}
+                            defaultValue={item.isBlocked}
+                            render={({ field: { onChange, value } }) => (
+                              <Switch
+                                className="cursor-pointer"
+                                checked={value}
+                                disabled={submittingItems.has(item.id)}
+                                onCheckedChange={(checked) => {
+                                  onChange(checked);
+                                  handleSwitchChange(item.id, checked);
+                                }}
+                              />
+                            )}
+                          />
+                        )}
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))
               ) : (

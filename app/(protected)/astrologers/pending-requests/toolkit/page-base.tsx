@@ -18,6 +18,7 @@ import Image from "next/image";
 import { getImageUrl } from "@/lib/utils";
 import { MessageSquare, PhoneCall, SquarePen, Loader2 } from "lucide-react";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
+import { usePermission } from "@/src/context/PermissionContext";
 
 export const PageBase = () => {
   const {
@@ -33,6 +34,8 @@ export const PageBase = () => {
   } = useDataMutation();
 
   const { control } = useForm();
+  const { modules, role } = usePermission();
+  const canEdit = role === "superadmin" || modules?.["Pending Requests"]?.edit;
 
   return (
     <div className="mt-8">
@@ -60,10 +63,14 @@ export const PageBase = () => {
                 <TableHead className="px-[10px] py-5">Email</TableHead>
                 <TableHead className="px-[10px] py-5">Gender</TableHead>
                 <TableHead className="px-[10px] py-5">Total Request</TableHead>
-                <TableHead className="px-[10px] py-5">Approved</TableHead>
-                <TableHead className="px-[10px] py-5 text-center">
-                  Action
-                </TableHead>
+                {canEdit && (
+                  <TableHead className="px-[10px] py-5">Approved</TableHead>
+                )}
+                {canEdit && (
+                  <TableHead className="px-[10px] py-5 text-center">
+                    Action
+                  </TableHead>
+                )}
               </TableRow>
             </TableHeader>
 
@@ -79,12 +86,12 @@ export const PageBase = () => {
                     </TableCell>
                     <TableCell className="px-[10px] py-5">
                       <Image
-                          src={getImageUrl(item.avatarUrl)}
-                          width={40}
-                          height={40}
-                          alt="avatar"
-                          className="rounded-full object-cover shadow-sm"
-                        />
+                        src={getImageUrl(item.avatarUrl)}
+                        width={40}
+                        height={40}
+                        alt="avatar"
+                        className="rounded-full object-cover shadow-sm"
+                      />
                     </TableCell>
                     <TableCell className="px-[10px] py-5 font-semibold text-gray-800">
                       {item.firstName || "-"}
@@ -123,36 +130,40 @@ export const PageBase = () => {
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell className="px-[10px] py-5 text-center">
-                      {submittingItems.has(item.id) ? (
-                        <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
-                      ) : (
-                        <Controller
-                          name={`isApproved-${item.id}`}
-                          control={control}
-                          defaultValue={item.isApproved}
-                          render={({ field: { onChange, value } }) => (
-                            <Switch
-                              className="cursor-pointer"
-                              checked={value}
-                              disabled={submittingItems.has(item.id)}
-                              onCheckedChange={(checked) => {
-                                onChange(checked);
-                                handleSwitchChange(item.id, checked);
-                              }}
-                            />
-                          )}
-                        />
-                      )}
-                    </TableCell>
-                    <TableCell className="px-[10px] py-5 text-center">
-                      <Link
-                        href={`/astrologers/pending-requests/${item.id}`}
-                        className="flex gap-2 items-center hover:text-[#e25016]"
-                      >
-                        <SquarePen size={18} /> Edit
-                      </Link>
-                    </TableCell>
+                    {canEdit && (
+                      <TableCell className="px-[10px] py-5 text-center">
+                        {submittingItems.has(item.id) ? (
+                          <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
+                        ) : (
+                          <Controller
+                            name={`isApproved-${item.id}`}
+                            control={control}
+                            defaultValue={item.isApproved}
+                            render={({ field: { onChange, value } }) => (
+                              <Switch
+                                className="cursor-pointer"
+                                checked={value}
+                                disabled={submittingItems.has(item.id)}
+                                onCheckedChange={(checked) => {
+                                  onChange(checked);
+                                  handleSwitchChange(item.id, checked);
+                                }}
+                              />
+                            )}
+                          />
+                        )}
+                      </TableCell>
+                    )}
+                    {canEdit && (
+                      <TableCell className="px-[10px] py-5 text-center">
+                        <Link
+                          href={`/astrologers/pending-requests/${item.id}`}
+                          className="flex gap-2 items-center hover:text-[#e25016]"
+                        >
+                          <SquarePen size={18} /> Edit
+                        </Link>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))
               ) : (

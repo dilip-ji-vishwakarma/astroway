@@ -8,13 +8,17 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
 import { CreateGift } from "./create-gift";
+import { usePermission } from "@/src/context/PermissionContext";
 
 export const BaseHeader = () => {
   const [open, setOpen] = useState(false);
+    const { modules, role } = usePermission();
+        const canAdd = role === "superadmin" || modules?.["Gifts"]?.edit;
   return (
     <>
     <PageHeader containerVariation="fluid" height="l">
       <PageHeaderLeft>Gifts</PageHeaderLeft>
+      {canAdd && (
       <PageHeaderRight>
         <Button
           variant={"outline"}
@@ -27,6 +31,7 @@ export const BaseHeader = () => {
           Add Gift
         </Button>
       </PageHeaderRight>
+      )}
     </PageHeader>
     <CreateGift open={open} onOpenChange={setOpen}/>
     </>

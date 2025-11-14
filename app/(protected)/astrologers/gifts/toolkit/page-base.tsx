@@ -19,6 +19,7 @@ import { UpdateGift } from "./update-gift";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 import { useDataMutation } from "../hook/use-data-mutation";
 import { Label } from "@/components/ui/label";
+import { usePermission } from "@/src/context/PermissionContext";
 
 export const PageBase = () => {
   const [open, setOpen] = useState(false);
@@ -37,6 +38,9 @@ export const PageBase = () => {
   } = useDataMutation();
 
   const { control } = useForm();
+  const { modules, role } = usePermission();
+  const canEdit = role === "superadmin" || modules?.["Gifts"]?.edit;
+  const canDelete = role === "superadmin" || modules?.["Gifts"]?.delete;
 
   return (
     <div className="mt-8 relative">
@@ -56,8 +60,12 @@ export const PageBase = () => {
                 <TableHead className="px-[20px] py-5">Amount</TableHead>
                 <TableHead className="px-[20px] py-5">Added By</TableHead>
                 <TableHead className="px-[20px] py-5">Updated By</TableHead>
-                <TableHead className="px-[20px] py-5">Status</TableHead>
-                <TableHead className="px-[20px] py-5">Action</TableHead>
+                {canEdit && (
+                  <TableHead className="px-[20px] py-5">Status</TableHead>
+                )}
+                {(canEdit || canDelete) && (
+                  <TableHead className="px-[20px] py-5">Action</TableHead>
+                )}
               </TableRow>
             </TableHeader>
 
@@ -68,12 +76,12 @@ export const PageBase = () => {
                     <TableCell className="px-[20px] py-5">{item.id}</TableCell>
                     <TableCell className="px-[20px] py-5">
                       <Image
-                          src={getImageUrl(item.imageUrl)}
-                          width={40}
-                          height={40}
-                          alt="avatar"
-                          className="rounded-full"
-                        />
+                        src={getImageUrl(item.imageUrl)}
+                        width={40}
+                        height={40}
+                        alt="avatar"
+                        className="rounded-full"
+                      />
                     </TableCell>
                     <TableCell className="px-[20px] py-5">
                       {item.name}
@@ -87,62 +95,70 @@ export const PageBase = () => {
                     <TableCell className="px-[20px] py-5">
                       {item.updatedByAdmin?.name}
                     </TableCell>
-                    <TableCell className="px-[20px] py-5">
-                      {submittingItems.has(item.id) ? (
-                        <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
-                      ) : (
-                        <Controller
-                          name={`isActive-${item.id}`}
-                          control={control}
-                          defaultValue={item.isActive}
-                          render={({ field: { onChange, value } }) => (
-                            <Switch
-                              className="cursor-pointer"
-                              checked={value}
-                              disabled={submittingItems.has(item.id)}
-                              onCheckedChange={(checked) => {
-                                onChange(checked);
-                                handleSwitchChange(item.id, checked);
-                              }}
-                            />
-                          )}
-                        />
-                      )}
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      className="px-[30px] py-5 gap-3 flex items-center"
-                    >
-                      <Button
-                        variant="outline"
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setOpen(true);
-                          setSelectedItem(item);
-                        }}
-                      >
-                        <SquarePen
-                          color="currentColor"
-                          size={18}
-                          className="text-gray-600 hover:text-[#E25016]"
-                        />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="cursor-pointer"
-                        onClick={() => handleDeleteGift(item.id)}
-                      >
-                        {deletingItemId === item.id ? (
-                          <div className="w-[15px] h-[15px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
+                    {canEdit && (
+                      <TableCell className="px-[20px] py-5">
+                        {submittingItems.has(item.id) ? (
+                          <div className="w-[20px] h-[20px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
                         ) : (
-                          <Trash2
-                            color="currentColor"
-                            size={18}
-                            className="text-gray-600 hover:text-[#E25016]"
+                          <Controller
+                            name={`isActive-${item.id}`}
+                            control={control}
+                            defaultValue={item.isActive}
+                            render={({ field: { onChange, value } }) => (
+                              <Switch
+                                className="cursor-pointer"
+                                checked={value}
+                                disabled={submittingItems.has(item.id)}
+                                onCheckedChange={(checked) => {
+                                  onChange(checked);
+                                  handleSwitchChange(item.id, checked);
+                                }}
+                              />
+                            )}
                           />
                         )}
-                      </Button>
-                    </TableCell>
+                      </TableCell>
+                    )}
+                    {(canEdit || canDelete) && (
+                      <TableCell
+                        align="right"
+                        className="px-[30px] py-5 gap-3 flex items-center"
+                      >
+                        {canEdit && (
+                          <Button
+                            variant="outline"
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setOpen(true);
+                              setSelectedItem(item);
+                            }}
+                          >
+                            <SquarePen
+                              color="currentColor"
+                              size={18}
+                              className="text-gray-600 hover:text-[#E25016]"
+                            />
+                          </Button>
+                        )}
+                        {canDelete && (
+                          <Button
+                            variant="outline"
+                            className="cursor-pointer"
+                            onClick={() => handleDeleteGift(item.id)}
+                          >
+                            {deletingItemId === item.id ? (
+                              <div className="w-[15px] h-[15px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
+                            ) : (
+                              <Trash2
+                                color="currentColor"
+                                size={18}
+                                className="text-gray-600 hover:text-[#E25016]"
+                              />
+                            )}
+                          </Button>
+                        )}
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))
               ) : (

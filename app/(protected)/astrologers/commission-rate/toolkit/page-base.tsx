@@ -15,6 +15,7 @@ import { Loader2, SquarePen, Trash2 } from "lucide-react";
 import { UpdateCommission } from "./update-commission";
 import { MetaPagination } from "@/components/ui-kit/meta-paginations/meta-pagination";
 import { Label } from "@/components/ui/label";
+import { usePermission } from "@/src/context/PermissionContext";
 
 export const PageBase = () => {
   const [open, setOpen] = useState(false);
@@ -29,6 +30,12 @@ export const PageBase = () => {
     handleDeleteCommission,
     deletingItemId,
   } = useDataMutation();
+  const { modules, role } = usePermission();
+  const canEdit =
+    role === "superadmin" || modules?.["Commission Rate for Calls/Chats"]?.edit;
+  const canDelete =
+    role === "superadmin" ||
+    modules?.["Commission Rate for Calls/Chats"]?.delete;
 
   return (
     <div className="mt-8">
@@ -53,7 +60,9 @@ export const PageBase = () => {
                 <TableHead className="px-[20px] py-5">Commission</TableHead>
                 <TableHead className="px-[20px] py-5">Added By</TableHead>
                 <TableHead className="px-[20px] py-5">Updated By</TableHead>
-                <TableHead className="px-[20px] py-5">Action</TableHead>
+                {(canEdit || canDelete) && (
+                  <TableHead className="px-[20px] py-5">Action</TableHead>
+                )}
               </TableRow>
             </TableHeader>
 
@@ -80,37 +89,43 @@ export const PageBase = () => {
                     <TableCell className="px-[20px] py-5">
                       {item.updatedByAdmin?.name}
                     </TableCell>
-                    <TableCell className="px-[30px] py-5 gap-3 flex items-center">
-                      <Button
-                        variant="outline"
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setOpen(true);
-                          setSelectedItem(item);
-                        }}
-                      >
-                        <SquarePen
-                          color="currentColor"
-                          size={18}
-                          className="text-gray-600 hover:text-[#E25016]"
-                        />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="cursor-pointer"
-                        onClick={() => handleDeleteCommission(item.id)}
-                      >
-                        {deletingItemId === item.id ? (
-                          <div className="w-[15px] h-[15px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
-                        ) : (
-                          <Trash2
-                            color="currentColor"
-                            size={18}
-                            className="text-gray-600 hover:text-[#E25016]"
-                          />
+                    {(canEdit || canDelete) && (
+                      <TableCell className="px-[30px] py-5 gap-3 flex items-center">
+                        {canEdit && (
+                          <Button
+                            variant="outline"
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setOpen(true);
+                              setSelectedItem(item);
+                            }}
+                          >
+                            <SquarePen
+                              color="currentColor"
+                              size={18}
+                              className="text-gray-600 hover:text-[#E25016]"
+                            />
+                          </Button>
                         )}
-                      </Button>
-                    </TableCell>
+                        {canDelete && (
+                          <Button
+                            variant="outline"
+                            className="cursor-pointer"
+                            onClick={() => handleDeleteCommission(item.id)}
+                          >
+                            {deletingItemId === item.id ? (
+                              <div className="w-[15px] h-[15px] animate-spin rounded-full border-2 border-solid border-gray-200 border-t-blue-500" />
+                            ) : (
+                              <Trash2
+                                color="currentColor"
+                                size={18}
+                                className="text-gray-600 hover:text-[#E25016]"
+                              />
+                            )}
+                          </Button>
+                        )}
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))
               ) : (
