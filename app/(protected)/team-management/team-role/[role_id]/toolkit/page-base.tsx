@@ -15,10 +15,9 @@ import {
 import { mainItems } from "@/lib/menuItems";
 import { useDataMutation } from "../hook/use-data-mutation";
 
-
 type PermissionTableProps = {
   response: any;
-}
+};
 
 export const PageBase = ({ response }: PermissionTableProps) => {
   const [permissions, setPermissions] = useState(response?.module || {});
@@ -58,7 +57,11 @@ export const PageBase = ({ response }: PermissionTableProps) => {
         <h2 className="text-2xl font-semibold">
           Role: {response?.name || "N/A"}
         </h2>
-        <Button className="bg-[transparent] cursor-pointer text-sm flex items-center gap-1 md:p-2 p-1 rounded-sm border border-solid border-[#E25016] text-[#E25016] hover:bg-[#E25016] hover:text-white transition font-medium" onClick={handleUpdate} disabled={isLoading}>
+        <Button
+          className="bg-[transparent] cursor-pointer text-sm flex items-center gap-1 md:p-2 p-1 rounded-sm border border-solid border-[#E25016] text-[#E25016] hover:bg-[#E25016] hover:text-white transition font-medium"
+          onClick={handleUpdate}
+          disabled={isLoading}
+        >
           {isLoading ? "Updating..." : "Update Permissions"}
         </Button>
       </div>
@@ -74,11 +77,14 @@ export const PageBase = ({ response }: PermissionTableProps) => {
               <TableHead className="text-center">Delete</TableHead>
             </TableRow>
           </TableHeader>
-
           <TableBody>
             {flattenedMenus.map((menu, idx) => {
               const modulePermissions = permissions[menu.title] || {};
-              const hasAnyPermission = Object.keys(modulePermissions).length > 0;
+              const availableActions = Object.keys(modulePermissions);
+
+              if (availableActions.length === 0) return null;
+
+              const actionList = ["view", "create", "edit", "delete"];
 
               return (
                 <TableRow key={idx}>
@@ -90,25 +96,33 @@ export const PageBase = ({ response }: PermissionTableProps) => {
                     )}
                     {menu.title}
                   </TableCell>
-                  {["view", "create", "edit", "delete"].map((action) => (
-                    <TableCell key={action} className="text-center">
-                      <Checkbox
-                        checked={!!modulePermissions[action]}
-                        disabled={!hasAnyPermission}
-                        onCheckedChange={() =>
-                          handleToggle(menu.title, action)
-                        }
-                        className="
-                          cursor-pointer
-                          data-[state=checked]:bg-[#E25016]
-                          data-[state=checked]:border-[#E25016]
-                          data-[state=checked]:text-white
-                          hover:border-[#E25016]
-                          transition
-                        "
-                      />
-                    </TableCell>
-                  ))}
+
+                  {actionList.map((action) => {
+                    const exists = action in modulePermissions;
+
+                    return (
+                      <TableCell key={action} className="text-center">
+                        {exists ? (
+                          <Checkbox
+                            checked={!!modulePermissions[action]}
+                            onCheckedChange={() =>
+                              handleToggle(menu.title, action)
+                            }
+                            className="
+                    cursor-pointer
+                    data-[state=checked]:bg-[#E25016]
+                    data-[state=checked]:border-[#E25016]
+                    data-[state=checked]:text-white
+                    hover:border-[#E25016]
+                    transition
+                  "
+                          />
+                        ) : (
+                          <div className="h-4 w-full"></div>
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               );
             })}
