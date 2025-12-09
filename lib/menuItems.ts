@@ -9,7 +9,7 @@ import {
   Bell,
   Newspaper,
   Smile,
-  UserPlus,
+  // UserPlus,
   Layers,
   Users2,
   Wallet,
@@ -18,7 +18,7 @@ import {
   Blocks,
   ClipboardList,
   BookOpen,
-  Coins,
+  // Coins,
   CreditCard,
   DollarSign,
   CalendarClock,
@@ -85,8 +85,8 @@ export const mainItems = [
     icon: Wallet,
     children: [
       { title: "Withdrawal Requests", url: "/earning/withdrawal-requests", icon: CreditCard },
-      { title: "Withdrawal Methods", url: "/earning/withdrawal-methods", icon: Coins },
-      { title: "Wallet History", url: "/earning/wallet-history", icon: Wallet },
+      // { title: "Withdrawal Methods", url: "/earning/withdrawal-methods", icon: Coins },
+      // { title: "Wallet History", url: "/earning/wallet-history", icon: Wallet },
     ],
   },
   {
@@ -118,9 +118,9 @@ export const mainItems = [
     url: "/page-management",
     icon: Layers,
   },
-  {
-    title: "Contact Form",
-    url: "/contact-form",
-    icon: UserPlus,
-  },
+  // {
+  //   title: "Contact Form",
+  //   url: "/contact-form",
+  //   icon: UserPlus,
+  // },
 ];
